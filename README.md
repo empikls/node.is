@@ -1,5 +1,3 @@
 -----
-test
-
-change
+test change
 
