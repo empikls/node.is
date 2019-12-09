@@ -55,6 +55,7 @@ spec:
         stage('Test') {
             steps {
                 echo 'Testing..'
+                sh 'printenv'
             }
         }
         stage('Deploy') {
