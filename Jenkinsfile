@@ -3,7 +3,6 @@ pipeline {
   environment {
     APP_NAME = "hello-world "
     STORAGE_CREDS = "${PROJECT}"
-    IMAGE_TAG = "eu.gcr.io/${PROJECT}/${APP_NAME}:${GIT_COMMIT}"
     JENKINS_CRED = "${PROJECT}"
     APP_REPO="https://github.com/empikls/node.is"
     NAMESPACE="jenkins"
