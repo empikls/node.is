@@ -89,8 +89,9 @@ spec:
     }
         stage('Deploy') {
             steps {
-                echo 'Deploying....'
-                sh 'env'
+                sh '''
+                printenv
+                '''
             }
         }
     }
