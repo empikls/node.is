@@ -35,6 +35,11 @@ spec:
     command:
     - cat
     tty: true
+  - name: nodejs
+    image: node:latest
+    command:
+    - cat
+    tty: true
   - name: docker-daemon
     image: docker:19.03.1-dind
     securityContext:
@@ -47,20 +52,23 @@ spec:
 }
 
  stages {
-        stage('Build') {
-            steps {
-                echo 'Building..'
-            }
+            stage('Checkout') {
+        steps {
+            git branch: "${BRANCH}", url: "${APP_REPO}"
         }
-        stage('Test') {
-            steps {
-                echo 'Testing..'
-                sh 'printenv'
-            }
         }
+        stage('Build) {
+        steps {
+        container('nodejs'){
+            sh 'npm install'
+            
+          }
+        }
+    }
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
+                sh 'printenv'
             }
         }
     }
