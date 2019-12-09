@@ -13,8 +13,8 @@ pipeline {
     DOCKER_PROJECT_NAMESPACE="devops53"
     IMAGE_NAME="http-app"
     IMAGE_TAG="v1"
-    DOCKER_HUB_USER="devops53"
-    DOCKER_HUB_PASSWORD="Ke150591"
+    DOCKER_HUB_USER=""
+    DOCKER_HUB_PASSWORD=""
   }
 
  agent {
