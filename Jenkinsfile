@@ -54,7 +54,7 @@ spec:
  stages {
             stage('Checkout') {
         steps {
-            git branch: "${BRANCH}", url: "${APP_REPO}"
+            git branch: 'master', url: "${APP_REPO}"
         }
         }
         stage('Build') {
