@@ -10,6 +10,10 @@ pipeline {
     BRANCHNAME="${BRANCH}"
     DOCKERREGISTRY="devops53/hello-app"
     CI = 'true'
+    DOCKER_REGISTRY_URL="registry.hub.docker.com"
+    DOCKER_PROJECT_NAMESPACE="devops53"
+    IMAGE_NAME="http-app"
+    IMAGE_TAG=""
   }
 
  agent {
@@ -40,7 +44,12 @@ spec:
     command:
     - cat
     tty: true
-  - name: docker-daemon
+  - name: kubectl
+    image: lachlanevenson/k8s-kubectl:v1.8.8
+    command:
+    - cat
+    tty: true
+  - name: docker
     image: docker:19.03.1-dind
     securityContext:
       privileged: true
@@ -54,17 +63,35 @@ spec:
  stages {
             stage('Checkout') {
         steps {
-            git branch: 'master', url: "${APP_REPO}"
+            git branch: "", url: "${APP_REPO}"
         }
         }
-        stage('Build') {
+
+        stage('RUN Unit Tests') {
         steps {
-        container('nodejs'){
-            sh 'npm install'
+        container('nodejs') {
+          sh "npm install"
+          sh "npm test"
             
           }
         }
     }
+
+     stage('Create Docker images') {
+      container('docker') {
+        withCredentials([[$class: 'UsernamePasswordMultiBinding',
+          credentialsId: 'dockerhub',
+          usernameVariable: 'DOCKER_HUB_USER',
+          passwordVariable: 'DOCKER_HUB_PASSWORD']]) {
+                sh '''
+                docker login -u ${DOCKER_HUB_USER} -p ${DOCKER_HUB_PASSWORD}
+                docker build -t namespace/my-image:${gitCommit} .
+                docker push namespace/my-image:${gitCommit}
+                '''
+            }   
+        }
+    }
+     }
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
