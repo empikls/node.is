@@ -13,7 +13,7 @@ pipeline {
     DOCKER_REGISTRY_URL="registry.hub.docker.com"
     DOCKER_PROJECT_NAMESPACE="devops53"
     IMAGE_NAME="http-app"
-    IMAGE_TAG=""
+    IMAGE_TAG="v1"
   }
 
  agent {
@@ -78,6 +78,7 @@ spec:
     }
 
      stage('Create Docker images') {
+      steps{
       container('docker') {
         withCredentials([[$class: 'UsernamePasswordMultiBinding',
           credentialsId: 'dockerhub',
@@ -99,4 +100,4 @@ spec:
             }
         }
     }
-
+}
