@@ -57,7 +57,7 @@ spec:
             git branch: "${BRANCH}", url: "${APP_REPO}"
         }
         }
-        stage('Build) {
+        stage('Build') {
         steps {
         container('nodejs'){
             sh 'npm install'
