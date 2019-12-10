@@ -60,9 +60,6 @@ spec:
       - name: DOCKER_TLS_CERTDIR
         value: ""
     volumeMounts:
-    - name: workspace-volume
-      mountPath: "/home/jenkins/agent"
-      readOnly: false
     - name: dockersock
       mountPath: /var/run/docker.sock
 """
