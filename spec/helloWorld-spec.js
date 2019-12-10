@@ -1,6 +1,6 @@
 var request = require("request");
 var base_url = "http://localhost:3000/";
-var server = require("../app.js");
+var server = require("../index.js");
 
 describe("Hello World Server", function() {
   describe("GET /", function() {
