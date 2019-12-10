@@ -4,7 +4,7 @@ from node:8
 WORKDIR /usr/node/app
 
 COPY package*.json /usr/node/app/
-COPY index.js /usr/app/
+COPY index.js /usr/node/app/
 
 RUN npm install
 
