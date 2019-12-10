@@ -30,9 +30,9 @@ spec:
   # Use service account that can deploy to all namespaces
   serviceAccountName: jenkins
   volumes:
-  - name: dockersock
-    hostPath:
-      path: /var/jenkins_home/docker.sock  
+  - name: repository
+    persistentVolumeClaim:
+      claimName: repository
   containers:
   - name: git
     image: alpine/git
@@ -55,8 +55,8 @@ spec:
     - cat
     tty: true
     volumeMounts:
-    - name: dockersock
-      mountPath: /var/jenkins_home/docker.sock
+    - name: docker-sock
+      mountPath: /var/run/docker.sock
 """
 }
 }
