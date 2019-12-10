@@ -30,12 +30,9 @@ spec:
   # Use service account that can deploy to all namespaces
   serviceAccountName: jenkins
   volumes:
-  - name: workspace-volume
-    emptyDir:
+  - emptyDir:
       medium: ""
-  - name: dockersock
-    hostPath:
-      path: /var/run/docker.sock
+    name: "workspace-volume"
   containers:
   - name: git
     image: alpine/git
@@ -59,9 +56,6 @@ spec:
     env:
       - name: DOCKER_TLS_CERTDIR
         value: ""
-    volumeMounts:
-    - name: dockersock
-      mountPath: /var/run/docker.sock
 """
 }
 }
