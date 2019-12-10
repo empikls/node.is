@@ -29,10 +29,10 @@ metadata:
 spec:
   # Use service account that can deploy to all namespaces
   serviceAccountName: jenkins
-  volumes:
-  - name: repository
-    persistentVolumeClaim:
-      claimName: repository
+  volumeMounts:
+    - mountPath: "/home/jenkins/agent"
+      name: "workspace-volume"
+      readOnly: false
   containers:
   - name: git
     image: alpine/git
