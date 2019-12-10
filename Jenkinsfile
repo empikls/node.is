@@ -33,9 +33,9 @@ spec:
   - name: workspace-volume
     emptyDir:
       medium: ""
-  - name: jenkins
-    secret:
-      secretName: jenkins
+  - name: docker
+    emptyDir: {}
+    medium: ""
   containers:
   - name: git
     image: alpine/git
@@ -63,7 +63,7 @@ spec:
     - name: "workspace-volume"
       mountPath: "/home/jenkins/agent"
       readOnly: false
-    - name: jenkins
+    - name: docker
       mountPath: /tmp/
       readOnly: true
 """
