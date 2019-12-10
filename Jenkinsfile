@@ -34,7 +34,7 @@ spec:
     emptyDir:
       medium: ""
   - name: dockersock
-      mountPath: /var/run/docker.sock
+    mountPath: /var/run/docker.sock
   containers:
   - name: git
     image: alpine/git
