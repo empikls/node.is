@@ -49,14 +49,13 @@ spec:
     command:
     - cat
     tty: true
-  - name: docker
-    image: docker:18.09.2
-    command:
-    - cat
-    tty: true
-    volumeMounts:
-    - name: dockersock
-      mountPath: /var/run/docker.sock
+  - name: docker-daemon
+    image: docker:19.03.1-dind
+    securityContext:
+      privileged: true
+    env:
+      - name: DOCKER_TLS_CERTDIR
+        value: ""
 """
 }
 }
