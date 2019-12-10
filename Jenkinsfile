@@ -59,9 +59,6 @@ spec:
     volumeMounts:
     - name: dockersock
       mountPath: /var/run/docker.sock
-    env:
-    - name: DOCKER_HOST
-      value: tcp://localhost:2375
 """
 }
 }
