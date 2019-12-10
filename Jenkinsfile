@@ -49,7 +49,7 @@ spec:
     command:
     - cat
     tty: true
-  - name: docker-daemon
+  - name: docker
     image: docker:19.03.1-dind
     securityContext:
       privileged: true
