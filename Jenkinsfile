@@ -57,6 +57,11 @@ spec:
     env:
       - name: DOCKER_TLS_CERTDIR
         value: ""
+  - name: helm
+    image: lachlanevenson/k8s-helm:latest
+    command:
+    - cat
+    tty: true
 """
 }
 }
@@ -70,8 +75,15 @@ spec:
           }
         }
     }
+  stage ('Helm create') {
+   steps {
+    container ('helm') {
+        sh "helm create" ;
+    }
+   }
+  }
      
-     stage('Create Docker images') {
+ stage('Create Docker images') {
        steps{
         container('docker') {
          withCredentials([[$class: 'UsernamePasswordMultiBinding',
