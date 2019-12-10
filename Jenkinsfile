@@ -78,7 +78,7 @@ spec:
   stage ('Helm create') {
    steps {
     container ('helm') {
-        sh "helm create" ;
+        sh "helm create app" ;
     }
    }
   }
