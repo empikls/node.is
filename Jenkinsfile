@@ -58,7 +58,11 @@ spec:
     tty: true
     volumeMounts:
     - name: dockersock
-      mountPath: /var/run/docker.sock
+      mountPath: "/var/run/docker.sock"
+    volumes:
+  - name: dockersock
+    hostPath:
+      path: /var/run/docker.sock
 """
 }
 }
@@ -83,7 +87,6 @@ spec:
        steps{
         container('docker') {
           sh """
-            docker login -u ${DOCKER_HUB_USER} -p ${DOCKER_HUB_PASSWORD}
             docker build -t ${DOCKER_PROJECT_NAMESPACE}/${IMAGE_NAME}:dev .
             docker push ${DOCKER_PROJECT_NAMESPACE}/${IMAGE_NAME}:dev
             """
