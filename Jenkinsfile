@@ -78,6 +78,7 @@ spec:
        steps{
         container('docker') {
           sh """
+            ls
             docker build -t ${DOCKER_PROJECT_NAMESPACE}/${IMAGE_NAME}:dev .
             docker push ${DOCKER_PROJECT_NAMESPACE}/${IMAGE_NAME}:dev
             """
