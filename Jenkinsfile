@@ -30,8 +30,9 @@ spec:
   # Use service account that can deploy to all namespaces
   serviceAccountName: jenkins
   volumes:
-  - name: cache-volume
-    emptyDir: 
+  - name: dockersock
+    hostPath:
+      path: /var/run/docker.sock  
   containers:
   - name: git
     image: alpine/git
@@ -49,12 +50,11 @@ spec:
     - cat
     tty: true
   - name: docker
-    image: docker:19.03.1-dind
-    securityContext:
-      privileged: true
-    env:
-      - name: DOCKER_HOST
-        value: tcp://localhost:2375
+    image: docker:dind
+    volumeMounts:
+    - name: dockersock
+      mountPath: "/var/run/docker.sock"
+  
 """
 }
 }
