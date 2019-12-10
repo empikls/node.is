@@ -49,7 +49,7 @@ spec:
     command:
     - cat
     tty: true
- - name: docker
+ -  name: docker
     image: docker:dind
     securityContext:
       privileged: true
