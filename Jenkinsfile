@@ -65,12 +65,6 @@ spec:
 }
 
  stages {
-            stage('Checkout') {
-        steps {
-            git branch: "master", url: "${APP_REPO}"
-        }
-        }
-
         stage('RUN Unit Tests') {
         steps {
         container('nodejs') {
