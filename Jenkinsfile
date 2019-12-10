@@ -55,7 +55,7 @@ spec:
     - cat
     tty: true
     volumeMounts:
-    - name: docker-sock
+    - name: dockersock
       mountPath: /var/run/docker.sock
 """
 }
