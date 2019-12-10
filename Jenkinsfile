@@ -84,11 +84,7 @@ spec:
      
      stage('Create Docker images') {
        steps{
-      container('docker') {
-        withCredentials([[$class: 'UsernamePasswordMultiBinding',
-          credentialsId: 'dockerhub',
-          usernameVariable: 'DOCKER_HUB_USER',
-          passwordVariable: 'DOCKER_HUB_PASSWORD']]) {
+        container('docker') {
           sh """
             docker login -u ${DOCKER_HUB_USER} -p ${DOCKER_HUB_PASSWORD}
             docker build -t ${DOCKER_PROJECT_NAMESPACE}/${IMAGE_NAME}:dev .
@@ -99,5 +95,4 @@ spec:
     }
      }
     }
-}
 
