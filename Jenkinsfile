@@ -32,7 +32,7 @@ spec:
   volumes:
   - name: dockersock
     hostPath:
-      path: /var/run/docker.sock  
+      path: /var/jenkins_home/docker.sock  
   containers:
   - name: git
     image: alpine/git
@@ -50,15 +50,13 @@ spec:
     - cat
     tty: true
   - name: docker
-    image: docker:dind
-    securityContext:
-      privileged: true
+    image: docker:18.09.2
     command:
     - cat
     tty: true
     volumeMounts:
-    - name: dockersock
-      mountPath: "/var/run/docker.sock"
+    - name: docker-sock
+      mountPath: /var/jenkins_home/docker.sock
 """
 }
 }
