@@ -77,8 +77,7 @@ spec:
         steps {
         container('nodejs') {
           sh "npm install" ;
-          sh "npm test" ;
-          '''  
+          sh "npm test" ; 
           }
         }
     }
