@@ -33,9 +33,8 @@ spec:
   - name: workspace-volume
     emptyDir:
       medium: ""
-  - name: docker
-    emptyDir: {}
-    medium: ""
+  - name: dockersock
+      mountPath: /var/run/docker.sock
   containers:
   - name: git
     image: alpine/git
@@ -60,12 +59,11 @@ spec:
       - name: DOCKER_TLS_CERTDIR
         value: ""
     volumeMounts:
-    - name: "workspace-volume"
+    - name: workspace-volume
       mountPath: "/home/jenkins/agent"
       readOnly: false
-    - name: docker
-      mountPath: /tmp/
-      readOnly: true
+    - name: dockersock
+      mountPath: /var/run/docker.sock
 """
 }
 }
