@@ -3,7 +3,8 @@ from node:8
 # Create app directory
 WORKDIR /usr/node/app
 
-COPY package*.json index.js
+COPY package*.json
+COPY index.js
 
 RUN npm install
 
