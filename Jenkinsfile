@@ -30,9 +30,12 @@ spec:
   # Use service account that can deploy to all namespaces
   serviceAccountName: jenkins
   volumes:
-  - emptyDir:
+  - name: workspace-volume
+    emptyDir:
       medium: ""
-    name: "workspace-volume"
+  - name: jenkins
+    secret:
+      secretName: jenkins
   containers:
   - name: git
     image: alpine/git
@@ -57,9 +60,12 @@ spec:
       - name: DOCKER_TLS_CERTDIR
         value: ""
     volumeMounts:
-    - mountPath: "/home/jenkins/agent"
-      name: "workspace-volume"
+    - name: "workspace-volume"
+      mountPath: "/home/jenkins/agent"
       readOnly: false
+    - name: jenkins
+      mountPath: /tmp/
+      readOnly: true
 """
 }
 }
