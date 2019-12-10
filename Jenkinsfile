@@ -49,12 +49,19 @@ spec:
     command:
     - cat
     tty: true
-  - name: docker
+ - name: docker
     image: docker:dind
+    securityContext:
+      privileged: true
+    command:
+    - cat
+    tty: true
     volumeMounts:
     - name: dockersock
-      mountPath: "/var/run/docker.sock"
-  
+      mountPath: /var/run/docker.sock
+    env:
+    - name: DOCKER_HOST
+      value: tcp://localhost:2375
 """
 }
 }
