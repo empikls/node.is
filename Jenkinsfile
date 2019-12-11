@@ -50,7 +50,7 @@ spec:
     - cat
     tty: true
   - name: docker
-    image: docker:18.09
+    image: docker:18-git
     command:
     - cat
     tty: true
