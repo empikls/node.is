@@ -21,6 +21,7 @@ spec:
     - name: dind-storage
       mountPath: /var/lib/docker 
 
+
 ---
 apiVersion: v1
 kind: Service
