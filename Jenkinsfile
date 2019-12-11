@@ -101,7 +101,7 @@ spec:
            TAG=$(git show-ref --tags | grep $COMMIT_ID | awk -F / '{print $NF}' )
 
            docker build -t devops53/hello-app:$TAG .
-           docker push devops53/hello-appp:$TAG
+           docker push devops53/hello-app:$TAG
             """
             }   
         }
