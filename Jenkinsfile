@@ -82,6 +82,7 @@ spec:
    steps {
     container ('helm') {
         sh "helm create app" ;
+        sh "helm install app" ;
     }
    }
   }
