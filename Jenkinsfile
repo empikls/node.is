@@ -97,10 +97,11 @@ spec:
           usernameVariable: 'DOCKER_HUB_USER',
           passwordVariable: 'DOCKER_HUB_PASSWORD']]) {
           sh """
-            ls
-            docker login -u ${DOCKER_HUB_USER} -p ${DOCKER_HUB_PASSWORD}
-            docker build -t ${DOCKER_PROJECT_NAMESPACE}/${IMAGE_NAME}:dev .
-            docker push ${DOCKER_PROJECT_NAMESPACE}/${IMAGE_NAME}:dev
+           COMMIT_ID=$(git rev-list --tags --date-order | head -1)
+           TAG=$(git show-ref --tags | grep $COMMIT_ID | awk -F / '{print $NF}' )
+
+           docker build -t devops53/hello-app:$TAG .
+           docker push devops53/hello-appp:$TAG
             """
             }   
         }
