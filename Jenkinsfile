@@ -49,7 +49,7 @@ spec:
     - cat
     tty: true
   - name: docker
-    image: docker:18-git
+    image: docker:19-git
     command:
     - cat
     tty: true
