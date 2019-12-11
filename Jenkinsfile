@@ -50,12 +50,13 @@ spec:
     - cat
     tty: true
   - name: docker
-    image: docker:19.03.1-dind
-    securityContext:
-      privileged: true
+    image: docker:19.03.3-git
+    command:
+    - cat
+    tty: true
     env:
-      - name: DOCKER_TLS_CERTDIR
-        value: ""
+    - name: DOCKER_HOST
+      value: tcp://localhost:2375
     volumeMounts:
       - name: dind-storage
         mountPath: /var/lib/docker
