@@ -1,6 +1,5 @@
 pipeline {
  
- 
   environment {
     APP_NAME = "hello-world "
     STORAGE_CREDS = "${PROJECT}"
