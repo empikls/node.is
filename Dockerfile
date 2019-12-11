@@ -8,6 +8,5 @@ COPY index.js /usr/node/app/
 
 RUN npm install
 
-
 EXPOSE 9001
 CMD [ "npm", "start" ]
