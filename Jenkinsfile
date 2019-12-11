@@ -56,7 +56,7 @@ spec:
     tty: true
     env:
     - name: DOCKER_HOST
-      value: tcp://localhost:2375
+      value: tcp://docker-dind:2375
     volumeMounts:
       - name: dind-storage
         mountPath: /var/lib/docker
