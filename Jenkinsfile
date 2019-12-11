@@ -31,9 +31,8 @@ spec:
   # Use service account that can deploy to all namespaces
   serviceAccountName: jenkins
   volumes:
-  - emptyDir:
-      medium: ""
-    name: "workspace-volume"
+  - name: dind-storage
+    emptyDir: {}
   containers:
   - name: git
     image: alpine/git
@@ -57,6 +56,9 @@ spec:
     env:
       - name: DOCKER_TLS_CERTDIR
         value: ""
+    volumeMounts:
+      - name: dind-storage
+        mountPath: /var/lib/docker
   - name: helm
     image: lachlanevenson/k8s-helm:latest
     command:
