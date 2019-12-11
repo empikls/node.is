@@ -71,7 +71,6 @@ spec:
 }
 
 
-
  stages {
         stage('RUN Unit Tests') {
         steps {
@@ -84,8 +83,8 @@ spec:
   stage ('Helm create') {
    steps {
     container ('helm') {
+        sh "helm version"
         sh "helm create app" ;
-        sh "helm install app" ;
     }
    }
   }
