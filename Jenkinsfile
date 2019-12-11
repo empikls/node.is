@@ -15,6 +15,7 @@ pipeline {
     IMAGE_TAG="v1"
   }
 
+ 
  agent {
     kubernetes {
       yaml """
