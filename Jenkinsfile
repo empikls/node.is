@@ -84,7 +84,7 @@ spec:
    steps {
     container ('helm') {
         sh "helm version"
-        sh "helm install stable/nginx-ingress --name nginx"
+        sh "helm install nginx stable/nginx-ingress"
         sh "helm create app" ;
     }
    }
