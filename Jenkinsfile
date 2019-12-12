@@ -75,12 +75,12 @@ spec:
  stage('Create Docker images') {
        steps{
         container('docker') {
-         withCredentials([[$class: 'UsernamePasswordMultiBinding',
-          credentialsId: 'docker_hub_login']]) {
-          sh """
-           docker build -t kongurua/hello-app:1 .
-           docker push kongurua/hello-app:1
-            """
+         withRegistry('https://registry.hub.docker.com', 'docker_hub_login')
+           {
+             sh """
+               docker build -t kongurua/hello-app:1 .
+               docker push kongurua/hello-app:1
+             """
             }
         }
     }
