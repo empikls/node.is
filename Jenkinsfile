@@ -1,10 +1,6 @@
 pipeline {
  
- 
-<<<<<<< HEAD
- 
-=======
->>>>>>> 86663326859ed0b585d407bd7e4f941864a665d2
+
 agent {
   kubernetes {
       yaml """
@@ -88,7 +84,7 @@ spec:
          withCredentials([credentialsId: 'dockerhub']) {
           sh """
            docker build -t $IMAGE_NAME:$IMAGE_TAG .
-           docker push $DOCKER_PROJECT_NAMESPACE/$IMAGE_NAME:0.0.1
+           docker push $DOCKER_PROJECT_NAMESPACE/$IMAGE_NAME:$IMAGE_TAG
             """
           }   
         }
