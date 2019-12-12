@@ -75,7 +75,7 @@ spec:
  stage('Create Docker images') {
        steps{
         container('docker') {
-         withCredentials([credentialsId: 'docker_hub_login']) {
+         withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
            sh """
              docker build -t kongurua/hello-app:1 .
              docker push kongurua/hello-app:1
