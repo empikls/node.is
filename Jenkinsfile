@@ -1,13 +1,6 @@
 pipeline {
  
  
-  environment {
-    BRANCHNAME="${BRANCH}"
-    DOCKER_PROJECT_NAMESPACE="devops53"
-    IMAGE_NAME="http-app"
-    IMAGE_TAG="v1"
-  }
-
  
 agent {
   kubernetes {
@@ -38,7 +31,7 @@ spec:
     - cat
     tty: true
   - name: kubectl
-    image: lachlanevenson/k8s-kubectl:v1.8.8
+    image: bitnami/kubectl:latest
     command:
     - cat
     tty: true
@@ -77,7 +70,7 @@ spec:
   stage ('Helm create') {
    steps {
       container ('helm') {
-        withCredentials([file(credentialsId: 'kubeconfig', variable: 'FILE')]) {
+        withCredentials([file(credentialsId: 'kubeconfig')]) {
         sh """
         helm version
         helm create app
@@ -89,10 +82,7 @@ spec:
  stage('Create Docker images') {
        steps{
         container('docker') {
-         withCredentials([[$class: 'UsernamePasswordMultiBinding',
-          credentialsId: 'dockerhub',
-          usernameVariable: 'DOCKER_HUB_USER',
-          passwordVariable: 'DOCKER_HUB_PASSWORD']]) {
+         withCredentials([credentialsId: 'dockerhub']) {
           sh """
            docker build -t $DOCKER_PROJECT_NAMESPACE/$IMAGE_NAME:$IMAGE_TAG .
            docker push $DOCKER_PROJECT_NAMESPACE/$IMAGE_NAME:$IMAGE_TAG
