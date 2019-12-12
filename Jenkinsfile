@@ -76,9 +76,7 @@ spec:
        steps{
         container('docker') {
          withCredentials([[$class: 'UsernamePasswordMultiBinding',
-          credentialsId: 'docker_hub_login',
-          usernameVariable: 'DOCKER_HUB_USER',
-          passwordVariable: 'DOCKER_HUB_PASSWORD']]) {
+          credentialsId: 'docker_hub_login']]) {
           sh """
            docker build -t kongurua/hello-app:1 .
            docker push kongurua/hello-app:1
