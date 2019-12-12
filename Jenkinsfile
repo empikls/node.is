@@ -81,7 +81,7 @@ spec:
  stage('Create Docker images') {
        steps{
         container('docker') {
-         withCredentials([credentialsId: 'dockerhub']) {
+         withCredentials([usernameColonPassword(credentialsId: 'dockerhub', variable: 'USERPASS')]) {
           sh """
            docker build -t $IMAGE_NAME:$IMAGE_TAG .
            docker push $DOCKER_PROJECT_NAMESPACE/$IMAGE_NAME:$IMAGE_TAG
