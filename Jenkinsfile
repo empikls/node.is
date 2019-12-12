@@ -1,5 +1,11 @@
 pipeline {
 
+ environment { 
+        DockerRegistryURL = 'hub.docker.com'
+        DockerImageName = ''
+  
+ }
+ 
  agent {
     kubernetes {
       yaml """
@@ -75,14 +81,17 @@ spec:
  stage('Create Docker images') {
        steps{
         container('docker') {
-          withCredentials([usernameColonPassword(credentialsId: 'docker_hub_login')]) {
-           sh """
-             docker build -t kongurua/hello-app:1 .
-             docker push kongurua/hello-app:1
-           """
-           }
+         withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) 
+          {
+              sh "docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD} https://${DockerRegistryURL}"
+              sh "docker build -t kongurua/hello-app:1 ."
+              sh "docker push kongurua/hello-app:1"
+          }         
         }
     }
      }
  }
     }
+
+
+
