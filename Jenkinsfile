@@ -80,7 +80,7 @@ stage('Create Docker images') {
          withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
             sh """
               echo "STEP 1"
-              docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD} https://${DockerRegistryURL}
+              docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD} https://hub.docker.com
               echo "STEP 2"
               docker build -t kongurua/hello-app:1 .
               echo "STEP 3"
