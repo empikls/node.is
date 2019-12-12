@@ -1,14 +1,6 @@
 pipeline {
  
  
-  environment {
-    BRANCHNAME="${BRANCH}"
-    DOCKER_PROJECT_NAMESPACE="devops53"
-    IMAGE_NAME="http-app"
-    IMAGE_TAG="v1"
-  }
-
- 
 agent {
   kubernetes {
       yaml """
@@ -80,7 +72,7 @@ spec:
         withCredentials([file(credentialsId: 'kubeconfig', variable: 'FILE')]) {
         sh """
         helm version
-        helm create app
+        helm install --set 
           """
       }
     }
@@ -94,8 +86,8 @@ spec:
           usernameVariable: 'DOCKER_HUB_USER',
           passwordVariable: 'DOCKER_HUB_PASSWORD']]) {
           sh """
-           docker build -t $DOCKER_PROJECT_NAMESPACE/$IMAGE_NAME:$IMAGE_TAG .
-           docker push $DOCKER_PROJECT_NAMESPACE/$IMAGE_NAME:$IMAGE_TAG
+           docker build -t $IMAGE_NAME:$IMAGE_TAG .
+           docker push $DOCKER_PROJECT_NAMESPACE/$IMAGE_NAME:0.0.1
             """
           }   
         }
