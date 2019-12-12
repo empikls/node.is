@@ -2,15 +2,7 @@ pipeline {
  
  
   environment {
-    APP_NAME = "hello-world "
-    STORAGE_CREDS = "${PROJECT}"
-    JENKINS_CRED = "${PROJECT}"
-    APP_REPO="https://github.com/empikls/node.is"
-    NAMESPACE="jenkins"
     BRANCHNAME="${BRANCH}"
-    DOCKERREGISTRY="devops53/hello-app"
-    CI = 'true'
-    DOCKER_REGISTRY_URL="registry.hub.docker.com"
     DOCKER_PROJECT_NAMESPACE="devops53"
     IMAGE_NAME="http-app"
     IMAGE_TAG="v1"
@@ -72,21 +64,21 @@ spec:
 
 
  stages {
-        stage('RUN Unit Tests') {
-        steps {
-        container('nodejs') {
+  stage('RUN Unit Tests') {
+    steps {
+      container('nodejs') {
           sh "npm install" ;
           sh "npm test" ; 
-          }
         }
-    }
+      }
+  }
   stage ('Helm create') {
    steps {
-    container ('helm') {
+      container ('helm') {
         sh "helm version"
         sh "helm create app" ;
-    }
-   }
+        }
+      }
   }
      
  stage('Create Docker images') {
@@ -97,16 +89,13 @@ spec:
           usernameVariable: 'DOCKER_HUB_USER',
           passwordVariable: 'DOCKER_HUB_PASSWORD']]) {
           sh """
-           COMMIT_ID="$(git rev-list --tags --date-order | head -1)"
-           TAG="$(git show-ref --tags | grep $COMMIT_ID | awk -F / '{print $NF}' )"
-
-           docker build -t devops53/hello-app:$TAG .
-           docker push devops53/hello-app:$TAG
+           docker build -t $DOCKER_PROJECT_NAMESPACE/$IMAGE_NAME:$IMAGE_TAG .
+           docker push $DOCKER_PROJECT_NAMESPACE/$IMAGE_NAME:$IMAGE_TAG
             """
             }   
         }
     }
      }
- }
-    }
+  }
+}
 
