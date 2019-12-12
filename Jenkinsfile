@@ -1,7 +1,10 @@
 pipeline {
  
  
+<<<<<<< HEAD
  
+=======
+>>>>>>> 86663326859ed0b585d407bd7e4f941864a665d2
 agent {
   kubernetes {
       yaml """
@@ -73,7 +76,7 @@ spec:
         withCredentials([file(credentialsId: 'kubeconfig')]) {
         sh """
         helm version
-        helm create app
+        helm install --set 
           """
       }
     }
@@ -84,8 +87,8 @@ spec:
         container('docker') {
          withCredentials([credentialsId: 'dockerhub']) {
           sh """
-           docker build -t $DOCKER_PROJECT_NAMESPACE/$IMAGE_NAME:$IMAGE_TAG .
-           docker push $DOCKER_PROJECT_NAMESPACE/$IMAGE_NAME:$IMAGE_TAG
+           docker build -t $IMAGE_NAME:$IMAGE_TAG .
+           docker push $DOCKER_PROJECT_NAMESPACE/$IMAGE_NAME:0.0.1
             """
           }   
         }
