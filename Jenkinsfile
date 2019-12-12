@@ -1,10 +1,4 @@
 pipeline {
-
- environment { 
-        DockerRegistryURL = 'hub.docker.com'
-        DockerImageName = ''
-  
- }
  
  agent {
     kubernetes {
