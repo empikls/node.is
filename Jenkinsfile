@@ -72,7 +72,9 @@ spec:
    }
   }
 
- stage('Create Docker images') {
+
+
+stage('Create Docker images') {
        steps{
         container('docker') {
          withCredentials([[$class: 'UsernamePasswordMultiBinding',
@@ -83,12 +85,16 @@ spec:
            docker build -t kongurua/hello-app:1 .
            docker push kongurua/hello-app:1
             """
-          }
+          }   
         }
+      }
     }
-     }
- }
-    }
+  }
+}
+
+
+
+
 
 
 
