@@ -1,22 +1,21 @@
 pipeline {
- 
- 
-  environment {
-    APP_NAME = "hello-world "
-    STORAGE_CREDS = "${PROJECT}"
-    JENKINS_CRED = "${PROJECT}"
-    APP_REPO="https://github.com/empikls/node.is"
-    NAMESPACE="jenkins"
-    BRANCHNAME="${BRANCH}"
-    DOCKERREGISTRY="devops53/hello-app"
-    CI = 'true'
-    DOCKER_REGISTRY_URL="registry.hub.docker.com"
-    DOCKER_PROJECT_NAMESPACE="devops53"
-    IMAGE_NAME="http-app"
-    IMAGE_TAG="v1"
-  }
 
- 
+
+  #environment {
+  #  APP_NAME = "hello-world "
+  #  STORAGE_CREDS = "${PROJECT}"
+  #  JENKINS_CRED = "${PROJECT}"
+  #  APP_REPO="https://github.com/empikls/node.is"
+  #  BRANCHNAME="${BRANCH}"
+  #  DOCKERREGISTRY="kongurua/hello-app"
+  #  CI = 'true'
+  #  DOCKER_REGISTRY_URL="registry.hub.docker.com"
+  #  DOCKER_PROJECT_NAMESPACE="kongurua"
+  #  IMAGE_NAME="http-app"
+  #  IMAGE_TAG="v1"
+  #}
+
+
  agent {
     kubernetes {
       yaml """
@@ -76,7 +75,7 @@ spec:
         steps {
         container('nodejs') {
           sh "npm install" ;
-          sh "npm test" ; 
+          sh "npm test" ;
           }
         }
     }
@@ -88,25 +87,24 @@ spec:
     }
    }
   }
-     
+
  stage('Create Docker images') {
        steps{
         container('docker') {
          withCredentials([[$class: 'UsernamePasswordMultiBinding',
-          credentialsId: 'dockerhub',
+          credentialsId: 'docker_hub_login',
           usernameVariable: 'DOCKER_HUB_USER',
           passwordVariable: 'DOCKER_HUB_PASSWORD']]) {
           sh """
-           COMMIT_ID="$(git rev-list --tags --date-order | head -1)"
-           TAG="$(git show-ref --tags | grep $COMMIT_ID | awk -F / '{print $NF}' )"
+#           COMMIT_ID="$(git rev-list --tags --date-order | head -1)"
+#           TAG="$(git show-ref --tags | grep $COMMIT_ID | awk -F / '{print $NF}' )"
 
-           docker build -t devops53/hello-app:$TAG .
-           docker push devops53/hello-app:$TAG
+           docker build -t kongurua/hello-app:1 .
+           docker push kongurua/hello-app:1
             """
-            }   
+            }
         }
     }
      }
  }
     }
-
