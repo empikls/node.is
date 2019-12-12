@@ -77,21 +77,21 @@ spec:
 stage('Create Docker images') {
        steps{
         container('docker') {
-         withCredentials([[$class: 'UsernamePasswordMultiBinding',
-          credentialsId: 'docker_hub_login',
-          usernameVariable: 'DOCKER_HUB_USER',
-          passwordVariable: 'DOCKER_HUB_PASSWORD']]) {
-          sh """
-           docker build -t kongurua/hello-app:1 .
-           docker push kongurua/hello-app:1
-            """
+         withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
+            sh """
+              echo "STEP 1"
+              docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD} https://${DockerRegistryURL}
+              echo "STEP 2"
+              docker build -t kongurua/hello-app:1 .
+              echo "STEP 3"
+              docker push kongurua/hello-app:1
+               """
           }   
         }
       }
     }
   }
 }
-
 
 
 
