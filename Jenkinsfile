@@ -80,9 +80,6 @@ spec:
           usernameVariable: 'DOCKER_HUB_USER',
           passwordVariable: 'DOCKER_HUB_PASSWORD']]) {
           sh """
-#           COMMIT_ID="$(git rev-list --tags --date-order | head -1)"
-#           TAG="$(git show-ref --tags | grep $COMMIT_ID | awk -F / '{print $NF}' )"
-
            docker build -t kongurua/hello-app:1 .
            docker push kongurua/hello-app:1
             """
