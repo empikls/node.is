@@ -9,8 +9,8 @@ pipeline {
   }
 
  
- agent {
-    kubernetes {
+agent {
+  kubernetes {
       yaml """
 apiVersion: v1
 kind: Pod
@@ -59,7 +59,7 @@ spec:
     - cat
     tty: true
 """
-}
+  }
 }
 
 
@@ -67,20 +67,25 @@ spec:
   stage('RUN Unit Tests') {
     steps {
       container('nodejs') {
-          sh "npm install" ;
-          sh "npm test" ; 
+        sh """
+          npm install 
+          npm test
+           """
         }
-      }
-  }
+    }
+}
   stage ('Helm create') {
    steps {
       container ('helm') {
-        sh "helm version"
-        sh "helm create app" ;
-        }
+        withCredentials([file(credentialsId: 'kubeconfig', variable: 'FILE')]) {
+        sh """
+        helm version
+        helm create app
+          """
       }
+    }
   }
-     
+}     
  stage('Create Docker images') {
        steps{
         container('docker') {
@@ -92,10 +97,10 @@ spec:
            docker build -t $DOCKER_PROJECT_NAMESPACE/$IMAGE_NAME:$IMAGE_TAG .
            docker push $DOCKER_PROJECT_NAMESPACE/$IMAGE_NAME:$IMAGE_TAG
             """
-            }   
+          }   
         }
+      }
     }
-     }
   }
 }
 
