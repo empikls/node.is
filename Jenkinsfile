@@ -1,21 +1,5 @@
 pipeline {
 
-
-  #environment {
-  #  APP_NAME = "hello-world "
-  #  STORAGE_CREDS = "${PROJECT}"
-  #  JENKINS_CRED = "${PROJECT}"
-  #  APP_REPO="https://github.com/empikls/node.is"
-  #  BRANCHNAME="${BRANCH}"
-  #  DOCKERREGISTRY="kongurua/hello-app"
-  #  CI = 'true'
-  #  DOCKER_REGISTRY_URL="registry.hub.docker.com"
-  #  DOCKER_PROJECT_NAMESPACE="kongurua"
-  #  IMAGE_NAME="http-app"
-  #  IMAGE_TAG="v1"
-  #}
-
-
  agent {
     kubernetes {
       yaml """
