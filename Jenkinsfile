@@ -83,9 +83,11 @@ spec:
         container('docker') {
          withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
               sh """
-                 echo "FIRST STEP"
+                 echo "STEP 1"
                  docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD} https://${DockerRegistryURL}
+                 echo "STEP 2"
                  docker build -t kongurua/hello-app:1 .
+                 echo "STEP 3"
                  docker push kongurua/hello-app:1
                  """
            
