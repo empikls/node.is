@@ -69,7 +69,7 @@ spec:
  stage('Create Docker images') {
        steps{
         container('docker') {
-         withCredentials([usernameColonPassword(credentialsId: 'dockerhub', variable: 'DockerUsrnamePasswd')]) {
+         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
             sh """
            docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
            docker build -t $IMAGE_NAME:$GIT_BRANCH .
