@@ -72,16 +72,11 @@ spec:
          withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
             sh """
            docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
-           script {
-        if (env.CHANGE_ID) {
-            echo 'Something failed, send PR comment.';
-            def comment = pullRequest.comment('Hello, something failed!');
-            // This doesn't work.
-            // groovy.lang.MissingPropertyException: No such property: pullRequest for class: groovy.lang.Binding
+            if (env.CHANGE_ID) {
+            echo 'I only execute on the master branch'
         } else {
-            echo 'Nope, its not a PR!';
+            echo 'I execute elsewhere'
         }
-    }
            docker push ${DOCKER_IMAGE_NAME}
             """
             }
