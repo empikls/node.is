@@ -73,7 +73,7 @@ spec:
             sh """
            docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
            docker build -t $IMAGE_NAME:$GIT_BRANCH .
-           docker push $DOCKER_PROJECT_NAMESPACE/$IMAGE_NAME:$GIT_BRANCH
+           docker push $DOCKER_PROJECT_NAMESPACE/$IMAGE_NAME
             """
             }
         }
