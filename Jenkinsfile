@@ -45,7 +45,7 @@ spec:
     volumeMounts:
       - name: dind-storage
         mountPath: /var/lib/docker
-    - name: helm
+  - name: helm
     image: lachlanevenson/k8s-helm:latest
     command:
     - cat
