@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "hello-app",
   "version": "1.0.0",
   "description": "",
@@ -15,4 +16,21 @@
     "jasmine-node": "^3.0.0",
     "request": "^2.88.0"
   }
+=======
+  "name": "node-js-sample",
+  "version": "1.0.0",
+  "description": "A sample Node.js app",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.13.3"
+  },
+  "engines": {
+    "node": "8.0.0"
+  },
+  "author": "Pankaj Sharma",
+  "license": "MIT"
+>>>>>>> dev
 }
