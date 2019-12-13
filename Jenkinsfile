@@ -71,7 +71,7 @@ spec:
          withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
             sh """
            docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
-           DOCKER_BUILDKIT=1  docker build . -t ${DOCKER_IMAGE_NAME} --cache-from ${DOCKER_IMAGE_NAME}
+           DOCKER_BUILDKIT=1  docker build . -t ${DOCKER_IMAGE_NAME} 
            docker push ${DOCKER_IMAGE_NAME}
             """
             }
@@ -83,7 +83,7 @@ spec:
       container ('helm') {
         withCredentials([file(credentialsId: 'kubeconfig')]) {
         sh """
-        helm upgrade --install $GIT_BRANCH \
+        helm upgrade --install app \
             --namespace=jenkins \
             --set master.ingress.enabled=true \
             --set-string master.ingress.hostName=ibmsuninters2.dns-cloud.net \
@@ -92,7 +92,7 @@ spec:
             --set-string master.ingress.annotations."kubernetes.io/ingress.class"=nginx \
             --set-string master.ingress.tls[0].hosts[0]=ibmsuninters2.dns-cloud.net \
             --set-string master.ingress.tls[0].secretName=acme-jenkins-tls \
-            $GIT_BRANCH
+            app
           """
       }
     }
