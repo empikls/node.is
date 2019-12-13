@@ -72,8 +72,8 @@ spec:
          withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
             sh """
            docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
-           docker build -t $IMAGE_NAME:$GIT_BRANCH .
-           docker push $DOCKER_PROJECT_NAMESPACE/$IMAGE_NAME:$GIT_BRANCH
+           DOCKER_BUILDKIT=1  docker build . -t ${DOCKER_IMAGE_NAME} --cache-from ${DOCKER_IMAGE_NAME}
+           docker push ${DOCKER_IMAGE_NAME}
             """
             }
         }
