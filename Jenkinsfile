@@ -17,7 +17,7 @@ spec:
   serviceAccountName: jenkins
   volumes:
   - name: cache-volume
-    emptyDir: 
+    emptyDir:{} 
   containers:
   - name: git
     image: alpine/git
@@ -42,9 +42,6 @@ spec:
     env:
     - name: DOCKER_HOST
       value: tcp://docker-dind:2375
-    volumeMounts:
-    - name: dind-storage
-      mountPath: /var/lib/docker
   - name: helm
     image: lachlanevenson/k8s-helm:latest
     command:
