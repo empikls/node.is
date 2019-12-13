@@ -72,12 +72,6 @@ spec:
          withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
             sh """
            docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
-            if (env.CHANGE_ID) {
-            echo 'I only execute on the master branch'
-        } else 
-        {
-            echo 'I execute elsewhere'
-        }
            docker push ${DOCKER_IMAGE_NAME}
             """
             }
