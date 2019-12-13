@@ -73,13 +73,15 @@ spec:
             sh """
            docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
            script {
-           if ${CHANGE_ID} {
-           DOCKER_BUILDKIT=1 docker build . -t ${DOCKER_IMAGE_NAME}:${CHANGE_ID}  
-            }
-           else { 
-            DOCKER_BUILDKIT=1 docker build . -t ${DOCKER_IMAGE_NAME}
-            }
-             }
+        if (env.CHANGE_ID) {
+            echo 'Something failed, send PR comment.';
+            def comment = pullRequest.comment('Hello, something failed!');
+            // This doesn't work.
+            // groovy.lang.MissingPropertyException: No such property: pullRequest for class: groovy.lang.Binding
+        } else {
+            echo 'Nope, its not a PR!';
+        }
+    }
            docker push ${DOCKER_IMAGE_NAME}
             """
             }
