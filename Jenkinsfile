@@ -82,11 +82,9 @@ spec:
 }
   stage ('Helm create') {
    steps {
-      container ('helm') {
-        withCredentials([file(credentialsId: 'kubeconfig')]) {
-        sh """
-        helm version
-          """
+      container('helm') {
+          withKubeConfig([credentialsId: 'kubeconfig']) {
+          sh 'helm version'
       }
     }
   }
