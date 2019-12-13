@@ -60,7 +60,7 @@ spec:
         sh """
           npm install 
           npm test
-          echo $CHANGE_ID
+          echo ${CHANGE_ID}
            """
         }
     }
