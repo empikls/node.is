@@ -89,8 +89,8 @@ spec:
             --set master.ingress.enabled=true \
             --set-string master.ingress.hostName=ibmsuninters2.dns-cloud.net \
             --set-string master.ingress.annotations."kubernetes.io/tls-acme"=true \
-            --set-string master.ingress.annotations."kubernetes\.io/ssl-redirect"=true \
-            --set-string master.ingress.annotations."kubernetes\.io/ingress\.class"=nginx \
+            --set-string master.ingress.annotations."kubernetes.io/ssl-redirect"=true \
+            --set-string master.ingress.annotations."kubernetes.io/ingress\.class"=nginx \
             --set-string master.ingress.tls[0].hosts[0]=ibmsuninters2.dns-cloud.net \
             --set-string master.ingress.tls[0].secretName=acme-jenkins-tls \
             $IMAGE_NAME
