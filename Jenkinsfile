@@ -1,8 +1,8 @@
 pipeline {
- 
 
-agent {
-  kubernetes {
+
+ agent {
+    kubernetes {
       yaml """
 apiVersion: v1
 kind: Pod
@@ -16,8 +16,8 @@ spec:
   # Use service account that can deploy to all namespaces
   serviceAccountName: jenkins
   volumes:
-  - name: dind-storage
-    emptyDir: {}
+  - name: cache-volume
+    emptyDir: 
   containers:
   - name: git
     image: alpine/git
@@ -30,30 +30,29 @@ spec:
     - cat
     tty: true
   - name: kubectl
-    image: bitnami/kubectl:latest
+    image: lachlanevenson/k8s-kubectl:v1.8.8
     command:
     - cat
     tty: true
   - name: docker
-    image: docker:19-git
+    image: docker:19.03.3-git
     command:
     - cat
     tty: true
     env:
     - name: DOCKER_HOST
-      value: tcp://docker-dind:2375
+      value: tcp://localhost:2375
     volumeMounts:
       - name: dind-storage
         mountPath: /var/lib/docker
-  - name: helm
+    - name: helm
     image: lachlanevenson/k8s-helm:latest
     command:
     - cat
     tty: true
 """
-  }
 }
-
+}
 
  stages {
   stage('RUN Unit Tests') {
@@ -66,30 +65,33 @@ spec:
         }
     }
 }
+  
+ stage('Create Docker images') {
+       steps{
+        container('docker') {
+         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
+            sh """
+           docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
+           docker login 
+           docker build -t $IMAGE_NAME:$GIT_BRANCH .
+           docker push $DOCKER_PROJECT_NAMESPACE/$IMAGE_NAME:$GIT_BRANCH
+            """
+            }
+        }
+    }
+}
   stage ('Helm create') {
    steps {
       container ('helm') {
         withCredentials([file(credentialsId: 'kubeconfig')]) {
         sh """
         helm version
-        helm install --set 
           """
       }
     }
   }
 }     
- stage('Create Docker images') {
-       steps{
-        container('docker') {
-         withCredentials([usernameColonPassword(credentialsId: 'dockerhub')]) {
-          sh """
-           docker build -t $IMAGE_NAME:$IMAGE_TAG .
-           docker push $DOCKER_PROJECT_NAMESPACE/$IMAGE_NAME:$IMAGE_TAG
-            """
-          }   
-        }
-      }
-    }
-  }
+ }
 }
 
+ 
