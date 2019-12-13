@@ -1,17 +1,18 @@
 {
-  "name": "node-js-sample",
+  "name": "hello-app",
   "version": "1.0.0",
-  "description": "A sample Node.js app",
-  "main": "index.js",
+  "description": "",
+  "main": "app.js",
+  "private": true,
   "scripts": {
-    "start": "node index.js"
+    "start": "node app.js",
+    "test": "jasmine-node spec"
   },
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "express": "^4.13.3"
-  },
-  "engines": {
-    "node": "8.0.0"
-  },
-  "author": "Pankaj Sharma",
-  "license": "MIT"
+    "express": "^4.17.1",
+    "jasmine-node": "^3.0.0",
+    "request": "^2.88.0"
+  }
 }
