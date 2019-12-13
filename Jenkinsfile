@@ -72,12 +72,13 @@ spec:
          withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
             sh """
            docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
-   if (env.CHANGE_BRANCH != 'master' && env.CHANGE_ID == null){
+   if (env.CHANGE_BRANCH != 'master' && env.CHANGE_ID == null) 
+        then
              docker build -t $IMAGE_NAME .
-        }
-        else {
+       
+        else 
         echo "PR"
-}
+
            docker push ${DOCKER_IMAGE_NAME}
             """
             }
