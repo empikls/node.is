@@ -60,6 +60,7 @@ spec:
         sh """
           npm install 
           npm test
+          echo "$env.CHANGE_ID"
            """
         }
     }
