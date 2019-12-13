@@ -74,7 +74,8 @@ spec:
            docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
             if (env.CHANGE_ID) {
             echo 'I only execute on the master branch'
-        } else {
+        } else 
+        {
             echo 'I execute elsewhere'
         }
            docker push ${DOCKER_IMAGE_NAME}
@@ -82,7 +83,7 @@ spec:
             }
         }
     }
-
+ }
   stage ('Helm create') {
    steps {
       container ('helm') {
