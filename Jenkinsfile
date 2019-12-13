@@ -84,7 +84,7 @@ spec:
       container ('helm') {
         withCredentials([file(credentialsId: 'kubeconfig')]) {
         sh """
-        helm upgrade --install $IMAGE_NAME \
+        helm upgrade --install $GIT_BRANCH \
             --namespace=jenkins \
             --set master.ingress.enabled=true \
             --set-string master.ingress.hostName=ibmsuninters2.dns-cloud.net \
@@ -93,7 +93,7 @@ spec:
             --set-string master.ingress.annotations."kubernetes.io/ingress.class"=nginx \
             --set-string master.ingress.tls[0].hosts[0]=ibmsuninters2.dns-cloud.net \
             --set-string master.ingress.tls[0].secretName=acme-jenkins-tls \
-            $IMAGE_NAME
+            $GIT_BRANCH
           """
       }
     }
