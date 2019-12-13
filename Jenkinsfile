@@ -72,13 +72,9 @@ spec:
          withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
             sh """
            docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
-    if (env.BRANCH_NAME == 'master') {
-     echo 'I execute elsewhere'
-    } else if (env.BRANCH_NAME.startsWith('PR')) {
-      // do actions for pull request
-    } else {
-      echo 'I execute elsewhere1'
-  }
+   if (env.CHANGE_BRANCH != 'master' && env.CHANGE_ID == null){
+             docker build -t $IMAGE_NAME .
+        }
            docker push ${DOCKER_IMAGE_NAME}
             """
             }
