@@ -15,7 +15,7 @@ spec:
   # Use service account that can deploy to all namespaces
   serviceAccountName: jenkins
   volumes:
-  - name: dind-storage
+  - name: cache-volume
     emptyDir: {}
   containers:
   - name: git
@@ -42,8 +42,8 @@ spec:
     - name: DOCKER_HOST
       value: tcp://docker-dind:2375
     volumeMounts:
-      - name: dind-storage
-        mountPath: /var/lib/docker
+    - mountPath: /cache
+      name: cache-volume
   - name: helm
     image: lachlanevenson/k8s-helm:latest
     command:
