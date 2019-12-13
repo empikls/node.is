@@ -73,7 +73,7 @@ spec:
             sh """
            docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
            script {
-           if (env.CHANGE_ID) {
+           if ${CHANGE_ID} {
            DOCKER_BUILDKIT=1 docker build . -t ${DOCKER_IMAGE_NAME}:${CHANGE_ID}  
             }
            else { 
