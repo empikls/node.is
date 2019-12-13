@@ -71,7 +71,7 @@ spec:
          withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
             sh """
            docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
-           DOCKER_BUILDKIT=1 docker build . -t ${DOCKER_IMAGE_NAME}:${CHANGE_ID}
+           DOCKER_BUILDKIT=1 docker build . -t ${DOCKER_IMAGE_NAME}:${GIT_TAG}
            docker push ${DOCKER_IMAGE_NAME}
             """
             }
