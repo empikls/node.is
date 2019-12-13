@@ -75,6 +75,9 @@ spec:
    if (env.CHANGE_BRANCH != 'master' && env.CHANGE_ID == null){
              docker build -t $IMAGE_NAME .
         }
+        else {
+        echo "PR"
+}
            docker push ${DOCKER_IMAGE_NAME}
             """
             }
