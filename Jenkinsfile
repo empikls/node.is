@@ -67,19 +67,14 @@ spec:
 }
   
  stage('Create Docker images') {
+      when { PullRequest { env.CHANGE_ID == null } }
        steps{
         container('docker') {
          withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
             sh """
            docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
-   if env.CHANGE_BRANCH
-        then
              docker build -t $IMAGE_NAME:${CHANGE_ID} .
-       
-        else 
-        docker build -t $IMAGE_NAME .
-            fi
-           docker push ${DOCKER_IMAGE_NAME}
+             docker push ${DOCKER_IMAGE_NAME}
             """
             }
         }
