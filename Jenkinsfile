@@ -82,6 +82,20 @@ spec:
         }
     }
  }
+   stage ('Build when the file is change ')  {
+      when {               
+        changeset pattern: "production-release.txt"
+            }
+      steps {
+        container ('docker')
+        withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
+                   sh """
+                    PROD="${sh(script:'cat production-release.txt')}"
+                    docker build -t $IMAGE_NAME:${BRANCH_NAME}  .
+                    docker push ${DOCKERHUB_USER}/${DOCKER_IMAGE_NAME}:${PROD}
+                }
+            }
+        }
   stage ('Helm create') {
    steps {
       container ('helm') {
