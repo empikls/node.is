@@ -75,7 +75,7 @@ spec:
        withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
             sh """
              docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
-             docker build -t $IMAGE_NAME:${BRANCH_NAME}  .
+             docker build -t ${IMAGE_NAME}:${BRANCH_NAME}  .
              docker push ${DOCKERHUB_USER}/${DOCKER_IMAGE_NAME}:${BRANCH_NAME}
             """
             }
@@ -91,7 +91,7 @@ spec:
         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
                    sh """
                     PROD="${sh(script:'cat production-release.txt')}"
-                    docker build -t $IMAGE_NAME:${BRANCH_NAME}  .
+                    docker build -t ${IMAGE_NAME}:${BRANCH_NAME}  .
                     docker push ${DOCKERHUB_USER}/${DOCKER_IMAGE_NAME}:${PROD}
                     """
                 }
