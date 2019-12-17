@@ -93,6 +93,7 @@ spec:
                     PROD="${sh(script:'cat production-release.txt')}"
                     docker build -t $IMAGE_NAME:${BRANCH_NAME}  .
                     docker push ${DOCKERHUB_USER}/${DOCKER_IMAGE_NAME}:${PROD}
+                    """
                 }
             }
         }
