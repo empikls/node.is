@@ -90,7 +90,7 @@ spec:
         container ('docker')
         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
                    sh """
-                    PROD="${sh(script:'cat production-release.txt')}"
+                    PROD="${sh(script:'cat production-release.txt',returnStdout: true)}"
                     docker build -t ${IMAGE_NAME}:${BRANCH_NAME}:${PROD}  .
                     docker push ${DOCKERHUB_USER}/${DOCKER_IMAGE_NAME}:${PROD}
                     """
