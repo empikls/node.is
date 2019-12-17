@@ -66,14 +66,17 @@ spec:
     }
 }
   
- stage('Create Docker images') {
+ stage('Create Docker images "PR" ') {
+    when {
+      expression { BRANCH_NAME =~ 'PR-*' }
+       }          
        steps{
-        container('docker') {
-         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
+       container('docker') {
+       withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
             sh """
-           docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
-             docker build -t $IMAGE_NAME.
-             docker push ${DOCKER_IMAGE_NAME}
+             docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
+             docker build -t $IMAGE_NAME:${BRANCH_NAME}  .
+             docker push ${DOCKERHUB_USER}/${DOCKER_IMAGE_NAME}:${BRANCH_NAME}
             """
             }
         }
