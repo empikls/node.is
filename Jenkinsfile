@@ -66,7 +66,7 @@ spec:
             checkout scm
         }
     }
-    
+
   stage('RUN Unit Tests') {
     steps {
       container('nodejs') {
@@ -77,7 +77,39 @@ spec:
         }
     }
 }
-
+stage('Create Docker images when commit to Master ') {
+    when {
+      expression { BRANCH_NAME =~ 'master' }
+       }          
+       steps{
+         script{
+                                // if PR 
+                                if ( env.BRANCH_NAME ==~  /^PR-\d+$/ ) {
+                                    sh 'echo It is pull request'
+                                // if Push to master    
+                                } else if (env.BRANCH_NAME ==~  /^master$/) {
+                                    sh 'echo Its push to master '
+                                // if git Tag    
+                                } else if (env.BRANCH_NAME =~ /^v\d.\d.\d$/ ){
+                                    sh 'echo qa release with tag : $(BRANCH_NAME)'
+                                // Other operation    
+                                } else {
+                                    sh 'echo push to other branch $(BRANCH_NAME)'
+                                }
+                                   
+                            }
+       container('docker') {
+       withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
+            sh """
+             docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
+             docker build . -t ${DOCKER_USER}/${DOCKERHUB_IMAGE}:dev
+             docker push ${DOCKER_USER}/${DOCKERHUB_IMAGE}:dev
+            """
+            }
+        }
+    
+    }
+ }
  stage('Create Docker images "PR" ') {
     when {
       expression { BRANCH_NAME =~ 'PR-*' }
