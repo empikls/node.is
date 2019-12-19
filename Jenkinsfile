@@ -70,24 +70,10 @@ spec:
         }
     }
 }
-stage(' When adding tag ') {
-   when { buildingTag()}        
-       steps{
-       container('docker') {
-       withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
-            sh """
-             docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
-             docker build . -t ${DOCKER_USER}/${DOCKERHUB_IMAGE}:QA
-             docker push ${DOCKER_USER}/${DOCKERHUB_IMAGE}:QA
-            """
-            }
-        }
-    
-    }
- }
+
 stage ('TAG') {
            when {
-  tag comparator: 'EQUALS', pattern: 'release-*' }
+  tag comparator: 'EQUALS', pattern: '/^v\\d.\\d.\\d$/ '}
             steps {
                container('docker') {
        withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
