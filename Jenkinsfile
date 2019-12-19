@@ -60,13 +60,6 @@ spec:
 }
 
  stages {
-
-    stage('Checkout code') {
-        steps {
-            checkout scm
-        }
-    }
-
   stage('RUN Unit Tests') {
     steps {
       container('nodejs') {
@@ -77,6 +70,22 @@ spec:
         }
     }
 }
+stage(' When adding tag ') {
+   when { buildingTag()}        
+       steps{
+       container('docker') {
+       withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
+            sh """
+             docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
+             docker build . -t ${DOCKER_USER}/${DOCKERHUB_IMAGE}:QA
+             docker push ${DOCKER_USER}/${DOCKERHUB_IMAGE}:QA
+            """
+            }
+        }
+    
+    }
+ }
+
 stage('Create Docker images when commit to Master ') {
     when {
       expression { BRANCH_NAME =~ 'master' }
