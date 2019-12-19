@@ -78,13 +78,8 @@ stage ('TAG') {
        withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
             sh """
              docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
-<<<<<<< HEAD
              docker build . -t ${DOCKER_USER}/${DOCKERHUB_IMAGE}:v1.2.100
              docker push ${DOCKER_USER}/${DOCKERHUB_IMAGE}:v1.2.100
-=======
-             docker build . -t ${DOCKER_USER}/${DOCKERHUB_IMAGE}:v1.7.0
-             docker push ${DOCKER_USER}/${DOCKERHUB_IMAGE}:v1.7.0
->>>>>>> fcce5b21134bf15bda4be824eb4ba13f3117bfaf
             """
             }
           }            
