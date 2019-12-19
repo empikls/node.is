@@ -86,10 +86,8 @@ stage(' When adding tag ') {
     }
  }
 stage ('TAG') {
-
            when {
-                        buildingTag()
-                }
+  tag comparator: 'EQUALS', pattern: 'release-*' }
             steps {
                 sh 'echo building tag' 
             }            
