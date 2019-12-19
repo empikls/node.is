@@ -1,5 +1,6 @@
 pipeline {
 
+
  
  environment {
   DOCKERHUB_IMAGE = "hello-world"
@@ -131,7 +132,7 @@ spec:
         echo 'Deploying only because this commit is tagged...'
       }
  }
- 
+
 }     
  }
 
