@@ -71,24 +71,6 @@ spec:
     }
 }
 
- stage ('Test commmit')  {
-   steps {
-     container('docker') {
-      withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
-                   sh """
-                    docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
-                    docker build -t ${DOCKERHUB_IMAGE}:${BRANCH_NAME} .
-                    docker push ${DOCKER_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME}
-                    """
-
-   }
-   }
- }
- }
-
-
-
-
  stage('Create Docker images "PR" ') {
     when {
       expression { BRANCH_NAME =~ 'PR-*' }
@@ -114,7 +96,7 @@ spec:
        withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
             sh """
              docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
-             docker build -t ${DOCKER_USER}:${BRANCH_NAME} .
+             docker build -t   ${DOCKER_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME} .
              docker push ${DOCKER_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME}
             """
             }
@@ -131,17 +113,17 @@ spec:
                     PROD="${sh(script:'cat production-release.txt',returnStdout: true)}"
                     echo "script ${PROD}"
                 }
-        container ('docker')
+        container ('docker') {
         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
                    sh """
                     docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
-                    docker build -t ${DOCKERHUB_IMAGE}:`cat production-release.txt`  .
-                    docker push ${DOCKER_USER}/${DOCKERHUB_IMAGE}:`cat production-release.txt`
+                    docker build -t ${DOCKER_USER}/${DOCKERHUB_IMAGE}:${PROD} .
+                    docker push ${DOCKER_USER}/${DOCKERHUB_IMAGE}:${PROD}
                     """
                 }
             }
         }
-
+   }
 }     
  }
 
