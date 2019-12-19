@@ -1,5 +1,8 @@
 pipeline {
 
+ environment {
+  IMAGE_NAME = "hello-world"
+ }
     
 agent {
     kubernetes {
@@ -71,6 +74,22 @@ spec:
       expression { BRANCH_NAME =~ 'PR-*' }
        }          
        steps{
+         script{
+                                // if PR 
+                                if ( env.BRANCH_NAME ==~  /^PR-\d+$/ ) {
+                                    sh 'echo It is pull request'
+                                // if Push to master    
+                                } else if (env.BRANCH_NAME ==~  /^master$/) {
+                                    sh 'echo Its push to master '
+                                // if git Tag    
+                                } else if (env.BRANCH_NAME =~ /^v\d.\d.\d$/ ){
+                                    sh 'echo qa release with tag : $(BRANCH_NAME)'
+                                // Other operation    
+                                } else {
+                                    sh 'echo push to other branch $(BRANCH_NAME)'
+                                }
+                                   
+                            }
        container('docker') {
        withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
             sh """
@@ -80,17 +99,21 @@ spec:
             """
             }
         }
+    
     }
  }
-   stage ('Build when the file is change ')  {
+   stage ('Build when the file was changed ')  {
       when {               
         changeset pattern: "production-release.txt"
             }
       steps {
+         script {
+                    PROD="${sh(script:'cat production-release.txt',returnStdout: true)}"
+                    echo "script ${PROD}"
+                }
         container ('docker')
         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
                    sh """
-                    PROD="${sh(script:'cat production-release.txt',returnStdout: true)}"
                     docker build -t ${IMAGE_NAME}:${PROD}  .
                     docker push ${DOCKERHUB_USER}/${IMAGE_NAME}:${PROD}
                     """
