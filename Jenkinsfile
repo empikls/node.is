@@ -89,9 +89,16 @@ stage ('TAG') {
            when {
   tag comparator: 'EQUALS', pattern: 'release-*' }
             steps {
-                sh 'echo building tag' 
-            }            
-
+               container('docker') {
+       withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
+            sh """
+             docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
+             docker build . -t ${DOCKER_USER}/${DOCKERHUB_IMAGE}:QA
+             docker push ${DOCKER_USER}/${DOCKERHUB_IMAGE}:QA
+            """
+            }
+          }            
+         }
         }
 stage('Create Docker images when commit to Master ') {
     when {
