@@ -60,6 +60,13 @@ spec:
 }
 
  stages {
+
+    stage('Checkout code') {
+        steps {
+            checkout scm
+        }
+    }
+    
   stage('RUN Unit Tests') {
     steps {
       container('nodejs') {
