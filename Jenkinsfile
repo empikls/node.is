@@ -2,6 +2,7 @@ pipeline {
 
 
  
+ 
  environment {
   DOCKERHUB_IMAGE = "hello-world"
   DOCKER_USER = "devops53"
