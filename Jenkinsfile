@@ -1,8 +1,8 @@
 pipeline {
 
  environment {
-  IMAGE_NAME = "hello-world"
-
+  DOCKERHUB_IMAGE = "hello-world"
+  DOCKER_USER = "devops53"
  }
     
 agent {
@@ -95,8 +95,8 @@ spec:
        withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
             sh """
              docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
-             docker build -t ${IMAGE_NAME}:${BRANCH_NAME} .
-             docker push ${DOCKER_USER}/${IMAGE_NAME}:${BRANCH_NAME}
+             docker build -t ${DOCKER_USER}:${BRANCH_NAME} .
+             docker push ${DOCKER_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME}
             """
             }
         }
@@ -116,8 +116,8 @@ spec:
         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
                    sh """
                     docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
-                    docker build -t ${IMAGE_NAME}:${PROD}  .
-                    docker push ${DOCKER_USER}/${IMAGE_NAME}:${PROD}
+                    docker build -t ${DOCKERHUB_IMAGE}:${PROD}  .
+                    docker push ${DOCKER_USER}/${DOCKERHUB_IMAGE}:${PROD}
                     """
                 }
             }
