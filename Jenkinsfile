@@ -85,7 +85,16 @@ stage(' When adding tag ') {
     
     }
  }
+stage ('TAG') {
 
+           when {
+                        buildingTag()
+                }
+            steps {
+                sh 'echo building tag' 
+            }            
+
+        }
 stage('Create Docker images when commit to Master ') {
     when {
       expression { BRANCH_NAME =~ 'master' }
