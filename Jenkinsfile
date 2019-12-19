@@ -124,6 +124,14 @@ spec:
             }
         }
    }
+
+ stage('Deploy with TAG') {
+    when { tag  "release-*" }
+      steps {
+        echo 'Deploying only because this commit is tagged...'
+      }
+ }
+ 
 }     
  }
 
