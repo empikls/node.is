@@ -2,6 +2,7 @@ pipeline {
 
  environment {
   IMAGE_NAME = "hello-world"
+
  }
     
 agent {
@@ -95,7 +96,7 @@ spec:
             sh """
              docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
              docker build -t ${IMAGE_NAME}:${BRANCH_NAME} .
-             docker push ${DOCKERHUB_USER}/${IMAGE_NAME}:${BRANCH_NAME}
+             docker push ${DOCKER_USER}/${IMAGE_NAME}:${BRANCH_NAME}
             """
             }
         }
@@ -115,7 +116,7 @@ spec:
         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
                    sh """
                     docker build -t ${IMAGE_NAME}:${PROD}  .
-                    docker push ${DOCKERHUB_USER}/${IMAGE_NAME}:${PROD}
+                    docker push ${DOCKER_USER}/${IMAGE_NAME}:${PROD}
                     """
                 }
             }
