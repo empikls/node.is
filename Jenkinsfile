@@ -1,8 +1,6 @@
 pipeline {
 
 
- 
- 
  environment {
   DOCKERHUB_IMAGE = "hello-world"
   DOCKER_USER = "devops53"
@@ -127,12 +125,7 @@ spec:
         }
    }
 
- stage('Deploy with TAG') {
-    when { tag  "release-*" }
-      steps {
-        echo 'Deploying only because this commit is tagged...'
-      }
- }
+ 
 
 }     
  }
