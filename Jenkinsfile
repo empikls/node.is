@@ -73,7 +73,7 @@ spec:
 
  stage ('Test commmit')  {
    steps {
-     container('docker')
+     container('docker') {
       withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
                    sh """
                     docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
@@ -84,7 +84,7 @@ spec:
    }
    }
  }
-
+ }
 
 
 
