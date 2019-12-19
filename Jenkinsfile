@@ -176,7 +176,7 @@ stage ('Heml create')  {
         container('helm') {
                  withKubeConfig([credentialsId: 'kubeconfig']) {
                    sh """
-                    helm upgrade --install ${DOCKERHUB_IMAGE} \
+                    helm  install ${DOCKERHUB_IMAGE} \
             --namespace=jenkins \
             --version v1.9.4 \
             --set master.ingress.enabled=true \
