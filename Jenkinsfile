@@ -1,5 +1,6 @@
 pipeline {
 
+
  environment {
   DOCKERHUB_IMAGE = "hello-world"
   DOCKER_USER = "devops53"
@@ -176,7 +177,7 @@ stage ('Heml create')  {
         container('helm') {
                  withKubeConfig([credentialsId: 'kubeconfig']) {
                    sh """
-                    helm  install ${DOCKERHUB_IMAGE} \
+                    helm install ${DOCKERHUB_IMAGE} \
             --namespace=jenkins \
             --version v1.9.4 \
             --set master.ingress.enabled=true \
@@ -186,7 +187,8 @@ stage ('Heml create')  {
             --set-string master.ingress.annotations."kubernetes.io/ingress.class"=nginx \
             --set-string master.ingress.tls[0].hosts[0]="https://ibmsuninters2.dns-cloud.net" \
             --set-string master.ingress.tls[0].secretName=acme-jenkins-tls \
-            --set-string persistence.size=8Gi 
+            --set-string persistence.size=8Gi \
+            app
                     """
                 }
             }
