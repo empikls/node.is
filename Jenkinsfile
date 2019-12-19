@@ -1,5 +1,6 @@
 pipeline {
 
+ 
  environment {
   IMAGE_NAME = "hello-world"
 
