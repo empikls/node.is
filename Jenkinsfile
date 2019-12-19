@@ -174,7 +174,7 @@ stage('Create Docker images when commit to Master ') {
    }
 stage ('Heml create')  {
       steps {
-        container('helm') {
+        container('kubectl') {
                  withKubeConfig([credentialsId: 'kubeconfig']) {
                    sh """
                    kubectl get pods --all-namespaces
