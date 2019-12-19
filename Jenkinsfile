@@ -78,8 +78,8 @@ stage ('TAG') {
        withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
             sh """
              docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
-             docker build . -t ${DOCKER_USER}/${DOCKERHUB_IMAGE}:QA
-             docker push ${DOCKER_USER}/${DOCKERHUB_IMAGE}:QA
+             docker build . -t ${DOCKER_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME}
+             docker push ${DOCKER_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME}
             """
             }
           }            
@@ -110,8 +110,8 @@ stage('Create Docker images when commit to Master ') {
        withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
             sh """
              docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
-             docker build . -t ${DOCKER_USER}/${DOCKERHUB_IMAGE}:dev
-             docker push ${DOCKER_USER}/${DOCKERHUB_IMAGE}:dev
+             docker build . -t ${DOCKER_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME}
+             docker push ${DOCKER_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME}
             """
             }
         }
