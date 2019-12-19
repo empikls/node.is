@@ -109,16 +109,16 @@ spec:
         changeset pattern: "production-release.txt"
             }
       steps {
-         script {
-                    PROD="${sh(script:'cat production-release.txt',returnStdout: true)}"
-                    echo "script ${PROD}"
-                }
+        # script {
+         #           PROD="${sh(script:'cat production-release.txt',returnStdout: true)}"
+          #          echo "script ${PROD}"
+           #     }
         container ('docker')
         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
                    sh """
                     docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
-                    docker build -t ${DOCKERHUB_IMAGE}:${PROD}  .
-                    docker push ${DOCKER_USER}/${DOCKERHUB_IMAGE}:${PROD}
+                    docker build -t ${DOCKERHUB_IMAGE}:`cat production-release.txt`  .
+                    docker push ${DOCKER_USER}/${DOCKERHUB_IMAGE}:`cat production-release.txt`
                     """
                 }
             }
