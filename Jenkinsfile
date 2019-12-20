@@ -72,17 +72,15 @@ spec:
 }
 
 stage ('TAG') {
-           when {
-  tag comparator: 'EQUALS', pattern: 'release-*'
-}
+           when { tag ''}
 
             steps {
                container('docker') {
        withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
             sh """
              docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
-             docker build . -t ${DOCKER_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME}
-             docker push ${DOCKER_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME}
+             docker build . -t ${DOCKER_USER}/${DOCKERHUB_IMAGE}:${RELEASE_TAG}
+             docker push ${DOCKER_USER}/${DOCKERHUB_IMAGE}:${RELEASE_TAG}
             """
             }
           }            
