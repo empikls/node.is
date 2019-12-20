@@ -177,7 +177,7 @@ stage ('Heml create')  {
         container('kubectl') {
                  withKubeConfig([credentialsId: 'kubeconfig']) {
                    sh """
-                   kubectl get pods -n jenkins
+                   kubectl get pods --all-namespaces
                     """
                 }
             }
