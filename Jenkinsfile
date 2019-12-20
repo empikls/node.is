@@ -50,10 +50,12 @@ spec:
 """ 
 ) {
 
+agent {
 node
     
     stage('Checkout SCM') {
         checkout scm
     } 
 
+}
 }
