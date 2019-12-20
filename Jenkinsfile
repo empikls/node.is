@@ -72,7 +72,7 @@ spec:
 }
 
 stage ('TAG') {
-           when { tag ''}
+           when { buildingTag()}
 
             steps {
                container('docker') {
