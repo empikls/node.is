@@ -34,7 +34,7 @@ spec:
     - cat
     tty: true
   - name: kubectl
-    image: lachlanevenson/k8s-kubectl:v1.8.8
+    image: lachlanevenson/k8s-kubectl:v1.16.4
     command:
     - cat
     tty: true
@@ -50,7 +50,7 @@ spec:
     - mountPath: /cache
       name: cache-volume  
   - name: helm
-    image: lachlanevenson/k8s-helm:latest
+    image: lachlanevenson/k8s-helm:2.16.1
     command:
     - cat
     tty: true
