@@ -1,11 +1,13 @@
 #!groovy
 
+
+
+def label = "jenkins"
+
 environment {
   DOCKERHUB_IMAGE = "hello-world"
   DOCKER_USER = "devops53"
  }
-
-def label = "jenkins"
 
 podTemplate(label: label, yaml: """
 apiVersion: v1
