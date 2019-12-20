@@ -55,16 +55,16 @@ spec:
     tty: true
 """
   )
-   
-  {
 
-environment {
-  DOCKERHUB_IMAGE = "hello-world"
-  DOCKER_USER = "devops53"
- }
+  {
 
   node(label) {
     
+    environment {
+  DOCKERHUB_IMAGE = "hello-world"
+  DOCKER_USER = "devops53"
+ }
+ 
     stage('Checkout SCM') {
         checkout scm
     } 
