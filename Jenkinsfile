@@ -1,6 +1,6 @@
 #!groovy
 
-podTemplate( yaml: """
+podTemplate(label: label, yaml: """
 apiVersion: v1
 kind: Pod
 metadata:
@@ -47,11 +47,10 @@ spec:
     command:
     - cat
     tty: true
-""" 
-) {
+"""
+  ) {
 
-agent {
-node
+  node(label) {
     
     stage('Checkout SCM') {
         checkout scm
