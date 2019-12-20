@@ -4,10 +4,7 @@
 
 def label = "jenkins"
 
-environment {
-  DOCKERHUB_IMAGE = "hello-world"
-  DOCKER_USER = "devops53"
- }
+
 
 podTemplate(label: label, yaml: """
 apiVersion: v1
@@ -57,7 +54,14 @@ spec:
     - cat
     tty: true
 """
-  ) {
+  )
+   
+  {
+
+environment {
+  DOCKERHUB_IMAGE = "hello-world"
+  DOCKER_USER = "devops53"
+ }
 
   node(label) {
     
