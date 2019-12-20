@@ -60,13 +60,14 @@ spec:
     } 
 
     stage('Build node.js_app') {
-        container('nodejs')
+        container('nodejs') {
         sh 'npm install'
     }
-    
+      }
     stage('Node.js test') {
-        container('nodejs')
+        container('nodejs') {
         sh 'npm test'
     }
+      }
             }
   }
