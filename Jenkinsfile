@@ -55,3 +55,5 @@ node('slave')
     stage('Checkout SCM') {
         checkout scm
     } 
+
+}
