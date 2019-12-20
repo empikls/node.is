@@ -59,7 +59,7 @@ spec:
         checkout scm
     } 
 
-    stage('Build node.js_app') {
+    stage('Build node.js app') {
         container('nodejs') {
         sh 'npm install'
     }
