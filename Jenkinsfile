@@ -1,5 +1,9 @@
 #!groovy
 
+environment {
+  DOCKERHUB_IMAGE = "hello-world"
+  DOCKER_USER = "devops53"
+ }
 
 def label = "jenkins"
 
@@ -71,7 +75,7 @@ spec:
       }
     stage('Build docker image')
         container('docker') {
-          sh 'docker build . -t ${DOCKER_IMAGE_NAME}:${BRANCH_NAME}'
+          sh 'docker build . -t ${DOCKERHUB_IMAGE}:${BRANCH_NAME}'
             }
     }
   }
