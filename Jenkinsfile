@@ -35,7 +35,7 @@ spec:
     - cat
     tty: true
   - name: kubectl
-    image: lachlanevenson/k8s-kubectl:v1.16.4
+    image: lachlanevenson/k8s-kubectl:v1.8.8
     command:
     - cat
     tty: true
@@ -51,7 +51,7 @@ spec:
     - mountPath: /cache
       name: cache-volume  
   - name: helm
-    image: lachlanevenson/k8s-helm:2.16.1
+    image: lachlanevenson/k8s-helm:latest
     command:
     - cat
     tty: true
@@ -187,7 +187,3 @@ stage ('Heml create')  {
 
 }     
  }
-
-
-
- 
