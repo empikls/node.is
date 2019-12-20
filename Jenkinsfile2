@@ -1,18 +1,6 @@
 #!groovy
 
-<<<<<<< HEAD:Jenkinsfile
 podTemplate(label: slave, yaml: """
-=======
- 
- environment {
-  DOCKERHUB_IMAGE = "hello-world"
-  DOCKER_USER = "devops53"
- }
-    
-agent {
-    kubernetes {
-      yaml """
->>>>>>> 39bebe6617296def2c4a16f306e0916408a97ac1:Jenkinsfile2
 apiVersion: v1
 kind: Pod
 metadata:
