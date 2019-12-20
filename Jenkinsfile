@@ -64,7 +64,7 @@ spec:
   DOCKERHUB_IMAGE = "hello-world"
   DOCKER_USER = "devops53"
  }
- 
+
     stage('Checkout SCM') {
         checkout scm
     } 
@@ -81,7 +81,7 @@ spec:
       }
     stage('Build docker image')
         container('docker') {
-          sh 'docker build . -t ${DOCKERHUB_IMAGE}:${BRANCH_NAME}'
+          sh 'docker build . -t env.DOCKERHUB_IMAGE:${BRANCH_NAME}'
             }
     }
   }
