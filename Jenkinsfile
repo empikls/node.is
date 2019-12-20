@@ -69,5 +69,9 @@ spec:
         sh 'npm test'
     }
       }
+    stage('Build docker image')
+        container('docker') {
+          sh 'docker build . -t ${DOCKER_IMAGE_NAME}:${BRANCH_NAME}'
             }
+    }
   }
