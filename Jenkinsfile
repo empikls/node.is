@@ -1,6 +1,6 @@
 #!groovy
 
-podTemplate(label: slave, yaml: """
+podTemplate( yaml: """
 apiVersion: v1
 kind: Pod
 metadata:
@@ -50,7 +50,7 @@ spec:
 """ 
 ) {
 
-node('slave')
+node
     
     stage('Checkout SCM') {
         checkout scm
