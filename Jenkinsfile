@@ -1,5 +1,8 @@
 #!groovy
 
+
+def label = "jenkins"
+
 podTemplate(label: label, yaml: """
 apiVersion: v1
 kind: Pod
