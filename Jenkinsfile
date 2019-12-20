@@ -72,7 +72,8 @@ spec:
 
 stage ('TAG') {
            when {
-  tag comparator: 'EQUALS', pattern: '/^v\\d.\\d.\\d$/ '}
+  tag 'release-*'
+}
             steps {
                container('docker') {
        withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
