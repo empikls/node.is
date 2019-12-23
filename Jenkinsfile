@@ -179,7 +179,7 @@ spec:
             --set-string master.ingress.annotations."kubernetes.io/ingress.class"=nginx \
             --set-string master.ingress.tls[0].hosts[0]="https://ibmsuninters2.dns-cloud.net" \
             --set-string master.ingress.tls[0].secretName=acme-app-tls \
-            devops53/hello-world:master
+            app
         """
         }
 }
