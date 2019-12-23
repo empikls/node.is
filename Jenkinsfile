@@ -60,11 +60,6 @@ spec:
 
   node(label) {
     
-    environment {
-  DOCKERHUB_IMAGE = "hello-world"
-  DOCKER_USER = "devops53"
-    }
-
     stage('Checkout SCM') {
         checkout scm
     } 
@@ -95,9 +90,10 @@ spec:
 
     stage('Docker push')
         container('docker') {
+           withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
           sh 'docker push ${DOCKERHUB_IMAGE}:${BRANCH_NAME}'
         }
-
+        }
           
     }
   }
