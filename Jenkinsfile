@@ -169,7 +169,7 @@ spec:
 
         withKubeConfig([credentialsId: 'kubeconfig']) {
         sh """
-         helm upgrade --install $appName --debug  \
+         helm upgrade --install $appName --debug ./app \
             --namespace=jenkins \
             --set master.ingress.enabled=true \
             --set-string master.ingress.hostName="https://ibmsuninters2.dns-cloud.net" \
@@ -179,8 +179,7 @@ spec:
             --set-string master.ingress.annotations."kubernetes.io/ssl-redirect"=true \
             --set-string master.ingress.annotations."kubernetes.io/ingress.class"=nginx \
             --set-string master.ingress.tls[0].hosts[0]="https://ibmsuninters2.dns-cloud.net" \
-            --set-string master.ingress.tls[0].secretName=acme-app-tls \
-          app
+            --set-string master.ingress.tls[0].secretName=acme-app-tls 
           """
         }
 }
