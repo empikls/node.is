@@ -130,47 +130,55 @@ spec:
             }
     }
   }    
-    def isPullRequest() {
-    return (env.BRANCH_NAME ==~  /^PR-\d+$/)
-        }
-    def isMaster() {
-    return (env.BRANCH_NAME == "master" )
-        }
-    def isBuildingTag() {
-    return ( env.BRANCH_NAME ==~ /^v\d.\d.\d$/ )
-        }
+    boolean isPullRequest() {
+      return (env.BRANCH_NAME ==~  /^PR-\d+$/)
+    }
+    boolean isMaster() {
+      return (env.BRANCH_NAME == "master" )
+    }
+    boolean isBuildingTag() {
+      return ( env.BRANCH_NAME ==~ /^v\d.\d.\d$/ )
+    }
 
-    def isPushToAnotherBranch() {
-    return ( ! isMaster() && ! isBuildingTag() && ! isPullRequest() )
-        }
+    boolean isPushToAnotherBranch() {
+      return ( ! isMaster() && ! isBuildingTag() && ! isPullRequest() )
+    }
     
     boolean isChangeSet() {
 
 
       // new version
-      currentBuild.changeSets*.getItems*.getAffectedFiles.each { println "it.class = ${it.class} ; it = ${it}" }
-      // currentBuild.changeSets*.items*.affectedFiles.find { it.path.equals("production-release.txt") }
-
-
-      // previous version
-      def changeLogSets = currentBuild.changeSets
-      for (int i = 0; i < changeLogSets.size(); i++) {
-        def entries = changeLogSets[i].items
-        for (int j = 0; j < entries.length; j++) {
-          println "entry[j].class = ${entries[j].class} : ${entries[j]}"
-          def files = new ArrayList(entries[j].affectedFiles)
-          for (int k = 0; k < files.size(); k++) {
-              def file = files[k]
-              println "file[k] = ${file.class} : ${file}"
-              if (file.path.equals("production-release.txt")) {
-                  return true
-              }
+      // currentBuild.changeSets*.getItems*.getAffectedFiles.each { println "it.class = ${it.class} ; it = ${it}" }
+      currentBuild.changeSets.any { changeSet -> 
+        changeSet.items.any { entry -> 
+          enty.affectedFiles.any { file -> 
+            file.path.equals("production-release.txt")
           }
         }
       }
 
+      // currentBuild.changeSets*.items*.affectedFiles.find { it.path.equals("production-release.txt") }
 
-    return false
+
+      // previous version
+      // def changeLogSets = currentBuild.changeSets
+      // for (int i = 0; i < changeLogSets.size(); i++) {
+      //   def entries = changeLogSets[i].items
+      //   for (int j = 0; j < entries.length; j++) {
+      //     println "entry[j].class = ${entries[j].class} : ${entries[j]}"
+      //     def files = new ArrayList(entries[j].affectedFiles)
+      //     for (int k = 0; k < files.size(); k++) {
+      //         def file = files[k]
+      //         println "file[k] = ${file.class} : ${file}"
+      //         if (file.path.equals("production-release.txt")) {
+      //             return true
+      //         }
+      //     }
+      //   }
+      // }
+
+
+    // return false
   }
     def deploy( tagName, appName, hostname ) {
 
