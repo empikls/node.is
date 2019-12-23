@@ -170,7 +170,7 @@ spec:
 
         withKubeConfig([credentialsId: 'kubeconfig']) {
         sh """
-        helm upgrade --install ${appName} \
+        helm upgrade --install ${appName} --debug \
             --namespace=jenkins \
             --set master.ingress.enabled=true \
             --set-string master.ingress.hostName="https://ibmsuninters2.dns-cloud.net" \
