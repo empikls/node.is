@@ -81,9 +81,18 @@ spec:
       }
     stage('Build docker image')
         container('docker') {
+
+         if (env.BRANCH_NAME != 'master' && env.CHANGE_ID == null){
+           return 0
+          }
+
+
       echo "Docker build image name ${DOCKERHUB_IMAGE}:${BRANCH_NAME}"
            sh 'docker build . -t ${DOCKERHUB_IMAGE}:${BRANCH_NAME}'
             }
+
+
+
     stage('Docker push')
         container('docker') {
           sh 'docker push ${DOCKERHUB_IMAGE}:${BRANCH_NAME}'
