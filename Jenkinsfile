@@ -101,16 +101,39 @@ spec:
             }
           }
         } 
-       if ( isChangeSet()  ) {
-    stage ('Deploy to Production') {
-        container('docker') {
-            tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
-            sh 'docker build . -t ${DOCKERHUB_IMAGE}:${tagDockerImage}'
-          }
-        }
-       }
+      
+       if ( isPushToAnotherBranch() ) {
+          print "It's push to another Branch"
     }
-  }
+    def tagDockerImage
+    def nameStage
+            if ( isMaster() ) {
+               stage('Deploy dev version') {
+                    tagDockerImage = env.BRANCH_NAME
+                    nameStage = "dev"
+                    container('helm') {
+                        deploy( tagDockerImage, nameStage )
+                     }
+               }
+            if ( isChangeSet() ) {
+                stage('Deploy to Production')
+                        tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
+                        nameStage = "prod"
+                        container('helm') {
+                            deploy( tagDockerImage, nameStage )
+                        }
+              }
+            }
+            if ( isBuildingTag() ){
+                stage('Deploy to QA stage') {
+                    tagDockerImage = env.BRANCH_NAME
+                    nameStage = "QA"
+                    container('kubhelmectl') {
+                        deploy( tagDockerImage, nameStage )
+                    }
+                }   
+            }
+
     def isPullRequest() {
     return (env.BRANCH_NAME ==~  /^PR-\d+$/)
         }
@@ -133,6 +156,28 @@ spec:
                 if(path.tokenize("/").size() > 1) result.put(path.tokenize("/").first(), true)
             }
         }
-    }
+      }
     return false
     }
+
+    def deploy( tagName, appName ) {
+
+        echo "Release image: ${DOCKERHUB_IMAGE}:$tagName"
+        echo "Deploy app name: $appName"
+
+        withKubeConfig([credentialsId: 'kubeconfig']) {
+        sh """
+        helm upgrade --install ${appName} \
+            --namespace=jenkins \
+            --set master.ingress.enabled=true \
+            --set-string master.ingress.hostName="https://ibmsuninters2.dns-cloud.net" \
+            --set-string master.ingress.annotations."kubernetes.io/tls-acme"=true \
+            --set-string master.ingress.annotations."kubernetes.io/ssl-redirect"=true \
+            --set-string master.ingress.annotations."kubernetes.io/ingress.class"=nginx \
+            --set-string master.ingress.tls[0].hosts[0]="https://ibmsuninters2.dns-cloud.net" \
+            --set-string master.ingress.tls[0].secretName=acme-app-tls \
+            ${DOCKER_IMAGE_NAME}:${tagName}
+        """
+        }
+
+}
