@@ -106,7 +106,7 @@ spec:
                     tagDockerImage = env.BRANCH_NAME
                     nameStage = "dev"
                     container('helm') {
-                        deploy( tagDockerImage, nameStage )
+                        deploy( tagDockerImage, nameStage, hostname )
                      }
                }
             }
@@ -162,15 +162,6 @@ spec:
 
     return false
 }
-    def hostname() {
-      container('kubectl') {
-        sh 'external_node_ip="$(kubectl get nodes \
-              -o jsonpath="{.items[0].status.addresses[?(@.type=="ExternalIP")].address}")"'
-        sh 'site_name="$(echo "${external_node_ip}" | sed "s/./-/g" | sed "s/^/$appName-/" | sed "s/$/.nip.io/")'
-        echo "$site_name"
-    
-      }
-    }
     def deploy( tagName, appName, hostname ) {
 
         echo "Release image: ${DOCKERHUB_IMAGE}:$tagName"
@@ -180,13 +171,13 @@ spec:
         sh 'helm upgrade --install ${appName} --debug   \
             --namespace=jenkins \
             --set master.ingress.enabled=true \
-            --set-string master.ingress.hostName="$site_name" \
+            --set-string master.ingress.hostName="dev-184-173-46-252.nip.io" \
             --set master.image="${DOCKERHUB_IMAGE}:${BRANCH_NAME}" \
             --set master.tag="$tagName" \
             --set-string master.ingress.annotations."kubernetes.io/tls-acme"=true \
             --set-string master.ingress.annotations."kubernetes.io/ssl-redirect"=true \
             --set-string master.ingress.annotations."kubernetes.io/ingress.class"=nginx \
-            --set-string master.ingress.tls[0].hosts[0]="$site_name" \
+            --set-string master.ingress.tls[0].hosts[0]="dev-184-173-46-252.nip.io" \
             --set-string master.ingress.tls[0].secretName=acme-app-tls \
           app'
         }
