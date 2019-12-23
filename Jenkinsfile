@@ -187,7 +187,7 @@ spec:
             --set-string master.ingress.annotations."kubernetes.io/ssl-redirect"=true \
             --set-string master.ingress.annotations."kubernetes.io/ingress.class"=nginx \
             --set-string master.ingress.tls[0].hosts[0]="$site_name" \
-            --set-string master.ingress.tls[0].secretName=acme-app-tls '
-        
+            --set-string master.ingress.tls[0].secretName=acme-app-tls \
+          app'
         }
 }
