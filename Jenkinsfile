@@ -144,24 +144,19 @@ spec:
     return ( ! isMaster() && ! isBuildingTag() && ! isPullRequest() )
         }
     
-    def isChangeSet() {
+    boolean isChangeSet() {
 
-      def changeLogSets = currentBuild.changeSets
-           for (int i = 0; i < changeLogSets.size(); i++) {
-           def entries = changeLogSets[i].items
-           for (int j = 0; j < entries.length; j++) {
-               def files = new ArrayList(entries[j].affectedFiles)
-               for (int k = 0; k < files.size(); k++) {
-                   def file = files[k]
-                   if (file.path.equals("production-release.txt")) {
-                       return true
-                   }
-               }
-            }
-    }
+
+      // new version
+      currentBuild.changeSets*.items*.affectedFiles.find { it.path.equals("production-release.txt") }
+
+
+      // previous version
+      
+
 
     return false
-}
+  }
     def deploy( tagName, appName, hostname ) {
 
         echo "Release image: ${DOCKERHUB_IMAGE}:$tagName"
