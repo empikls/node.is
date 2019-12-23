@@ -171,13 +171,13 @@ spec:
     
       }
     }
-    def deploy( tagName, appName ) {
+    def deploy( tagName, appName, hostname ) {
 
         echo "Release image: ${DOCKERHUB_IMAGE}:$tagName"
         echo "Deploy app name: $appName"
 
         withKubeConfig([credentialsId: 'kubeconfig']) {
-        sh 'helm upgrade --install ${appName} --debug  ./ \
+        sh 'helm upgrade --install ${appName} --debug   \
             --namespace=jenkins \
             --set master.ingress.enabled=true \
             --set-string master.ingress.hostName="$site_name" \
