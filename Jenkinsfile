@@ -162,7 +162,7 @@ spec:
 
     return false
 }
-    def hostname {
+    def hostname() {
       container('kubectl') {
         sh 'external_node_ip="$(kubectl get nodes \
               -o jsonpath="{.items[0].status.addresses[?(@.type=="ExternalIP")].address}")"'
