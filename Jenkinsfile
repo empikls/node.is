@@ -76,23 +76,15 @@ spec:
       }
     stage('Build docker image') {
         container('docker') {
-
-        if ( isPullRequest() ) {
-        print "it's a Pull Request and we don't build app"
-      }
-
-
       echo "Docker build image name ${DOCKERHUB_IMAGE}:${BRANCH_NAME}"
            sh 'docker build . -t ${DOCKERHUB_IMAGE}:${BRANCH_NAME}'
             }
-
-    }
+      }
+    if ( isPullRequest() ) {
+        print "it's a Pull Request and we don't build app"
+      }
     stage('Docker push') {
         container('docker') {
-
-       if ( isPullRequest() ) {
-        print "it's a Pull Request and we don't push app"
-       }
        withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
             sh """
              docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
@@ -102,11 +94,11 @@ spec:
           }
         } 
       
-       if ( isPushToAnotherBranch() ) {
+    if ( isPushToAnotherBranch() ) {
           print "It's push to another Branch"
     }
-  }
-  }
+  
+  
     def tagDockerImage
     def nameStage
             if ( isMaster() ) {
@@ -136,7 +128,8 @@ spec:
                     }
                 }   
             }
-
+    }
+  }    
     def isPullRequest() {
     return (env.BRANCH_NAME ==~  /^PR-\d+$/)
         }
@@ -152,16 +145,23 @@ spec:
         }
     
     def isChangeSet() {
-       def changeLogSets = currentBuild.changeSets
-       changeLogSets.each { gitChangeSetList ->
-        gitChangeSetList.each { gitChangeSet ->
-            gitChangeSet.getAffectedPaths().each { path ->
-                if(path.tokenize("/").size() > 1) result.put(path.tokenize("/").first(), true)
+
+      def changeLogSets = currentBuild.changeSets
+           for (int i = 0; i < changeLogSets.size(); i++) {
+           def entries = changeLogSets[i].items
+           for (int j = 0; j < entries.length; j++) {
+               def files = new ArrayList(entries[j].affectedFiles)
+               for (int k = 0; k < files.size(); k++) {
+                   def file = files[k]
+                   if (file.path.equals("production-release.txt")) {
+                       return true
+                   }
+               }
             }
-        }
-      }
-    return false
     }
+
+    return false
+}
 
     def deploy( tagName, appName ) {
 
