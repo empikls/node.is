@@ -81,12 +81,6 @@ spec:
       }
     stage('Build docker image')
         container('docker') {
-
-
-      // Enviroment variables for Docker
-
-      DOCKERHUB_IMAGE = "devops53"
-
       echo "Docker build image name ${env.DOCKERHUB_IMAGE}:${BRANCH_NAME}"
           sh 'docker build . -t ${env.DOCKERHUB_IMAGE}:${BRANCH_NAME}'
             }
