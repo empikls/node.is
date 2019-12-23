@@ -78,8 +78,8 @@ spec:
         container('docker') {
 
         if ( isPullRequest() ) {
-        return 0
-    }
+        print "it's a Pull Request and we don't build app"
+      }
 
 
       echo "Docker build image name ${DOCKERHUB_IMAGE}:${BRANCH_NAME}"
@@ -88,11 +88,11 @@ spec:
 
     }
     stage('Docker push') {
-    container('docker') {
+        container('docker') {
 
        if ( isPullRequest() ) {
-        return 0
-
+        print "it's a Pull Request and we don't push app"
+       }
        withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
             sh """
              docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
@@ -105,7 +105,7 @@ spec:
           
     }
   }
-  }
+  
 
     def isPullRequest() {
     return (env.BRANCH_NAME ==~  /^PR-\d+$/)
