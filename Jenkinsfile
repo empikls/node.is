@@ -84,7 +84,10 @@ spec:
       echo "Docker build image name ${DOCKERHUB_IMAGE}:${BRANCH_NAME}"
            sh 'docker build . -t ${DOCKERHUB_IMAGE}:${BRANCH_NAME}'
             }
-
+    stage('Docker push')
+        container('docker') {
+          sh 'docker push ${DOCKERHUB_IMAGE}:${BRANCH_NAME}'
+        }
 
           
     }
