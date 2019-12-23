@@ -151,7 +151,7 @@ spec:
       // currentBuild.changeSets*.getItems*.getAffectedFiles.each { println "it.class = ${it.class} ; it = ${it}" }
       currentBuild.changeSets.any { changeSet -> 
         changeSet.items.any { entry -> 
-          enty.affectedFiles.any { file -> 
+          entry.affectedFiles.any { file -> 
             file.path.equals("production-release.txt")
           }
         }
