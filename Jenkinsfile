@@ -170,8 +170,7 @@ spec:
 
         withKubeConfig([credentialsId: 'kubeconfig']) {
         sh """
-        external_node_ip=$(kubectl get nodes \
-              -o jsonpath='{.items[0].status.addresses[?(@.type=="ExternalIP")].address}')
+        external_node_ip="$(kubectl get nodes -o jsonpath='{.items[0].status.addresses[?(@.type=="ExternalIP")].address}')"
         site_name="$(echo $external_node_ip | sed 's/\./-/g' | sed 's/^/app-/' | sed 's/$/.nip.io/')"
         helm upgrade --install ${appName} --debug ./ \
             --namespace=jenkins \
