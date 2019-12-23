@@ -148,7 +148,7 @@ spec:
 
 
       // new version
-      currentBuild.changeSets*.items*.toList()*.affectedFiles.find { it.path.equals("production-release.txt") }
+      currentBuild.changeSets*.items.toList()*.affectedFiles.find { it.path.equals("production-release.txt") }
 
 
       // previous version
