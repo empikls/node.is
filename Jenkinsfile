@@ -74,7 +74,7 @@ spec:
         sh 'npm test'
     }
       }
-    stage('Build docker image')
+    stage('Build docker image') {
         container('docker') {
 
         if ( isPullRequest() ) {
@@ -86,9 +86,13 @@ spec:
            sh 'docker build . -t ${DOCKERHUB_IMAGE}:${BRANCH_NAME}'
             }
 
-
-    stage('Docker push')
+    }
+    stage('Docker push') {
     container('docker') {
+
+       if ( isPullRequest() ) {
+        return 0
+
        withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
             sh """
              docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
@@ -97,7 +101,7 @@ spec:
             }
         }
 
-   
+    }
           
     }
   }
