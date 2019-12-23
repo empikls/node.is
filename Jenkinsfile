@@ -146,12 +146,18 @@ spec:
     
     def isChangeSet() {
 
-      def changeLogSets.each { gitChangeSetList ->
-        gitChangeSetList.each { gitChangeSet ->
-            gitChangeSet.getAffectedPaths().each { path ->
-                if(path.tokenize("/").size() > 1) result.put(path.tokenize("/").first(), true)
+      def changeLogSets = currentBuild.changeSets
+           for (int i = 0; i < changeLogSets.size(); i++) {
+           def entries = changeLogSets[i].items
+           for (int j = 0; j < entries.length; j++) {
+               def files = new ArrayList(entries[j].affectedFiles)
+               for (int k = 0; k < files.size(); k++) {
+                   def file = files[k]
+                   if (file.path.equals("production-release.txt")) {
+                       return true
+                   }
+               }
             }
-        }
     }
 
     return false
