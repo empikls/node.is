@@ -172,8 +172,8 @@ spec:
         sh """
         external_node_ip=$(kubectl get nodes \
               -o jsonpath='{.items[0].status.addresses[?(@.type=="ExternalIP")].address}')
-        site_name=$(echo $external_node_ip | sed 's/\./-/g' | sed 's/^/app-/' | sed 's/$/.nip.io/')
-        helm upgrade --install ${appName} --debug \
+        site_name="$(echo $external_node_ip | sed 's/\./-/g' | sed 's/^/app-/' | sed 's/$/.nip.io/')"
+        helm upgrade --install ${appName} --debug ./ \
             --namespace=jenkins \
             --set master.ingress.enabled=true \
             --set-string master.ingress.hostName="https://ibmsuninters2.dns-cloud.net" \
@@ -184,7 +184,6 @@ spec:
             --set-string master.ingress.annotations."kubernetes.io/ingress.class"=nginx \
             --set-string master.ingress.tls[0].hosts[0]=$site_name \
             --set-string master.ingress.tls[0].secretName=acme-app-tls \
-            app 
         """
         }
 }
