@@ -169,10 +169,9 @@ spec:
         echo "Deploy app name: $appName"
 
         withKubeConfig([credentialsId: 'kubeconfig']) {
-        sh """
-        external_node_ip="$(kubectl get nodes -o jsonpath='{.items[0].status.addresses[?(@.type=="ExternalIP")].address}')"
-        site_name="$(echo $external_node_ip | sed 's/\./-/g' | sed 's/^/$appName-/' | sed 's/$/.nip.io/')"
-        helm upgrade --install ${appName} --debug  \
+        sh 'external_node_ip=$(kubectl get nodes -o jsonpath='{.items[0].status.addresses[?(@.type=="ExternalIP")].address}')'
+        sh 'site_name="$(echo $external_node_ip | sed 's/\./-/g' | sed 's/^/$appName-/' | sed 's/$/.nip.io/')'
+        sh 'helm upgrade --install ${appName} --debug  ./ \
             --namespace=jenkins \
             --set master.ingress.enabled=true \
             --set-string master.ingress.hostName="$site_name" \
@@ -182,8 +181,7 @@ spec:
             --set-string master.ingress.annotations."kubernetes.io/ssl-redirect"=true \
             --set-string master.ingress.annotations."kubernetes.io/ingress.class"=nginx \
             --set-string master.ingress.tls[0].hosts[0]="$site_name" \
-            --set-string master.ingress.tls[0].secretName=acme-app-tls 
-            app
-        """
+            --set-string master.ingress.tls[0].secretName=acme-app-tls '
+        
         }
 }
