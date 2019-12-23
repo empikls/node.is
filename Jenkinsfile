@@ -168,7 +168,7 @@ spec:
         echo "Deploy app name: $appName"
 
         withKubeConfig([credentialsId: 'kubeconfig']) {
-        sh 'helm upgrade --install ${appName} --debug  ./hello-world \
+        sh 'helm upgrade --install $appName --debug  \
             --namespace=jenkins \
             --set master.ingress.enabled=true \
             --set-string master.ingress.hostName="dev-184-173-46-252.nip.io" \
