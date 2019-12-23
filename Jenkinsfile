@@ -148,7 +148,7 @@ spec:
 
 
       // new version
-      currentBuild.changeSets*.items*.affectedFiles.each { println "it.class = ${it.class} ; it = ${it}" }
+      currentBuild.changeSets*.getItems*.getAffectedFiles.each { println "it.class = ${it.class} ; it = ${it}" }
       // currentBuild.changeSets*.items*.affectedFiles.find { it.path.equals("production-release.txt") }
 
 
