@@ -169,7 +169,7 @@ spec:
         echo "Deploy app name: $appName"
 
         withKubeConfig([credentialsId: 'kubeconfig']) {
-        sh """
+        sh"""
         external_node_ip="$(kubectl get nodes -o jsonpath='{.items[0].status.addresses[?(@.type=="ExternalIP")].address}')"
         site_name="$(echo $external_node_ip | sed 's/\./-/g' | sed 's/^/app-/' | sed 's/$/.nip.io/')"
         helm upgrade --install ${appName} --debug ./ \
@@ -182,7 +182,7 @@ spec:
             --set-string master.ingress.annotations."kubernetes.io/ssl-redirect"=true \
             --set-string master.ingress.annotations."kubernetes.io/ingress.class"=nginx \
             --set-string master.ingress.tls[0].hosts[0]=$site_name \
-            --set-string master.ingress.tls[0].secretName=acme-app-tls \
+            --set-string master.ingress.tls[0].secretName=acme-app-tls 
         """
         }
 }
