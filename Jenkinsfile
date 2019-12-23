@@ -105,7 +105,7 @@ spec:
           
     }
   }
-
+  }
 
     def isPullRequest() {
     return (env.BRANCH_NAME ==~  /^PR-\d+$/)
