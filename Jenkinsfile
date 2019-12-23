@@ -123,7 +123,7 @@ spec:
                 stage('Deploy to QA stage') {
                     tagDockerImage = env.BRANCH_NAME
                     nameStage = "QA"
-                    container('kubhelmectl') {
+                    container('helm') {
                         deploy( tagDockerImage, nameStage )
                     }
                 }   
@@ -179,7 +179,7 @@ spec:
             --set-string master.ingress.annotations."kubernetes.io/ingress.class"=nginx \
             --set-string master.ingress.tls[0].hosts[0]="https://ibmsuninters2.dns-cloud.net" \
             --set-string master.ingress.tls[0].secretName=acme-app-tls \
-            app
+            hello-world
         """
         }
 }
