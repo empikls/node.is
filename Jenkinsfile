@@ -167,6 +167,8 @@ spec:
         sh 'external_node_ip="$(kubectl get nodes \
               -o jsonpath="{.items[0].status.addresses[?(@.type=="ExternalIP")].address}")"'
         sh 'site_name="$(echo "${external_node_ip}" | sed "s/./-/g" | sed "s/^/$appName-/" | sed "s/$/.nip.io/")'
+        echo "$site_name"
+    
       }
     }
     def deploy( tagName, appName ) {
