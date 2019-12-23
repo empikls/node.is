@@ -88,12 +88,17 @@ spec:
 
 
 
-    stage('Docker push')
-        container('docker') {
-           withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
-          sh 'docker push ${DOCKERHUB_IMAGE}:${BRANCH_NAME}'
+    container('docker') {
+       withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
+            sh """
+             docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
+             docker build . -t ${DOCKERHUB_IMAGE}:${BRANCH_NAME} 
+             docker push ${DOCKERHUB_IMAGE}:${BRANCH_NAME}
+            """
+            }
         }
-        }
+
+   
           
     }
   }
