@@ -81,8 +81,8 @@ spec:
       }
     stage('Build docker image')
         container('docker') {
-      echo "Docker build image name ${env.DOCKERHUB_IMAGE}:${BRANCH_NAME}"
-          sh 'docker build . -t ${env.DOCKERHUB_IMAGE}:${BRANCH_NAME}'
+      echo "Docker build image name ${DOCKERHUB_IMAGE}:${BRANCH_NAME}"
+          # sh 'docker build . -t ${env.DOCKERHUB_IMAGE}:${BRANCH_NAME}'
             }
 
 
