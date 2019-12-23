@@ -105,6 +105,8 @@ spec:
        if ( isPushToAnotherBranch() ) {
           print "It's push to another Branch"
     }
+  }
+  }
     def tagDockerImage
     def nameStage
             if ( isMaster() ) {
@@ -180,5 +182,4 @@ spec:
             ${DOCKER_IMAGE_NAME}:${tagName}
         """
         }
-
 }
