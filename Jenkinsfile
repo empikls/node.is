@@ -115,6 +115,7 @@ spec:
                         deploy( tagDockerImage, nameStage )
                      }
                }
+            }
             if ( isChangeSet() ) {
                 stage('Deploy to Production')
                         tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
@@ -123,7 +124,7 @@ spec:
                             deploy( tagDockerImage, nameStage )
                         }
               }
-            }
+            
             if ( isBuildingTag() ){
                 stage('Deploy to QA stage') {
                     tagDockerImage = env.BRANCH_NAME
