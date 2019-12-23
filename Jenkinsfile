@@ -110,3 +110,15 @@ spec:
     def isPullRequest() {
     return (env.BRANCH_NAME ==~  /^PR-\d+$/)
         }
+    
+    def isChangeSet() {
+       def changeLogSets = currentBuild.changeSets
+       changeLogSets.each { gitChangeSetList ->
+        gitChangeSetList.each { gitChangeSet ->
+            gitChangeSet.getAffectedPaths().each { path ->
+                if(path.tokenize("/").size() > 1) result.put(path.tokenize("/").first(), true)
+            }
+        }
+    }
+    return false
+    }
