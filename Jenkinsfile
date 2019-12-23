@@ -174,8 +174,8 @@ spec:
             --namespace=jenkins \
             --set master.ingress.enabled=true \
             --set-string master.ingress.hostName="https://ibmsuninters2.dns-cloud.net" \
-            --master.image="devops53/hello-world" \
-            --master.tag="v1.1.77" \
+            --set master.image="devops53/hello-world" \
+            --set master.tag="v1.1.77" \
             --set-string master.ingress.annotations."kubernetes.io/tls-acme"=true \
             --set-string master.ingress.annotations."kubernetes.io/ssl-redirect"=true \
             --set-string master.ingress.annotations."kubernetes.io/ingress.class"=nginx \
