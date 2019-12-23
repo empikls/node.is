@@ -99,16 +99,30 @@ spec:
              docker push ${DOCKERHUB_IMAGE}:${BRANCH_NAME}
             """
             }
+          }
+        } 
+       if ( isChangeSet()  ) {
+    stage ('Deploy to Production') {
+        container('docker') {
+            tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
+            sh 'docker build . -t ${DOCKERHUB_IMAGE}:${tagDockerImage}'
+          }
         }
-
-    }
-          
+       }
     }
   }
-  
-
     def isPullRequest() {
     return (env.BRANCH_NAME ==~  /^PR-\d+$/)
+        }
+    def isMaster() {
+    return (env.BRANCH_NAME == "master" )
+        }
+    def isBuildingTag() {
+    return ( env.BRANCH_NAME ==~ /^v\d.\d.\d$/ )
+        }
+
+    def isPushToAnotherBranch() {
+    return ( ! isMaster() && ! isBuildingTag() && ! isPullRequest() )
         }
     
     def isChangeSet() {
