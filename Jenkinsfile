@@ -148,7 +148,8 @@ spec:
 
 
       // new version
-      currentBuild.changeSets*.items.toList()*.affectedFiles.find { it.path.equals("production-release.txt") }
+      currentBuild.changeSets*.items.each { println "it.class = ${it.class} ; it = ${it}" }
+      // currentBuild.changeSets*.items*.affectedFiles.find { it.path.equals("production-release.txt") }
 
 
       // previous version
@@ -156,9 +157,11 @@ spec:
       for (int i = 0; i < changeLogSets.size(); i++) {
         def entries = changeLogSets[i].items
         for (int j = 0; j < entries.length; j++) {
+          println "entry[j].class = ${entries[j].class} : ${entries[j]}"
           def files = new ArrayList(entries[j].affectedFiles)
           for (int k = 0; k < files.size(); k++) {
               def file = files[k]
+              println "file[k] = ${file.class} : ${file}"
               if (file.path.equals("production-release.txt")) {
                   return true
               }
