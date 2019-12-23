@@ -168,17 +168,19 @@ spec:
         echo "Deploy app name: $appName"
 
         withKubeConfig([credentialsId: 'kubeconfig']) {
-        sh 'helm upgrade --install $appName --debug  \
+        sh """
+         helm upgrade --install $appName --debug  \
             --namespace=jenkins \
             --set master.ingress.enabled=true \
             --set-string master.ingress.hostName="dev-184-173-46-252.nip.io" \
             --set master.image="${DOCKERHUB_IMAGE}:${BRANCH_NAME}" \
-            --set master.tag="$tagName" \
+            --set master.tag=$tagName \
             --set-string master.ingress.annotations."kubernetes.io/tls-acme"=true \
             --set-string master.ingress.annotations."kubernetes.io/ssl-redirect"=true \
             --set-string master.ingress.annotations."kubernetes.io/ingress.class"=nginx \
             --set-string master.ingress.tls[0].hosts[0]="dev-184-173-46-252.nip.io" \
             --set-string master.ingress.tls[0].secretName=acme-app-tls \
-          app'
+          app
+          """
         }
 }
