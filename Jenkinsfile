@@ -79,7 +79,7 @@ spec:
       container('docker') {
     if ( isChangeSet() ) {
       echo "${tagDockerImage}"
-      sh 'docker build . -t ${DOCKERHUB_IMAGE}:${tagDockerImage}'
+      sh "docker build . -t ${DOCKERHUB_IMAGE}:${tagDockerImage}"
     }
         else {
            sh 'docker build . -t ${DOCKERHUB_IMAGE}:${BRANCH_NAME}'
