@@ -49,7 +49,7 @@ spec:
       - name: dind-storage
         mountPath: /var/lib/docker
   - name: helm
-    image: lachlanevenson/k8s-helm:v2.13.1
+    image: lachlanevenson/k8s-helm:v2.16.1
     command:
     - cat
     tty: true
