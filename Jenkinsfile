@@ -168,12 +168,10 @@ spec:
       def changeLogSets = currentBuild.changeSets
       for (int i = 0; i < changeLogSets.size(); i++) {
         def entries = changeLogSets[i].items
-        for (int j = 0; j < entries.length; j++) {
-          println "entry[j].class = ${entries[j].class} : ${entries[j]}"
+        for (int j = 0; j < entries.length; j++) {   
           def files = new ArrayList(entries[j].affectedFiles)
           for (int k = 0; k < files.size(); k++) {
               def file = files[k]
-              println "file[k] = ${file.class} : ${file}"
               if (file.path.equals("production-release.txt")) {
                   return true
               }
@@ -194,18 +192,18 @@ spec:
          helm upgrade --install $appName --debug --force ./app \
             --namespace=jenkins \
             --set master.ingress.enabled=true \
-            --set-string master.ingress.hostName="qa-184-173-46-252.nip.io" \
+            --set-string master.ingress.hostName=$hostname \
             --set master.image="${DOCKERHUB_IMAGE}:${BRANCH_NAME}" \
             --set master.tag=$tagName \
             --set-string master.ingress.annotations."kubernetes.io/tls-acme"=true \
             --set-string master.ingress.annotations."kubernetes.io/ssl-redirect"=true \
             --set-string master.ingress.annotations."kubernetes.io/ingress.class"=nginx \
-            --set-string master.ingress.tls[0].hosts[0]="qa-184-173-46-252.nip.io" \
-            --set-string master.ingress.tls[0].secretName=acme-app-tls 
+            --set-string master.ingress.tls[0].hosts[0]=$hostname \
+            --set-string master.ingress.tls[0].secretName=acme-$appName-tls 
 
             helm ls
             helm version
             echo "$KUBECONFIG"
           """
         }
-}
+    }
