@@ -192,7 +192,6 @@ spec:
         sh """
          helm upgrade --install $appName --debug --force ./app \
             --namespace=jenkins \
-            --set master.ingress.enabled=true \
             --set-string master.ingress.hostName=$hostname \
             --set master.image="${DOCKERHUB_IMAGE}:${BRANCH_NAME}" \
             --set master.tag=$tagName \
