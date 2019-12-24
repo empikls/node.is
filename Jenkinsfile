@@ -56,7 +56,7 @@ spec:
 """
   )
 
-  {
+{
 
   node(label) {
     
@@ -123,7 +123,7 @@ spec:
                 stage('Deploy to Production') {
                         tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
                         nameStage = "prod"
-                        hostname = "prod-184-173-46-252.nip.io"
+                        hostname = "184-173-46-252.nip.io"
                         container('helm') {
                             deploy( tagDockerImage, nameStage, hostname )
                         }
@@ -151,7 +151,7 @@ spec:
                 }   
             }
     }
-  }    
+}    
     boolean isPullRequest() {
       return (env.BRANCH_NAME ==~  /^PR-\d+$/)
     }
