@@ -101,11 +101,12 @@ spec:
   
     def tagDockerImage
     def nameStage
+    def hostname
             if ( isMaster() ) {
                stage('Deploy dev version') {
                     tagDockerImage = env.BRANCH_NAME
                     nameStage = "dev"
-                    hostname = 
+                    hostname = "dev-184-173-46-252.nip.io"
                     container('helm') {
                         deploy( tagDockerImage, nameStage, hostname )
                      }
@@ -115,8 +116,9 @@ spec:
                 stage('Deploy to Production')
                         tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
                         nameStage = "prod"
+                        hostname = "prod-184-173-46-252.nip.io"
                         container('helm') {
-                            deploy( tagDockerImage, nameStage )
+                            deploy( tagDockerImage, nameStage, hostname )
                         }
               }
             
@@ -124,8 +126,9 @@ spec:
                 stage('Deploy to QA stage') {
                     tagDockerImage = env.BRANCH_NAME
                     nameStage = "QA"
+                    hostname = "qa-184-173-46-252.nip.io"
                     container('helm') {
-                        deploy( tagDockerImage, nameStage )
+                        deploy( tagDockerImage, nameStage, hostname )
                     }
                 }   
             }
@@ -188,16 +191,16 @@ spec:
 
         withKubeConfig([credentialsId: 'kubeconfig']) {
         sh """
-         helm upgrade --install $appName --debug ./app \
+         helm upgrade --install $appName --debug --force ./app \
             --namespace=jenkins \
             --set master.ingress.enabled=true \
-            --set-string master.ingress.hostName="https://ibmsuninters2.dns-cloud.net" \
+            --set-string master.ingress.hostName="qa-184-173-46-252.nip.io" \
             --set master.image="${DOCKERHUB_IMAGE}:${BRANCH_NAME}" \
             --set master.tag=$tagName \
             --set-string master.ingress.annotations."kubernetes.io/tls-acme"=true \
             --set-string master.ingress.annotations."kubernetes.io/ssl-redirect"=true \
             --set-string master.ingress.annotations."kubernetes.io/ingress.class"=nginx \
-            --set-string master.ingress.tls[0].hosts[0]="https://ibmsuninters2.dns-cloud.net" \
+            --set-string master.ingress.tls[0].hosts[0]="qa-184-173-46-252.nip.io" \
             --set-string master.ingress.tls[0].secretName=acme-app-tls 
 
             helm ls
