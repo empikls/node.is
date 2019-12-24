@@ -201,10 +201,6 @@ spec:
             --set-string master.ingress.annotations."kubernetes.io/ingress.class"=nginx \
             --set-string master.ingress.tls[0].hosts[0]=$hostname \
             --set-string master.ingress.tls[0].secretName=acme-$appName-tls 
-
-            helm ls
-            helm version
-            echo "$KUBECONFIG"
           """
         }
     }
