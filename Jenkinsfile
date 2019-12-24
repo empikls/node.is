@@ -170,7 +170,6 @@ spec:
 
 
       // new version
-      // currentBuild.changeSets*.getItems*.getAffectedFiles.each { println "it.class = ${it.class} ; it = ${it}" }
         currentBuild.changeSets.any { changeSet -> 
           changeSet.items.any { entry -> 
             entry.affectedFiles.any { file -> 
@@ -180,10 +179,11 @@ spec:
             }
           }
         }
+
+      // one more try 
       // currentBuild.changeSets*.items*.affectedFiles.find { it.path.equals("production-release.txt") }
 
-
-     // pprevious version
+     // previous version
       // def changeLogSets = currentBuild.changeSets
       // for (int i = 0; i < changeLogSets.size(); i++) {
       //   def entries = changeLogSets[i].items
@@ -197,9 +197,7 @@ spec:
       //     }
       //   }
       // }
-    
 
-    // return false
   }
     def deploy( tagName, appName, hostname ) {
 
@@ -211,7 +209,7 @@ spec:
          helm upgrade --install $appName --debug --force ./app \
             --namespace=jenkins \
             --set-string master.ingress.hostName=$hostname \
-            --set master.image="${DOCKERHUB_IMAGE}:${BRANCH_NAME}" \
+            --set master.image="${DOCKERHUB_IMAGE}:$tagName" \
             --set master.tag=$tagName \
             --set-string ingress.hosts[0].host=$hostname \
             --set-string ingress.tls[0].hosts[0]=$hostname \
