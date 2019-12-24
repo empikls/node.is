@@ -77,9 +77,14 @@ spec:
     stage('Build docker image') {
         container('docker') {
       echo "Docker build image name ${DOCKERHUB_IMAGE}:${BRANCH_NAME}"
+    if ( isChangeSet() ) {
+      sh 'docker build . -t ${DOCKERHUB_IMAGE}:$tagName'
+    }
+        else {
            sh 'docker build . -t ${DOCKERHUB_IMAGE}:${BRANCH_NAME}'
             }
       }
+    }
     if ( isPullRequest() ) {
         return 0
       }
