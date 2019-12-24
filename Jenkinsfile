@@ -102,16 +102,7 @@ spec:
     def tagDockerImage
     def nameStage
     def hostname
-            if ( isMaster() ) {
-               stage('Deploy dev version') {
-                    tagDockerImage = env.BRANCH_NAME
-                    nameStage = "dev"
-                    hostname = "dev-184-173-46-252.nip.io"
-                    container('helm') {
-                        deploy( tagDockerImage, nameStage, hostname )
-                    }
-               }
-            }
+
             if ( isChangeSet() ) {
                 stage('Deploy to Production') {
                         tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
@@ -122,7 +113,18 @@ spec:
                         }
                 }
             }
-            if ( isBuildingTag() ){
+            else if ( isMaster() ) {
+               stage('Deploy dev version') {
+                    tagDockerImage = env.BRANCH_NAME
+                    nameStage = "dev"
+                    hostname = "dev-184-173-46-252.nip.io"
+                    container('helm') {
+                        deploy( tagDockerImage, nameStage, hostname )
+                    }
+               }
+            }
+            
+            else if ( isBuildingTag() ){
                 stage('Deploy to QA stage') {
                     tagDockerImage = env.BRANCH_NAME
                     nameStage = "QA"
