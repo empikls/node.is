@@ -49,7 +49,7 @@ spec:
       - name: dind-storage
         mountPath: /var/lib/docker
   - name: helm
-    image: lachlanevenson/k8s-helm:latest
+    image: lachlanevenson/k8s-helm:v2.16.1
     command:
     - cat
     tty: true
@@ -105,6 +105,7 @@ spec:
                stage('Deploy dev version') {
                     tagDockerImage = env.BRANCH_NAME
                     nameStage = "dev"
+                    hostname = 
                     container('helm') {
                         deploy( tagDockerImage, nameStage, hostname )
                      }
