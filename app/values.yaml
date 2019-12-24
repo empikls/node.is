@@ -26,10 +26,10 @@ ingress:
   hosts:
     - host: ibmsuninters2.dns-cloud.net
 
- # tls: 
- #   - secretName: chart-example-tls2
- #     hosts:
- #       - ibmsuninters2.dns-cloud.net
+  tls: 
+    - secretName: chart-example-tls2
+      hosts:
+        - ibmsuninters2.dns-cloud.net
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
