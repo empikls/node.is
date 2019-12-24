@@ -195,7 +195,7 @@ spec:
             --set-string master.ingress.hostName=$hostname \
             --set master.image="${DOCKERHUB_IMAGE}:${BRANCH_NAME}" \
             --set master.tag=$tagName \
-            --set-string ingress.hosts=$hostname \
+            --set-string ingress.hosts.host=$hostname \
             --set-string master.ingress.annotations."kubernetes.io/tls-acme"=true \
             --set-string master.ingress.annotations."kubernetes.io/ssl-redirect"=true \
             --set-string master.ingress.annotations."kubernetes.io/ingress.class"=nginx \
