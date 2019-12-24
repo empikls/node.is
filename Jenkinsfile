@@ -78,7 +78,7 @@ spec:
       tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
       container('docker') {
     if ( isChangeSet() ) {
-      echo "${tagDockerImage}"
+      echo "Build docker image with tag ${tagDockerImage}"
       sh "docker build . -t ${DOCKERHUB_IMAGE}:${tagDockerImage}"
     }
         else {
@@ -90,15 +90,24 @@ spec:
       return 0
     }
     stage('Docker push') {
-        container('docker') {
-       withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
+      container('docker') {
+        withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
+          if ( isChangeSet() ) {
+            echo "Push docker image with tag ${tagDockerImage}"
             sh """
              docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
-             docker push ${DOCKERHUB_IMAGE}:${BRANCH_NAME}
+             docker push ${DOCKERHUB_IMAGE}:${tagDockerImage}
             """
+            else {
+              echo "Push docker image with tag ${BRANCH_NAME}"
+              sh """
+             docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
+             docker push ${DOCKERHUB_IMAGE}:${BRANCH_NAME}
+              """
             }
           }
         } 
+      } 
       
     if ( isPushToAnotherBranch() ) {
           print "It's push to another Branch"
