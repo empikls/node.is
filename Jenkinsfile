@@ -160,7 +160,7 @@ spec:
       // currentBuild.changeSets*.items*.affectedFiles.find { it.path.equals("production-release.txt") }
 
 
-      previous version
+     // pprevious version
       def changeLogSets = currentBuild.changeSets
       for (int i = 0; i < changeLogSets.size(); i++) {
         def entries = changeLogSets[i].items
@@ -176,7 +176,7 @@ spec:
           }
         }
       }
-
+    
 
     // return false
   }
@@ -198,8 +198,10 @@ spec:
             --set-string master.ingress.annotations."kubernetes.io/ingress.class"=nginx \
             --set-string master.ingress.tls[0].hosts[0]="https://ibmsuninters2.dns-cloud.net" \
             --set-string master.ingress.tls[0].secretName=acme-app-tls 
-            
+
             helm ls
+            helm version
+            echo "$KUBECONFIG"
           """
         }
 }
