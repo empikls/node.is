@@ -149,33 +149,33 @@ spec:
 
       // new version
       // currentBuild.changeSets*.getItems*.getAffectedFiles.each { println "it.class = ${it.class} ; it = ${it}" }
-      currentBuild.changeSets.any { changeSet -> 
-        changeSet.items.any { entry -> 
-          entry.affectedFiles.any { file -> 
-            file.path.equals("production-release.txt")
-          }
-        }
-      }
+      //currentBuild.changeSets.any { changeSet -> 
+       // changeSet.items.any { entry -> 
+       //   entry.affectedFiles.any { file -> 
+      //      file.path.equals("production-release.txt")
+      //    }
+     //   }
+     // }
 
       // currentBuild.changeSets*.items*.affectedFiles.find { it.path.equals("production-release.txt") }
 
 
-      // previous version
-      // def changeLogSets = currentBuild.changeSets
-      // for (int i = 0; i < changeLogSets.size(); i++) {
-      //   def entries = changeLogSets[i].items
-      //   for (int j = 0; j < entries.length; j++) {
-      //     println "entry[j].class = ${entries[j].class} : ${entries[j]}"
-      //     def files = new ArrayList(entries[j].affectedFiles)
-      //     for (int k = 0; k < files.size(); k++) {
-      //         def file = files[k]
-      //         println "file[k] = ${file.class} : ${file}"
-      //         if (file.path.equals("production-release.txt")) {
-      //             return true
-      //         }
-      //     }
-      //   }
-      // }
+      previous version
+      def changeLogSets = currentBuild.changeSets
+      for (int i = 0; i < changeLogSets.size(); i++) {
+        def entries = changeLogSets[i].items
+        for (int j = 0; j < entries.length; j++) {
+          println "entry[j].class = ${entries[j].class} : ${entries[j]}"
+          def files = new ArrayList(entries[j].affectedFiles)
+          for (int k = 0; k < files.size(); k++) {
+              def file = files[k]
+              println "file[k] = ${file.class} : ${file}"
+              if (file.path.equals("production-release.txt")) {
+                  return true
+              }
+          }
+        }
+      }
 
 
     // return false
@@ -198,6 +198,8 @@ spec:
             --set-string master.ingress.annotations."kubernetes.io/ingress.class"=nginx \
             --set-string master.ingress.tls[0].hosts[0]="https://ibmsuninters2.dns-cloud.net" \
             --set-string master.ingress.tls[0].secretName=acme-app-tls 
+            
+            helm ls
           """
         }
 }
