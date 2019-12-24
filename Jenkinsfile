@@ -67,13 +67,13 @@ spec:
     stage('Build node.js app') {
         container('nodejs') {
         sh 'npm install'
+        }
     }
-      }
     stage('Node.js test') {
         container('nodejs') {
         sh 'npm test'
+        }
     }
-      }
     stage('Build docker image') {
       tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
       container('docker') {
@@ -98,6 +98,7 @@ spec:
              docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
              docker push ${DOCKERHUB_IMAGE}:${tagDockerImage}
             """
+          }
             else {
               echo "Push docker image with tag ${BRANCH_NAME}"
               sh """
