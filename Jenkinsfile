@@ -75,19 +75,20 @@ spec:
     }
       }
     stage('Build docker image') {
-        container('docker') {
+      tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
+      container('docker') {
     if ( isChangeSet() ) {
       echo "${tagDockerImage}"
       sh 'docker build . -t ${DOCKERHUB_IMAGE}:${tagDockerImage}'
     }
         else {
            sh 'docker build . -t ${DOCKERHUB_IMAGE}:${BRANCH_NAME}'
-            }
+        }
       }
     }
     if ( isPullRequest() ) {
-        return 0
-      }
+      return 0
+    }
     stage('Docker push') {
         container('docker') {
        withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
