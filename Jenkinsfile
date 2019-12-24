@@ -193,8 +193,8 @@ spec:
          helm upgrade --install $appName --debug --force ./app \
             --namespace=jenkins \
             --set-string master.ingress.hostName=$hostname \
-            --set master.image="${DOCKERHUB_IMAGE}:${BRANCH_NAME}" \
-            --set master.tag=$tagName \
+            --set-string master.image="${DOCKERHUB_IMAGE}:${BRANCH_NAME}" \
+            --set-string master.tag=$tagName \
             --set-string ingress.hosts[0].host=$hostname \
             --set-string ingress.tls[0].hosts[0]=$hostname \
             --set-string master.ingress.annotations."kubernetes.io/tls-acme"=true \
