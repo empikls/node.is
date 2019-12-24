@@ -208,7 +208,7 @@ spec:
         sh """
          helm upgrade --install $appName --debug --force ./app \
             --namespace=jenkins \
-            --set-string master.ingress.hostName=$hostname \
+            --set master.ingress.hostName=$hostname \
             --set master.image="${DOCKERHUB_IMAGE}:$tagName" \
             --set master.tag=$tagName \
             --set ingress.hosts[0].host=$hostname \
@@ -216,8 +216,8 @@ spec:
             --set-string master.ingress.annotations."kubernetes.io/tls-acme"=true \
             --set-string master.ingress.annotations."kubernetes.io/ssl-redirect"=true \
             --set-string master.ingress.annotations."kubernetes.io/ingress.class"=nginx \
-            --set-string master.ingress.tls[0].hosts[0]=$hostname \
-            --set-string master.ingress.tls[0].secretName=acme-$appName-tls 
+            --set master.ingress.tls[0].hosts[0]=$hostname \
+            --set master.ingress.tls[0].secretName=acme-$appName-tls 
           """
         }
     }
