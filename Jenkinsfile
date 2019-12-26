@@ -75,41 +75,57 @@ spec:
         }
     }
     stage('Build docker image') {
-      tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
       container('docker') {
-    if ( isChangeSet() ) {
-      echo "Build docker image with tag ${tagDockerImage}"
-      sh "docker build . -t ${DOCKERHUB_IMAGE}:${tagDockerImage}"
-    }
+      if ( isBuildingTag() ) {
+        echo "Build docker image with tag ${BRANCH_NAME}"
+        sh "docker build . -t ${DOCKERHUB_IMAGE}:${BRANCH_NAME}"
+      }
         else {
-           sh 'docker build . -t ${DOCKERHUB_IMAGE}:${BRANCH_NAME}'
+          if ( isChangeSet() ) {
+            tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
+              echo "Build docker image with tag ${tagDockerImage}"
+              sh "docker build . -t ${DOCKERHUB_IMAGE}:${tagDockerImage}"
+          }
+          if ( isMaster() ) {
+              echo "Push docker image with tag ${BRANCH_NAME}"
+              sh 'docker build . -t ${DOCKERHUB_IMAGE}:${BRANCH_NAME}'
+          }
         }
       }
     }
     if ( isPullRequest() ) {
       return 0
     }
+
     stage('Docker push') {
       container('docker') {
         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
-          if ( isChangeSet() ) {
-            echo "Push docker image with tag ${tagDockerImage}"
+          if ( isBuildingTag() ) {
+            echo "Push docker image with tag ${BRANCH_NAME}"
             sh """
              docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
-             docker push ${DOCKERHUB_IMAGE}:${tagDockerImage}
+             docker push ${DOCKERHUB_IMAGE}:${BRANCH_NAME}
             """
           }
             else {
+              if ( isChangeSet() ) {
               echo "Push docker image with tag ${BRANCH_NAME}"
               sh """
-             docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
-             docker push ${DOCKERHUB_IMAGE}:${BRANCH_NAME}
+                docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
+                docker push ${DOCKERHUB_IMAGE}:${BRANCH_NAME}
               """
-            }
-          }
+              }
+              if ( isMaster() ) {
+              echo "Push docker image with tag ${BRANCH_NAME}"
+              sh """
+                docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
+                docker push ${DOCKERHUB_IMAGE}:${BRANCH_NAME}
+              """
+              }
+            } 
         } 
-      } 
-      
+      }
+    } 
     if ( isPushToAnotherBranch() ) {
           print "It's push to another Branch"
     }
