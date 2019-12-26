@@ -109,18 +109,19 @@ spec:
           }
             else {
               if ( isChangeSet() ) {
-              echo "Push docker image with tag ${BRANCH_NAME}"
-              sh """
-                docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
-                docker push ${DOCKERHUB_IMAGE}:${BRANCH_NAME}
-              """
+                tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
+                echo "Push docker image with tag ${tagDockerImage}"
+                sh """
+                  docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
+                  docker push ${DOCKERHUB_IMAGE}:${tagDockerImage}
+                """
               }
               if ( isMaster() ) {
-              echo "Push docker image with tag ${BRANCH_NAME}"
-              sh """
-                docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
-                docker push ${DOCKERHUB_IMAGE}:${BRANCH_NAME}
-              """
+                echo "Push docker image with tag ${BRANCH_NAME}"
+                sh """
+                  docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
+                  docker push ${DOCKERHUB_IMAGE}:${BRANCH_NAME}
+                """
               }
             } 
         } 
