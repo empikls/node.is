@@ -206,12 +206,12 @@ spec:
         withKubeConfig([credentialsId: 'kubeconfig']) {
         sh """
          helm upgrade --install $appName --debug --force ./app \
-            --namespace=$appName \
+            --namespace="$appName" \
             --set ingress.hostName=$hostname \
             --set-string image.tag="$tagName" \
             --set ingress.hosts[0].host=$hostname \
             --set ingress.tls[0].hosts[0]="$hostname" \
-            --set ingress.tls[0].secretName=acme-$appName-tls 
+            --set ingress.tls[0].secretName=acme-"$appName"-tls 
           """
         }
     }
