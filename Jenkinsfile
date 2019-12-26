@@ -211,9 +211,9 @@ spec:
          helm upgrade --install $appName --debug --force ./app \
             --namespace=$namespace \
             --set image.tag="$tagName" \
-            --set ingress.hosts[0].host=$hostname \
-            --set ingress.tls[0].hosts[0]="$hostname" \
-            --set master.ingress.tls[0].hosts[0]=$hostname \
+            --set ingress.hosts[0].host=$dev-184-173-46-252.nip.io \
+            --set ingress.tls[0].hosts[0]="$dev-184-173-46-252.nip.io" \
+            --set master.ingress.tls[0].hosts[0]="dev-184-173-46-252.nip.io" \
             --set master.ingress.tls[0].secretName=acme-$appName-tls
           """
         }
