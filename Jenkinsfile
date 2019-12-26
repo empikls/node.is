@@ -118,30 +118,8 @@ spec:
     def nameStage
     def hostname
 
-            if ( isChangeSet() ) {
-                stage('Deploy to Production') {
-                        nameStage = "app-prod"
-                        namespace = "prod"
-                        tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
-                        hostname = "prod-184-173-46-252.nip.io"
-                        container('helm') {
-                            deploy( nameStage, namespace, tagDockerImage, hostname  )
-                        }
-                }
-            }
-            else if ( isMaster() ) {
-               stage('Deploy dev version') {
-                    nameStage = "app-dev"
-                    namespace = "dev"
-                    tagDockerImage = env.BRANCH_NAME
-                    hostname = "dev-184-173-46-252.nip.io"
-                    container('helm') {
-                        deploy( nameStage, namespace, tagDockerImage, hostname )
-                    }
-               }
-            }
-            
-            else if ( isBuildingTag() ){
+
+            if ( isBuildingTag() ){
                 stage('Deploy to QA stage') {
                     nameStage = "app-qa"
                     namespace = "qa"
@@ -151,7 +129,31 @@ spec:
                         deploy( nameStage, namespace, tagDockerImage, hostname )
                     }
                 }   
+            } else {
+              if ( isChangeSet() ) {
+                  stage('Deploy to Production') {
+                          nameStage = "app-prod"
+                          namespace = "prod"
+                          tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
+                          hostname = "prod-184-173-46-252.nip.io"
+                          container('helm') {
+                              deploy( nameStage, namespace, tagDockerImage, hostname  )
+                          }
+                  }
+              }
+              if ( isMaster() ) {
+                stage('Deploy dev version') {
+                      nameStage = "app-dev"
+                      namespace = "dev"
+                      tagDockerImage = env.BRANCH_NAME
+                      hostname = "dev-184-173-46-252.nip.io"
+                      container('helm') {
+                          deploy( nameStage, namespace, tagDockerImage, hostname )
+                      }
+                }
+              }
             }
+            
     }
 }    
     boolean isPullRequest() {
