@@ -128,9 +128,6 @@ spec:
         } 
       }
     } 
-    if ( isPushtoFeatureBranch() ) {
-            return 0
-    }
   
     def tagDockerImage
     def nameStage
