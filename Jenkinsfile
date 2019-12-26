@@ -76,6 +76,9 @@ spec:
     }
     stage('Build docker image') {
       container('docker') {
+      if ( isPullRequest() ) {
+        return 0
+      }
       if ( isBuildingTag() ) {
         echo "Build docker image with tag ${BRANCH_NAME}"
         sh "docker build . -t ${DOCKERHUB_IMAGE}:${BRANCH_NAME}"
@@ -93,9 +96,7 @@ spec:
         }
       }
     }
-    if ( isPullRequest() ) {
-      return 0
-    }
+      
 
     stage('Docker push') {
       container('docker') {
@@ -127,8 +128,8 @@ spec:
         } 
       }
     } 
-    if ( isPushToAnotherBranch() ) {
-          print "It's push to another Branch"
+    if ( isPushtoFeatureBranch() ) {
+            return 0
     }
   
     def tagDockerImage
