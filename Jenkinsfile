@@ -101,6 +101,9 @@ spec:
     stage('Docker push') {
       container('docker') {
         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
+          if ( isPushtoFeatureBranch() ) {
+            return 0
+          }
           if ( isBuildingTag() ) {
             echo "Push docker image with tag ${BRANCH_NAME}"
             sh """
