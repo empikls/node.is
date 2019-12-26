@@ -200,7 +200,6 @@ spec:
 
   }
     def deploy( tagName, appName, hostname ) {
-
         echo "Release image: ${DOCKERHUB_IMAGE}:$tagName"
         echo "Deploy app name: $appName"
 
