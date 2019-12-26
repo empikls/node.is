@@ -118,7 +118,6 @@ spec:
     def nameStage
     def hostname
 
-
             if ( isBuildingTag() ){
                 stage('Deploy to QA stage') {
                     nameStage = "app-qa"
