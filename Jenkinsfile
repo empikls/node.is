@@ -213,7 +213,8 @@ spec:
             --set image.tag="$tagName" \
             --set ingress.hostName=$hostName \
             --set-string ingress.tls[0].hosts[0]="$hostName" \
-            --set-string ingress.tls[0].secretName=acme-$appName-tls
+            --set-string ingress.tls[0].secretName=acme-$appName-tls \
+            --set deployment.labels=$appName
           """
         }
     }
