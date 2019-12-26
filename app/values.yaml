@@ -7,7 +7,7 @@ replicaCount: 1
 image:
   repository: devops53/http-app
   tag: v2
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 nameOverride: ""
 fullnameOverride: ""
