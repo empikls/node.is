@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: devops53/http-app
+  repository: devops53/http-world
   pullPolicy: Always
 
 nameOverride: ""
