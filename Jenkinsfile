@@ -194,6 +194,7 @@ spec:
           sh """
          helm upgrade --install $appName --debug --force ./app \
             --namespace=$namespace \
+            --set image.repository=${DOCKERHUB_IMAGE}
             --set ingress.hostName=$hostname \
             --set image.tag=$tagName \
             --set ingress.hosts[0].host=$hostname \
