@@ -60,13 +60,16 @@ spec:
 
   node(label) {
     
- 
+    stage('Checkout SCM') {
+        checkout scm
+    } 
+
     stage('Build node.js app') {
         container('nodejs') {
         sh 'npm install'
         }
     }
-    stage('Node.js test') {
+    stage('Test node.js app') {
         container('nodejs') {
         sh 'npm test'
         }
