@@ -83,7 +83,7 @@ spec:
             sh "docker build . -t ${DOCKERHUB_IMAGE}:${BRANCH_NAME}"
         }
         else {
-          if ( isMaster() ) {
+          if (  !isChangeSet() && !isBuildingTag() ) {
             echo "Build docker image with tag ${shortCommit}"
             sh "docker build . -t ${DOCKERHUB_IMAGE}:${shortCommit}"
           }
@@ -104,7 +104,7 @@ spec:
             """
           }
           else {
-            if ( isMaster() ) {
+            if ( !isChangeSet() && !isBuildingTag() ) {
             echo "Push docker image with tag ${shortCommit}"
             sh """
              docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
