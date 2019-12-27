@@ -62,6 +62,11 @@ spec:
     
     stage('Checkout SCM') {
         checkout scm
+        sh 'git rev-parse HEAD > GIT_COMMIT'
+        shortCommit = readFile('GIT_COMMIT').take(7)
+        imageTag = "${env.BUILD_ID}-build${shortCommit}"
+        echo "SHORT GIT COMMIT ${shortCommit} ta da da "
+        echo "IMAGE TAG ${imageTag} da da"
     } 
 
     stage('Build node.js app') {
@@ -105,10 +110,6 @@ spec:
     def tagDockerImage
     def nameStage
     def hostname
-    def baseCommit 
-            if(env?.CHANGE_ID == null){
-             baseCommit = env.GIT_COMMIT
-            }
             if ( isChangeSet() ) {
                 stage('Deploy to Production') {
                         nameStage = "app-prod"
