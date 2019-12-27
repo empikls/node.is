@@ -194,11 +194,9 @@ spec:
           sh """
          helm upgrade --install $appName --debug --force ./app \
             --namespace=$namespace \
-            --set image.repository="${DOCKERHUB_IMAGE}"
-            --set ingress.hostName=$hostname \
-            --set-string image.tag=$tagName \
-            --set-string ingress.hosts[0].host=$hostname \
-            --set-string ingress.tls[0].hosts[0]=$hostname \
+            --set image.tag="$tagName" \
+            --set ingress.hostName=$hostName \
+            --set-string ingress.tls[0].hosts[0]="$hostName" \
             --set-string ingress.tls[0].secretName=acme-$appName-tls 
           """
         }
