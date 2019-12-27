@@ -114,7 +114,6 @@ spec:
           print "It's push to another Branch"
     }
   
-  
     def tagDockerImage
     def nameStage
     def hostname
