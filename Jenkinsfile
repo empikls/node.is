@@ -114,7 +114,7 @@ spec:
           print "It's push to another Branch"
     }
   
-
+  
     def tagDockerImage
     def nameStage
     def hostname
@@ -140,10 +140,10 @@ spec:
                         deploy( nameStage, namespace, tagDockerImage, hostname )
                     }
                }
+            }
             
-            
-                if ( isBuildingTag() ){
-                  stage('Deploy to QA stage') {
+            else if ( isBuildingTag() ){
+                stage('Deploy to QA stage') {
                     nameStage = "app-qa"
                     namespace = "qa"
                     tagDockerImage = env.BRANCH_NAME
@@ -151,10 +151,9 @@ spec:
                     container('helm') {
                         deploy( nameStage, namespace, tagDockerImage, hostname )
                     }
-                  }   
-                }
-              }
-  }
+                }   
+            }
+    }
 }    
     boolean isPullRequest() {
       return (env.BRANCH_NAME ==~  /^PR-\d+$/)
@@ -214,7 +213,7 @@ spec:
             --set image.tag="$tagName" \
             --set ingress.hostName=$hostName \
             --set-string ingress.tls[0].hosts[0]="$hostName" \
-            --set-string ingress.tls[0].secretName=acme-$appName-tls 
+            --set-string ingress.tls[0].secretName=acme-$appName-tls
           """
         }
     }
