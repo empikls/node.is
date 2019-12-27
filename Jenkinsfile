@@ -136,7 +136,8 @@ spec:
                         }
                 }
             }
-             if ( isMaster() ) {
+             else {
+               if ( isMaster() ) {
                stage('Deploy dev version') {
                     nameStage = "app-dev"
                     namespace = "dev"
@@ -159,7 +160,9 @@ spec:
                     }
                 }   
             }
-    }
+    
+              }
+  }
 }    
     boolean isPullRequest() {
       return (env.BRANCH_NAME ==~  /^PR-\d+$/)
