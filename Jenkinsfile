@@ -78,7 +78,7 @@ spec:
     }
     stage('Build docker image') {
       container('docker') {
-        if ( !isChangeSet() ) {
+        if ( !isChangeSet() && !isMaster() ) {
             echo "Build docker image with tag ${BRANCH_NAME}"
             sh "docker build . -t ${DOCKERHUB_IMAGE}:${BRANCH_NAME}"
         }
@@ -96,7 +96,7 @@ spec:
       stage('Docker push') {
       container('docker') {
         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
-          if ( !isChangeSet() ) {
+          if ( !isChangeSet() && !isMaster() ) {
             echo "Push docker image with tag ${BRANCH_NAME}"
             sh """
              docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
