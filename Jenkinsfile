@@ -81,12 +81,12 @@ spec:
           echo "Build docker image with tag ${BRANCH_NAME}"
           sh "docker build . -t ${DOCKERHUB_IMAGE}:${BRANCH_NAME}"
         }
-      }
-    }
         if ( isPullRequest() ) {
           echo "Build docker image with tag ${BRANCH_NAME}"
           sh "docker build . -t ${DOCKERHUB_IMAGE}:${BRANCH_NAME}"
-        } 
+        }
+      }
+    } 
     stage('Docker push') {
       container('docker') {
         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
@@ -96,11 +96,13 @@ spec:
              docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
              docker push ${DOCKERHUB_IMAGE}:${BRANCH_NAME}
             """
-          } 
+          }
+          if ( isPullRequest() ) {
+            return 0  
+          }
         } 
       } 
     }
-    
           if ( isPushToAnotherBranch() ) {
             return 0
           }
