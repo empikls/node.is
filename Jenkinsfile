@@ -105,7 +105,10 @@ spec:
     def tagDockerImage
     def nameStage
     def hostname
-
+    def baseCommit = ''
+            if(env?.CHANGE_ID == null){
+             baseCommit = env.GIT_COMMIT
+            }
             if ( isChangeSet() ) {
                 stage('Deploy to Production') {
                         nameStage = "app-prod"
@@ -187,6 +190,7 @@ spec:
     def deploy( appName, namespace, tagName, hostName ) {
       container('helm') {
           echo "Release image: ${env.GIT_COMMIT}"
+          echo "Git tag $baseCommit"
           echo "Deploy app name: $appName"
         withKubeConfig([credentialsId: 'kubeconfig']) {
           sh """
