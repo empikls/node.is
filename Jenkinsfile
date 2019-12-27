@@ -77,17 +77,14 @@ spec:
     stage('Build docker image') {
       tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
       container('docker') {
-    if ( isChangeSet() ) {
-      echo "Build docker image with tag ${tagDockerImage}"
-      sh "docker build . -t ${DOCKERHUB_IMAGE}:${tagDockerImage}"
+    if ( !isChangeSet() ) {
+      echo "Build docker image with tag ${BRANCH_NAME}"
+      sh "docker build . -t ${DOCKERHUB_IMAGE}:${BRANCH_NAME}"
     }
-        else {
-           sh 'docker build . -t ${DOCKERHUB_IMAGE}:${BRANCH_NAME}'
+        if ( isPullRequest() ) {
+            return 0
         }
       }
-    }
-    if ( isPullRequest() ) {
-      return 0
     }
     stage('Docker push') {
       container('docker') {
@@ -111,7 +108,7 @@ spec:
       } 
       
     if ( isPushToAnotherBranch() ) {
-          print "It's push to another Branch"
+          return 0
     }
   
     def tagDockerImage
