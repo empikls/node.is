@@ -187,8 +187,7 @@ spec:
   }
     def deploy( appName, namespace, tagName, hostName ) {
       container('helm') {
-          echo "Release image: ${env.GIT_COMMIT}"
-          echo "Git tag $baseCommit"
+          echo "Release image: ${shortCommit}"
           echo "Deploy app name: $appName"
         withKubeConfig([credentialsId: 'kubeconfig']) {
           sh """
