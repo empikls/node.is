@@ -77,35 +77,29 @@ spec:
     stage('Build docker image') {
       tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
       container('docker') {
-      if ( isPullRequest() ) {
-      echo "Build docker image with tag ${BRANCH_NAME}"
-    }
-      if ( isChangeSet() ) {
+    if ( isChangeSet() ) {
       echo "Build docker image with tag ${tagDockerImage}"
       sh "docker build . -t ${DOCKERHUB_IMAGE}:${tagDockerImage}"
     }
-      else {
+        else {
            sh 'docker build . -t ${DOCKERHUB_IMAGE}:${BRANCH_NAME}'
         }
       }
     }
+    if ( isPullRequest() ) {
+      return 0
+    }
     stage('Docker push') {
       container('docker') {
         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
-          if ( isPushToAnotherBranch() ) {
-          print "It's push to another Branch"
-          }
-          if ( isPullRequest() ) {
-            echo "Push docker image with tag ${BRANCH_NAME}"
-          }
-          else if ( isChangeSet() ) {
+          if ( isChangeSet() ) {
             echo "Push docker image with tag ${tagDockerImage}"
             sh """
              docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
              docker push ${DOCKERHUB_IMAGE}:${tagDockerImage}
             """
           }
-            else if {
+            else {
               echo "Push docker image with tag ${BRANCH_NAME}"
               sh """
              docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
@@ -113,19 +107,18 @@ spec:
               """
             }
           }
-        }
+        } 
       } 
       
     if ( isPushToAnotherBranch() ) {
           print "It's push to another Branch"
     }
   
-  
     def tagDockerImage
     def nameStage
     def hostname
 
-           if ( isChangeSet() ) {
+            if ( isChangeSet() ) {
                 stage('Deploy to Production') {
                         nameStage = "app-prod"
                         namespace = "prod"
@@ -168,7 +161,7 @@ spec:
       return (env.BRANCH_NAME == "master" )
     }
     boolean isBuildingTag() {
-      return ( env.BRANCH_NAME ==~ /^v\d.\d.\d$/ || env.BRANCH_NAME ==~ /^\d.\d.\d$/ )
+      return ( env.BRANCH_NAME ==~ /^v\d.\d.\d$/ )
     }
 
     boolean isPushToAnotherBranch() {
