@@ -77,12 +77,18 @@ spec:
         }
     }
     stage('Build docker image') {
-        if ( !isChangeSet() && !isBuildingTag() && !isPullRequest() && !isPushToAnotherBranch() ) {
-          container('docker') {
+      container('docker') {
+        if ( !isChangeSet() ) {
+            echo "Build docker image with tag ${BRANCH_NAME}"
+            sh "docker build . -t ${DOCKERHUB_IMAGE}:${BRANCH_NAME}"
+        }
+        else {
+          if ( isMaster() ) {
             echo "Build docker image with tag ${shortCommit}"
             sh "docker build . -t ${DOCKERHUB_IMAGE}:${shortCommit}"
           }
         }
+      }
     }
         if ( isPullRequest() ) {
           return 0  
@@ -90,12 +96,21 @@ spec:
       stage('Docker push') {
       container('docker') {
         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
-          if ( !isChangeSet() && !isBuildingTag() && !isPullRequest() && !isPushToAnotherBranch()  ) {
+          if ( !isChangeSet() ) {
+            echo "Push docker image with tag ${BRANCH_NAME}"
+            sh """
+             docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
+             docker push ${DOCKERHUB_IMAGE}:${BRANCH_NAME}
+            """
+          }
+          else {
+            if ( isMaster() ) {
             echo "Push docker image with tag ${shortCommit}"
             sh """
              docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
              docker push ${DOCKERHUB_IMAGE}:${shortCommit}
             """
+            }
           }
           
         } 
