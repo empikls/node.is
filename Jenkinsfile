@@ -84,7 +84,8 @@ spec:
       }
     }
         if ( isPullRequest() ) {
-          return 0
+          echo "Build docker image with tag ${BRANCH_NAME}"
+          sh "docker build . -t ${DOCKERHUB_IMAGE}:${BRANCH_NAME}"
         } 
     stage('Docker push') {
       container('docker') {
