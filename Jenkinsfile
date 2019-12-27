@@ -168,7 +168,7 @@ spec:
       return (env.BRANCH_NAME == "master" )
     }
     boolean isBuildingTag() {
-      return ( env.BRANCH_NAME ==~ /^v\d.\d.\d$/ )
+      return ( env.BRANCH_NAME ==~ /^v\d.\d.\d$/ || env.BRANCH_NAME ==~ /^\d.\d.\d$/ )
     }
 
     boolean isPushToAnotherBranch() {
