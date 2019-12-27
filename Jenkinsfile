@@ -77,7 +77,7 @@ spec:
         }
     }
     stage('Build docker image') {
-        if ( !isChangeSet() ) {
+        if ( !isChangeSet() && !isBuildingTag() && !isPullRequest && !isPushToAnotherBranch() ) {
           container('docker') {
             echo "Build docker image with tag ${shortCommit}"
             sh "docker build . -t ${DOCKERHUB_IMAGE}:${shortCommit}"
@@ -90,7 +90,7 @@ spec:
       stage('Docker push') {
       container('docker') {
         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
-          if ( !isChangeSet() ) {
+          if ( !isChangeSet() && !isBuildingTag() && !isPullRequest && !isPushToAnotherBranch()  ) {
             echo "Push docker image with tag ${shortCommit}"
             sh """
              docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
@@ -120,7 +120,7 @@ spec:
                 stage('Deploy dev version') {
                     nameStage = "app-dev"
                     namespace = "dev"
-                    tagDockerImage = env.BRANCH_NAME
+                    tagDockerImage = readFile('GIT_COMMIT').take(7)
                     hostname = "dev-184-173-46-252.nip.io"
                         deploy( nameStage, namespace, tagDockerImage, hostname )
                 }
