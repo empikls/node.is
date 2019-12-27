@@ -125,7 +125,7 @@ spec:
     def nameStage
     def hostname
 
-            if ( isChangeSet() ) {
+           if ( isChangeSet() ) {
                 stage('Deploy to Production') {
                         nameStage = "app-prod"
                         namespace = "prod"
@@ -136,8 +136,7 @@ spec:
                         }
                 }
             }
-             else {
-               if ( isMaster() ) {
+            else if ( isMaster() ) {
                stage('Deploy dev version') {
                     nameStage = "app-dev"
                     namespace = "dev"
@@ -149,7 +148,7 @@ spec:
                }
             }
             
-             if ( isBuildingTag() ){
+            else if ( isBuildingTag() ){
                 stage('Deploy to QA stage') {
                     nameStage = "app-qa"
                     namespace = "qa"
@@ -160,9 +159,7 @@ spec:
                     }
                 }   
             }
-    
-              }
-  }
+    }
 }    
     boolean isPullRequest() {
       return (env.BRANCH_NAME ==~  /^PR-\d+$/)
