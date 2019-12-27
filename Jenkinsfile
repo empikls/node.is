@@ -81,7 +81,7 @@ spec:
             sh "docker build . -t ${DOCKERHUB_IMAGE}:${BRANCH_NAME}"
           }
         }
-      }
+    }
         if ( isPullRequest() ) {
           return 0  
         }
