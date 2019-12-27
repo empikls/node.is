@@ -105,7 +105,7 @@ spec:
     def tagDockerImage
     def nameStage
     def hostname
-    def baseCommit = ''
+    def baseCommit 
             if(env?.CHANGE_ID == null){
              baseCommit = env.GIT_COMMIT
             }
