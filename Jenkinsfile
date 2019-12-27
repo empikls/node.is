@@ -98,14 +98,14 @@ spec:
           if ( isPullRequest() ) {
             echo "Push docker image with tag ${BRANCH_NAME}"
           }
-          if ( isChangeSet() ) {
+          else if ( isChangeSet() ) {
             echo "Push docker image with tag ${tagDockerImage}"
             sh """
              docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
              docker push ${DOCKERHUB_IMAGE}:${tagDockerImage}
             """
           }
-            else {
+            else if {
               echo "Push docker image with tag ${BRANCH_NAME}"
               sh """
              docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
@@ -113,7 +113,7 @@ spec:
               """
             }
           }
-        } 
+        }
       } 
       
     if ( isPushToAnotherBranch() ) {
