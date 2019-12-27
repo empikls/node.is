@@ -186,7 +186,7 @@ spec:
   }
     def deploy( appName, namespace, tagName, hostName ) {
       container('helm') {
-          echo '''Release image: ${DOCKERHUB_IMAGE}:${env.GIT_COMMIT}'''
+          echo "Release image: ${env.GIT_COMMIT}"
           echo "Deploy app name: $appName"
         withKubeConfig([credentialsId: 'kubeconfig']) {
           sh """
