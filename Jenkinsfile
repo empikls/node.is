@@ -88,7 +88,7 @@ spec:
       container('docker') {
         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
           if ( !isChangeSet() ) {
-            echo "Push docker image with tag ${tagDockerImage}"
+            echo "Push docker image with tag ${BRANCH_NAME}"
             sh """
              docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
              docker push ${DOCKERHUB_IMAGE}:${BRANCH_NAME}
