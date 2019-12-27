@@ -56,7 +56,7 @@ spec:
 """
   )
 
-  {
+{
 
   node(label) {
     
@@ -67,32 +67,57 @@ spec:
     stage('Build node.js app') {
         container('nodejs') {
         sh 'npm install'
+        }
     }
-      }
     stage('Node.js test') {
         container('nodejs') {
         sh 'npm test'
+        }
     }
-      }
     stage('Build docker image') {
-        container('docker') {
-      echo "Docker build image name ${DOCKERHUB_IMAGE}:${BRANCH_NAME}"
+      tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
+      container('docker') {
+     if ( isPullRequest() ) {
+      echo "Build docker image with tag ${BRANCH_NAME}"
+    }
+    if ( isChangeSet() ) {
+      echo "Build docker image with tag ${tagDockerImage}"
+      sh "docker build . -t ${DOCKERHUB_IMAGE}:${tagDockerImage}"
+    }
+        else {
            sh 'docker build . -t ${DOCKERHUB_IMAGE}:${BRANCH_NAME}'
-            }
+        }
       }
+    }
     if ( isPullRequest() ) {
-        print "it's a Pull Request and we don't build app"
-      }
+      return 0
+    }
     stage('Docker push') {
-        container('docker') {
-       withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
+      container('docker') {
+        withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
+          if ( isPushToAnotherBranch() ) {
+          print "It's push to another Branch"
+          }
+          if ( isPullRequest() ) {
+            echo "Push docker image with tag ${BRANCH_NAME}"
+          }
+          if ( isChangeSet() ) {
+            echo "Push docker image with tag ${tagDockerImage}"
             sh """
              docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
-             docker push ${DOCKERHUB_IMAGE}:${BRANCH_NAME}
+             docker push ${DOCKERHUB_IMAGE}:${tagDockerImage}
             """
+          }
+            else {
+              echo "Push docker image with tag ${BRANCH_NAME}"
+              sh """
+             docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
+             docker push ${DOCKERHUB_IMAGE}:${BRANCH_NAME}
+              """
             }
           }
         } 
+      } 
       
     if ( isPushToAnotherBranch() ) {
           print "It's push to another Branch"
@@ -102,38 +127,43 @@ spec:
     def tagDockerImage
     def nameStage
     def hostname
-            if ( isMaster() ) {
-               stage('Deploy dev version') {
-                    tagDockerImage = env.BRANCH_NAME
-                    nameStage = "dev"
-                    hostname = "dev-184-173-46-252.nip.io"
-                    container('helm') {
-                        deploy( tagDockerImage, nameStage, hostname )
-                    }
-               }
-            }
+
             if ( isChangeSet() ) {
                 stage('Deploy to Production') {
+                        nameStage = "app-prod"
+                        namespace = "prod"
                         tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
-                        nameStage = "prod"
                         hostname = "prod-184-173-46-252.nip.io"
                         container('helm') {
-                            deploy( tagDockerImage, nameStage, hostname )
+                            deploy( nameStage, namespace, tagDockerImage, hostname  )
                         }
                 }
             }
-            if ( isBuildingTag() ){
-                stage('Deploy to QA stage') {
+            else if ( isMaster() ) {
+               stage('Deploy dev version') {
+                    nameStage = "app-dev"
+                    namespace = "dev"
                     tagDockerImage = env.BRANCH_NAME
-                    nameStage = "QA"
+                    hostname = "dev-184-173-46-252.nip.io"
+                    container('helm') {
+                        deploy( nameStage, namespace, tagDockerImage, hostname )
+                    }
+               }
+            }
+            
+            else if ( isBuildingTag() ){
+                stage('Deploy to QA stage') {
+                    nameStage = "app-qa"
+                    namespace = "qa"
+                    tagDockerImage = env.BRANCH_NAME
                     hostname = "qa-184-173-46-252.nip.io"
                     container('helm') {
-                        deploy( tagDockerImage, nameStage, hostname )
+                        deploy( nameStage, namespace, tagDockerImage, hostname )
                     }
                 }   
             }
     }
-  }    
+}    
     boolean isPullRequest() {
       return (env.BRANCH_NAME ==~  /^PR-\d+$/)
     }
@@ -152,7 +182,6 @@ spec:
 
 
       // new version
-      // currentBuild.changeSets*.getItems*.getAffectedFiles.each { println "it.class = ${it.class} ; it = ${it}" }
         currentBuild.changeSets.any { changeSet -> 
           changeSet.items.any { entry -> 
             entry.affectedFiles.any { file -> 
@@ -162,10 +191,11 @@ spec:
             }
           }
         }
+
+      // one more try 
       // currentBuild.changeSets*.items*.affectedFiles.find { it.path.equals("production-release.txt") }
 
-
-     // pprevious version
+     // previous version
       // def changeLogSets = currentBuild.changeSets
       // for (int i = 0; i < changeLogSets.size(); i++) {
       //   def entries = changeLogSets[i].items
@@ -179,28 +209,20 @@ spec:
       //     }
       //   }
       // }
-    
 
-    // return false
   }
-    def deploy( tagName, appName, hostname ) {
-
+    def deploy( appName, namespace, tagName, hostName ) {
         echo "Release image: ${DOCKERHUB_IMAGE}:$tagName"
         echo "Deploy app name: $appName"
 
         withKubeConfig([credentialsId: 'kubeconfig']) {
         sh """
          helm upgrade --install $appName --debug --force ./app \
-            --namespace=jenkins \
-            --set master.ingress.enabled=true \
-            --set-string master.ingress.hostName=$hostname \
-            --set master.image="${DOCKERHUB_IMAGE}:${BRANCH_NAME}" \
-            --set master.tag=$tagName \
-            --set-string master.ingress.annotations."kubernetes.io/tls-acme"=true \
-            --set-string master.ingress.annotations."kubernetes.io/ssl-redirect"=true \
-            --set-string master.ingress.annotations."kubernetes.io/ingress.class"=nginx \
-            --set-string master.ingress.tls[0].hosts[0]=$hostname \
-            --set-string master.ingress.tls[0].secretName=acme-$appName-tls 
+            --namespace=$namespace \
+            --set image.tag="$tagName" \
+            --set ingress.hostName=$hostName \
+            --set-string ingress.tls[0].hosts[0]="$hostName" \
+            --set-string ingress.tls[0].secretName=acme-$appName-tls 
           """
         }
     }
