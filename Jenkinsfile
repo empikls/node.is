@@ -130,7 +130,7 @@ spec:
                         }
                 }
             }
-             if ( isMaster() ) {
+            else if ( isMaster() ) {
                stage('Deploy dev version') {
                     nameStage = "app-dev"
                     namespace = "dev"
@@ -142,7 +142,7 @@ spec:
                }
             }
             
-             if ( isBuildingTag() ){
+            else if ( isBuildingTag() ){
                 stage('Deploy to QA stage') {
                     nameStage = "app-qa"
                     namespace = "qa"
