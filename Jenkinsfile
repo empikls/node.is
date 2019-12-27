@@ -114,9 +114,7 @@ spec:
                         namespace = "prod"
                         tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
                         hostname = "prod-184-173-46-252.nip.io"
-                        container('helm') {
                             deploy( nameStage, namespace, tagDockerImage, hostname  )
-                        }
                 }
             }
             else if ( isMaster() ) {
@@ -125,23 +123,20 @@ spec:
                     namespace = "dev"
                     tagDockerImage = env.BRANCH_NAME
                     hostname = "dev-184-173-46-252.nip.io"
-                    container('helm') {
                         deploy( nameStage, namespace, tagDockerImage, hostname )
-                    }
                }
             }
             
-            else if ( isBuildingTag() ){
+            else if ( isBuildingTag() ) {
                 stage('Deploy to QA stage') {
                     nameStage = "app-qa"
                     namespace = "qa"
                     tagDockerImage = env.BRANCH_NAME
                     hostname = "qa-184-173-46-252.nip.io"
-                    container('helm') {
                         deploy( nameStage, namespace, tagDockerImage, hostname )
                     }
                 }   
-            }
+            
     }
 }    
     boolean isPullRequest() {
@@ -192,11 +187,11 @@ spec:
 
   }
     def deploy( appName, namespace, tagName, hostName ) {
-        echo "Release image: ${DOCKERHUB_IMAGE}:$tagName"
-        echo "Deploy app name: $appName"
-
+        container('helm') {
+          echo "Release image: ${DOCKERHUB_IMAGE}:$tagName"
+          echo "Deploy app name: $appName"
         withKubeConfig([credentialsId: 'kubeconfig']) {
-        sh """
+          sh """
          helm upgrade --install $appName --debug --force ./app \
             --namespace=$namespace \
             --set ingress.hostName=$hostname \
@@ -205,5 +200,6 @@ spec:
             --set-string ingress.tls[0].hosts[0]=$hostname \
             --set-string ingress.tls[0].secretName=acme-$appName-tls 
           """
+        }
         }
     }
