@@ -89,9 +89,6 @@ spec:
         }
       }
     }
-    if ( isPullRequest() ) {
-      return 0
-    }
     stage('Docker push') {
       container('docker') {
         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
