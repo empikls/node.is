@@ -196,8 +196,8 @@ spec:
             --namespace=$namespace \
             --set image.repository="${DOCKERHUB_IMAGE}"
             --set ingress.hostName=$hostname \
-            --set image.tag=$tagName \
-            --set ingress.hosts[0].host=$hostname \
+            --set-string image.tag=$tagName \
+            --set-string ingress.hosts[0].host=$hostname \
             --set-string ingress.tls[0].hosts[0]=$hostname \
             --set-string ingress.tls[0].secretName=acme-$appName-tls 
           """
