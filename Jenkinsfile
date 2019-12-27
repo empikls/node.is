@@ -118,13 +118,13 @@ spec:
                 }
             }
             else if ( isMaster() ) {
-               stage('Deploy dev version') {
+                stage('Deploy dev version') {
                     nameStage = "app-dev"
                     namespace = "dev"
                     tagDockerImage = env.BRANCH_NAME
                     hostname = "dev-184-173-46-252.nip.io"
                         deploy( nameStage, namespace, tagDockerImage, hostname )
-               }
+                }
             }
             
             else if ( isBuildingTag() ) {
@@ -134,8 +134,8 @@ spec:
                     tagDockerImage = env.BRANCH_NAME
                     hostname = "qa-184-173-46-252.nip.io"
                         deploy( nameStage, namespace, tagDockerImage, hostname )
-                    }
-                }   
+                }
+            }   
             
     }
 }    
@@ -187,7 +187,7 @@ spec:
 
   }
     def deploy( appName, namespace, tagName, hostName ) {
-        container('helm') {
+      container('helm') {
           echo "Release image: ${DOCKERHUB_IMAGE}:$tagName"
           echo "Deploy app name: $appName"
         withKubeConfig([credentialsId: 'kubeconfig']) {
@@ -200,5 +200,5 @@ spec:
             --set-string ingress.tls[0].secretName=acme-$appName-tls 
           """
         }
-        }
+      }
     }
