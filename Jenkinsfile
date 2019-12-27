@@ -114,7 +114,7 @@ spec:
           print "It's push to another Branch"
     }
   
-  
+
     def tagDockerImage
     def nameStage
     def hostname
@@ -140,10 +140,10 @@ spec:
                         deploy( nameStage, namespace, tagDockerImage, hostname )
                     }
                }
-            }
             
-            else if ( isBuildingTag() ){
-                stage('Deploy to QA stage') {
+            
+                if ( isBuildingTag() ){
+                  stage('Deploy to QA stage') {
                     nameStage = "app-qa"
                     namespace = "qa"
                     tagDockerImage = env.BRANCH_NAME
@@ -151,9 +151,10 @@ spec:
                     container('helm') {
                         deploy( nameStage, namespace, tagDockerImage, hostname )
                     }
-                }   
-            }
-    }
+                  }   
+                }
+              }
+  }
 }    
     boolean isPullRequest() {
       return (env.BRANCH_NAME ==~  /^PR-\d+$/)
