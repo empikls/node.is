@@ -77,13 +77,15 @@ spec:
     stage('Build docker image') {
       tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
       container('docker') {
-    if ( !isChangeSet() ) {
-      echo "Build docker image with tag ${BRANCH_NAME}"
-      sh "docker build . -t ${DOCKERHUB_IMAGE}:${BRANCH_NAME}"
-    }
-        
+        if ( !isChangeSet() ) {
+          echo "Build docker image with tag ${BRANCH_NAME}"
+          sh "docker build . -t ${DOCKERHUB_IMAGE}:${BRANCH_NAME}"
+        }
       }
     }
+        if ( isPullRequest() ) {
+          return 0
+        } 
     stage('Docker push') {
       container('docker') {
         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
@@ -93,17 +95,14 @@ spec:
              docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
              docker push ${DOCKERHUB_IMAGE}:${BRANCH_NAME}
             """
-          }
-          if ( isPullRequest() ) {
-            return 0
-          }
+          } 
         } 
       } 
-    } 
-    if ( isPushToAnotherBranch() ) {
-          return 0
     }
-  
+    
+          if ( isPushToAnotherBranch() ) {
+            return 0
+          }
     def tagDockerImage
     def nameStage
     def hostname
