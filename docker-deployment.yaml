@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: dind
-        image: docker:19.03.3-dind
+        image: docker:19-git
         securityContext:
           privileged: true
         volumeMounts:
