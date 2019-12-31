@@ -73,6 +73,7 @@ spec:
         sh """
         npm install mocha chai --save-dev
         npm install request --save-dev
+        node index.js &
         npm test
         """
         }
