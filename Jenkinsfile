@@ -16,7 +16,6 @@ metadata:
     component: ci
     jenkins: jenkins-agent
 spec:
-  # Use service account that can deploy to all namespaces
   serviceAccountName: jenkins
   volumes:
   - name: dind-storage
