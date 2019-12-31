@@ -38,7 +38,7 @@ spec:
     - cat
     tty: true
   - name: docker
-    image: docker:19-git
+    image: docker:19.03.3-git
     command:
     - cat
     tty: true
@@ -46,10 +46,10 @@ spec:
     - name: DOCKER_HOST
       value: tcp://docker-dind:2375
     volumeMounts:
-      - name: dind-storage
-        mountPath: /var/lib/docker
+    - mountPath: /cache
+      name: cache-volume  
   - name: helm
-    image: lachlanevenson/k8s-helm:v2.16.1
+    image: lachlanevenson/k8s-helm:latest
     command:
     - cat
     tty: true

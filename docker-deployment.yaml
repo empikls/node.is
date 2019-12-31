@@ -16,8 +16,8 @@ spec:
         app: docker-dind
     spec:
       containers:
-      - name: docker-dind
-        image: docker:stable-dind
+      - name: dind
+        image: docker:19.03.3-dind
         securityContext:
           privileged: true
         volumeMounts:
