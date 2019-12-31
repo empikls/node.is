@@ -45,8 +45,8 @@ spec:
     - name: DOCKER_HOST
       value: tcp://docker-dind:2375
     volumeMounts:
-    - mountPath: /cache
-      name: cache-volume 
+    - mountPath: /var/lib/docker
+      name: dind-storage 
   - name: helm
     image: lachlanevenson/k8s-helm:v2.16.1
     command:
