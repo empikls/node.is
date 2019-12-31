@@ -47,9 +47,9 @@ spec:
       value: tcp://docker-dind:2375
     volumeMounts:
     - mountPath: /cache
-      name: cache-volume  
+      name: cache-volume 
   - name: helm
-    image: lachlanevenson/k8s-helm:latest
+    image: lachlanevenson/k8s-helm:v2.16.1
     command:
     - cat
     tty: true
