@@ -70,7 +70,11 @@ spec:
     }
     stage('Test node.js app') {
         container('nodejs') {
-        sh 'npm test'
+        sh """
+        npm install mocha chai --save-dev
+        npm install request --save-dev
+        npm test
+        """
         }
     }
     stage('Build docker image') {
