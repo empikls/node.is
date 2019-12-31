@@ -120,11 +120,9 @@ spec:
     }
       stage('Trigger another job') {
         def handle = triggerRemoteJob(
-          remoteJenkinsURL: 'https://jenkins-173-193-112-65.nip.io/',
           job: 'https://jenkins-173-193-112-65.nip.io/job/configpipeline/',
           parameters: "",
-          maxConn: 1,
-          useCrumbCashe: true 
+          maxConn: 1
         )
       }
           if ( isPushToAnotherBranch() ) {
