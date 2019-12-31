@@ -9,7 +9,7 @@ RUN mkdir tests && npm install
 
 COPY package*.json /usr/node/app/
 COPY index.js /usr/node/app/
-COPY test-pages.js /usr/node/app/tests/
+COPY ./test/test-pages.js /usr/node/app/tests/
 
 
 EXPOSE 9001
