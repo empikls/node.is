@@ -123,7 +123,6 @@ spec:
           preventRemoteBuildQueue: true ,
           useCrumbCache: true , 
           pollInterval: 300 ,
-          useJobInfoCache: true ,
           maxConn: 1
         )
       }
