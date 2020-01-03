@@ -54,7 +54,6 @@ spec:
 
 {
 
-
   node(label) {
     
     stage('Checkout SCM') {
@@ -123,6 +122,7 @@ spec:
           job: 'https://jenkins-173-193-112-65.nip.io/job/RemoteJob/',
           preventRemoteBuildQueue: true ,
           useCrumbCache: true , 
+          pollInterval: 300 ,
           useJobInfoCache: true ,
           maxConn: 1
         )
