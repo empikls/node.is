@@ -118,9 +118,10 @@ spec:
       } 
     }
       
-        def handle 
+        
         stage('Trigger another job') {
-       handle = triggerRemoteJob job: 'https://jenkins-173-193-112-65.nip.io/job/RemoteJob/', shouldNotFailBuild: true , maxConn: 5 
+       def handle = triggerRemoteJob job: 'https://jenkins-173-193-112-65.nip.io/job/RemoteJob/'
+        echo 'Remote Status: ' + handle.getBuildStatus().toString()
       }
           if ( isPushToAnotherBranch() ) {
             return 0
