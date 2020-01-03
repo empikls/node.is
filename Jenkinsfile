@@ -123,7 +123,7 @@ spec:
           preventRemoteBuildQueue: true ,
           useCrumbCache: true , 
           pollInterval: 300 ,
-          maxConn: 1
+          maxConn: 5
         )
       }
           if ( isPushToAnotherBranch() ) {
