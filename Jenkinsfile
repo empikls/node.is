@@ -3,7 +3,6 @@
 def label = "jenkins"
 env.DOCKERHUB_IMAGE = "devops53/hello-world"
 
-
 podTemplate(label: label, yaml: """
 apiVersion: v1
 kind: Pod
@@ -120,7 +119,7 @@ spec:
     }
       stage('Trigger another job') {
         def handle = triggerRemoteJob(
-          job: 'https://jenkins-173-193-112-65.nip.io/job/configpipeline/',
+          job: 'https://jenkins-173-193-112-65.nip.io/job/RemoteJob/',
           parameters: "",
           maxConn: 1
         )
