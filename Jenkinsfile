@@ -120,9 +120,12 @@ spec:
       
         
         stage('Trigger another job') {
-       def handle = triggerRemoteJob job: 'https://jenkins-173-193-112-65.nip.io/job/RemoteJob2/'
+        def handle = triggerRemoteJob ( 
+          job: 'https://jenkins-173-193-112-65.nip.io/job/RemoteJob2/' ,
+          auth: CredentialsAuth(credentials: 'jenkins') )
         echo 'Remote Status: ' + handle.getBuildStatus().toString()
       }
+
           if ( isPushToAnotherBranch() ) {
             return 0
           }
