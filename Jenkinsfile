@@ -117,14 +117,10 @@ spec:
         } 
       } 
     }
-      stage('Trigger another job') {
-        def handle = triggerRemoteJob(
-          job: 'https://jenkins-173-193-112-65.nip.io/job/RemoteJob/',
-          preventRemoteBuildQueue: true,
-          useCrumbCache: true, 
-          pollInterval: 300,
-          maxConn: 5
-        )
+      
+        def handle 
+        stage('Trigger another job') {
+       handle = triggerRemoteJob job: 'https://jenkins-173-193-112-65.nip.io/job/RemoteJob/', remoteJenkinsName: 'RemoteJob', shouldNotFailBuild: true
       }
           if ( isPushToAnotherBranch() ) {
             return 0
