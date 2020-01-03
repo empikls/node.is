@@ -120,9 +120,9 @@ spec:
       stage('Trigger another job') {
         def handle = triggerRemoteJob(
           job: 'https://jenkins-173-193-112-65.nip.io/job/RemoteJob/',
-          preventRemoteBuildQueue: true ,
-          useCrumbCache: true , 
-          pollInterval: 300 ,
+          preventRemoteBuildQueue: true,
+          useCrumbCache: true, 
+          pollInterval: 300,
           maxConn: 5
         )
       }
