@@ -120,7 +120,7 @@ spec:
       
         def handle 
         stage('Trigger another job') {
-       handle = triggerRemoteJob job: 'https://jenkins-173-193-112-65.nip.io/job/RemoteJob/', remoteJenkinsName: 'RemoteJob', shouldNotFailBuild: true
+       handle = triggerRemoteJob job: maxConn: 5, remoteJenkinsName: 'RemoteJob', shouldNotFailBuild: true
       }
           if ( isPushToAnotherBranch() ) {
             return 0
