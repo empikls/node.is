@@ -121,7 +121,7 @@ spec:
         
         stage('Trigger another job') {
         def handle = triggerRemoteJob (
-          job: 'https://jenkins-173-193-112-65.nip.io:8080/jenkins/job/RemoteJob2',
+          job: 'https://jenkins-173-193-112-65.nip.io:443/jenkins/job/RemoteJob2',
           pollInterval: 300,
           maxConn: 5 )
            build(job: "RemoteJob2")
