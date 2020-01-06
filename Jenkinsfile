@@ -125,6 +125,7 @@ spec:
           job: 'https://jenkins-173-193-112-65.nip.io/job/RemoteJob2' )
         echo 'Remote Status: ' + handle.getBuildStatus().toString()
       }
+        def log = handle.lastLog()
 
           if ( isPushToAnotherBranch() ) {
             return 0
