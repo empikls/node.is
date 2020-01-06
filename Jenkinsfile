@@ -120,7 +120,9 @@ spec:
       
         
         stage('Trigger another job') {
-        def job = build job: ' 	RemoteJob2'
+        def job 
+        if (env.BRANCH_NAME == 'master') {
+          build job: 'RemoteJob2' } 
       }
 
           if ( isPushToAnotherBranch() ) {
