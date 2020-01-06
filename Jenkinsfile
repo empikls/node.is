@@ -121,7 +121,7 @@ spec:
         
         stage('Trigger another job') {
         def handle = triggerRemoteJob ( 
-          job: 'https://jenkins-50-23-5-248.nip.io/job/IBM_Project/job/DeployJavaWebApp/job/master',
+          job: 'https://jenkins-50-23-5-248.nip.io/job/IBM_Project/job/JavaWebApp',
           auth: CredentialsAuth(credentials: 'jenkins2') )
         echo 'Remote Status: ' + handle.getBuildStatus().toString()
       }
