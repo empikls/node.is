@@ -119,11 +119,7 @@ spec:
     }
       
         
-        stage('Trigger another job') {
-        def job 
-        if (env.BRANCH_NAME == 'master') {
-          build job: 'JenkinsFile' } 
-      }
+       
 
           if ( isPushToAnotherBranch() ) {
             return 0
@@ -131,15 +127,12 @@ spec:
     def tagDockerImage
     def nameStage
     def hostname
+    def job
+    
             if ( isChangeSet() ) {
-                stage('Deploy to Production') {
-                        nameStage = "app-prod"
-                        namespace = "prod"
-                        tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
-                        hostname = "prod-184-173-46-252.nip.io"
-                            deploy( nameStage, namespace, tagDockerImage, hostname  )
+                build job: 'JenkinsFile'
                 }
-            }
+            
             else if ( isMaster() ) {
                 stage('Deploy dev version') {
                     nameStage = "app-dev"
