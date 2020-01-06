@@ -120,9 +120,11 @@ spec:
       
         
         stage('Trigger another job') {
-        def handle = triggerRemoteJob ( 
-          remoteJenkinsName: 'RemoteJob2',
-          job: 'https://jenkins-173-193-112-65.nip.io/job/RemoteJob2' )
+        def handle = triggerRemoteJob (
+          job: 'https://jenkins-173-193-112-65.nip.io:8080/jenkins/job/RemoteJob2',
+          pollInterval: 300,
+          maxConn: 5 )
+           build(job: "RemoteJob2")
         echo 'Remote Status: ' + handle.getBuildStatus().toString()
       }
         def log = handle.lastLog()
