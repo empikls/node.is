@@ -122,7 +122,7 @@ spec:
         stage('Trigger another job') {
         def job 
         if (env.BRANCH_NAME == 'master') {
-          build job: 'RemoteJob2' } 
+          build job: 'JenkinsFile' } 
       }
 
           if ( isPushToAnotherBranch() ) {
