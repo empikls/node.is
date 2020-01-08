@@ -118,7 +118,7 @@ spec:
       } 
     }
       
-    stage('Trigger JenkinsFile2')   {
+    stage('Trigger Deploy')   {
        def job 
        build job: 'Deploy' 
        } 
