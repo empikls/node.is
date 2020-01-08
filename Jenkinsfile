@@ -131,7 +131,6 @@ spec:
     def hostname
     def job
     
-
             if ( isChangeSet() ) {
                 build job: 'JenkinsFile'
                 }
