@@ -118,8 +118,10 @@ spec:
       } 
     }
       
-        
-       
+    stage('Trigger JenkinsFile2')   {
+       def job 
+       build job: 'Deploy' 
+       } 
 
           if ( isPushToAnotherBranch() ) {
             return 0
