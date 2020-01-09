@@ -1,5 +1,6 @@
 #!groovy
 
+
 def label = "jenkins"
 env.DOCKERHUB_IMAGE = "devops53/hello-world"
 
@@ -134,9 +135,6 @@ spec:
     def job
     
 
-            if ( isChangeSet() ) {
-                build job: 'JenkinsFile'
-                }
             
             else if ( isMaster() ) {
                 stage('Deploy dev version') {
