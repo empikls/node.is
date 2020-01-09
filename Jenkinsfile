@@ -121,7 +121,7 @@ spec:
       
     stage('Trigger Deploy')   {
        def job 
-       build job: 'Deploy' , parameters:[string(name:'BRANCH_NAME', value: 'GOMMIT')]
+       build job: 'Deploy' , parameters:[string(name:'BRANCH_NAME', value: GOMMIT)]
        } 
 
           if ( isPushToAnotherBranch() ) {
