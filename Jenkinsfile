@@ -59,6 +59,7 @@ spec:
     stage('Checkout SCM') {
         checkout scm
         sh 'git rev-parse HEAD > GIT_COMMIT'
+        GOMMIT = readfile('GIT_COMMIT')
         shortCommit = readFile('GIT_COMMIT').take(7)
     } 
 
@@ -120,7 +121,7 @@ spec:
       
     stage('Trigger Deploy')   {
        def job 
-       build job: 'Deploy' , parameters:[string(name:'GIT_COMMIT', value:"${COMMIT_ID}")]
+       build job: 'Deploy' , parameters:[string(name:'GIT_COMMIT', value:"${GOMMIT}")]
        } 
 
           if ( isPushToAnotherBranch() ) {
