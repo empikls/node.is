@@ -136,7 +136,7 @@ spec:
     
 
             
-            else if ( isMaster() ) {
+             if ( isMaster() ) {
                 stage('Deploy dev version') {
                     nameStage = "app-dev"
                     namespace = "dev"
