@@ -13,4 +13,4 @@ COPY ./test/test-pages.js /usr/node/app/tests/
 
 
 EXPOSE 9001
-CMD [ "npm", "start" ]
+CMD [ "node", "index.js" ]
