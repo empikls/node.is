@@ -5,7 +5,7 @@ FROM node:8
 WORKDIR /usr/node/app
 
 
-RUN mkdir tests && npm install
+RUN mkdir tests && npm install --save express 
 
 COPY package*.json ./
 COPY index.js ./
