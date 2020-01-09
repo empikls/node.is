@@ -54,7 +54,7 @@ spec:
 
 {
 
-  
+
   node(label) {
     
     stage('Checkout SCM') {
@@ -122,7 +122,7 @@ spec:
       
     stage('Trigger Deploy')   {
        def job 
-       build job: 'Deploy' , parameters:[string(name:'BRANCH_NAME', value: COMMIT)]
+       build job: 'Deploy' , parameters:[string(name:'BRANCH_NAME', value: COMMIT),string(name:'GIT_TAG', value: GIT_TAG)]
        } 
 
           if ( isPushToAnotherBranch() ) {
