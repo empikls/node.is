@@ -59,7 +59,7 @@ spec:
     stage('Checkout SCM') {
         checkout scm
         sh 'git rev-parse HEAD > GIT_COMMIT'
-        GOMMIT = readfile('GIT_COMMIT')
+        GOMMIT = readFile('GIT_COMMIT')
         shortCommit = readFile('GIT_COMMIT').take(7)
     } 
 
