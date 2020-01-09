@@ -121,7 +121,7 @@ spec:
       
     stage('Trigger Deploy')   {
        def job 
-       build job: 'Deploy' , parameters:[string(name:'COMMIT_ID', value:'COMMIT_ID')]
+       build job: 'Deploy' , parameters:[string(name:'BRANCH_NAME', value: env.BRANCH_NAME)]
        } 
 
           if ( isPushToAnotherBranch() ) {
