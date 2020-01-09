@@ -133,8 +133,7 @@ spec:
     def hostname
     def job
     
-
-            
+        
              if ( isMaster() ) {
                 stage('Deploy dev version') {
                     nameStage = "app-dev"
