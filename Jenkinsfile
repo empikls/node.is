@@ -120,39 +120,39 @@ spec:
       } 
     }
       
-    // stage('Trigger Deploy')   {
-    //    def job 
-    //    build job: 'Deploy' , parameters:[string(name:'COMMIT', value: COMMIT),string(name:'TAG',value:env.BRANCH_NAME)]
-    //    } 
+    stage('Trigger Deploy')   {
+       def job 
+       build job: 'Deploy' , parameters:[string(name:'COMMIT', value: COMMIT),string(name:'TAG',value:env.BRANCH_NAME)]
+       } 
 
           if ( isPushToAnotherBranch() ) {
             return 0
           }
-    def tagDockerImage
-    def nameStage
-    def hostname
-    def job
+    // def tagDockerImage
+    // def nameStage
+    // def hostname
+    // def job
     
         
-             if ( isMaster() ) {
-                stage('Deploy dev version') {
-                    nameStage = "app-dev"
-                    namespace = "dev"
-                    tagDockerImage = readFile('GIT_COMMIT').take(7)
-                    hostname = "dev-173-193-112-65.nip.io"
-                        deploy( nameStage, namespace, tagDockerImage, hostname )
-                }
-            }
+    //          if ( isMaster() ) {
+    //             stage('Deploy dev version') {
+    //                 nameStage = "app-dev"
+    //                 namespace = "dev"
+    //                 tagDockerImage = readFile('GIT_COMMIT').take(7)
+    //                 hostname = "dev-173-193-112-65.nip.io"
+    //                     deploy( nameStage, namespace, tagDockerImage, hostname )
+    //             }
+    //         }
             
-            else if ( isBuildingTag() ) {
-                stage('Deploy to QA stage') {
-                    nameStage = "app-qa"
-                    namespace = "qa"
-                    tagDockerImage = env.BRANCH_NAME
-                    hostname = "qa-173-193-112-65..nip.io"
-                        deploy( nameStage, namespace, tagDockerImage, hostname )
-                }
-            }   
+    //         else if ( isBuildingTag() ) {
+    //             stage('Deploy to QA stage') {
+    //                 nameStage = "app-qa"
+    //                 namespace = "qa"
+    //                 tagDockerImage = env.BRANCH_NAME
+    //                 hostname = "qa-173-193-112-65..nip.io"
+    //                     deploy( nameStage, namespace, tagDockerImage, hostname )
+    //             }
+    //         }   
             
     }
 }    
@@ -205,19 +205,19 @@ spec:
       // }
 
   
-     def deploy( appName, namespace, tagName, hostName ) {
-       container('helm') {
-          echo "Release image: ${shortCommit}"
-          echo "Deploy app name: $appName"
-        withKubeConfig([credentialsId: 'kubeconfig']) {
-          sh """
-         helm upgrade --install $appName --debug --force ./app \
-            --namespace=$namespace \
-            --set image.tag="$tagName" \
-            --set ingress.hostName=$hostName \
-           --set-string ingress.tls[0].hosts[0]="$hostName" \
-            --set-string ingress.tls[0].secretName=acme-$appName-tls 
-          """
-        }
-      }
-    }
+    //  def deploy( appName, namespace, tagName, hostName ) {
+    //    container('helm') {
+    //       echo "Release image: ${shortCommit}"
+    //       echo "Deploy app name: $appName"
+    //     withKubeConfig([credentialsId: 'kubeconfig']) {
+    //       sh """
+    //      helm upgrade --install $appName --debug --force ./app \
+    //         --namespace=$namespace \
+    //         --set image.tag="$tagName" \
+    //         --set ingress.hostName=$hostName \
+    //        --set-string ingress.tls[0].hosts[0]="$hostName" \
+    //         --set-string ingress.tls[0].secretName=acme-$appName-tls 
+    //       """
+    //     }
+    //   }
+    // }
