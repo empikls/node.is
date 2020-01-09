@@ -61,7 +61,8 @@ spec:
         checkout scm
         sh 'git rev-parse HEAD > GIT_COMMIT'
         COMMIT = readFile('GIT_COMMIT')
-        TAG=$(git describe $(git rev-list --tags --max-count=1))
+        sh 'git describe $(git rev-list --tags --max-count=1) > GIT_TAG'
+        TAG = readFile('TAG')
         shortCommit = readFile('GIT_COMMIT').take(7)
     } 
 
