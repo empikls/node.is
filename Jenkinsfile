@@ -61,6 +61,7 @@ spec:
         checkout scm
         sh 'git rev-parse HEAD > GIT_COMMIT'
         COMMIT = readFile('GIT_COMMIT')
+        TAG=$(git describe $(git rev-list --tags --max-count=1))
         shortCommit = readFile('GIT_COMMIT').take(7)
     } 
 
@@ -122,7 +123,7 @@ spec:
       
     stage('Trigger Deploy')   {
        def job 
-       build job: 'Deploy' , parameters:[string(name:'BRANCH_NAME', value: COMMIT),string(name:'GIT_TAG', value: PT_TAG)]
+       build job: 'Deploy' , parameters:[string(name:'BRANCH_NAME', value: COMMIT),string(name:'GIT_TAG', value: TAG)]
        } 
 
           if ( isPushToAnotherBranch() ) {
