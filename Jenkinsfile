@@ -121,6 +121,7 @@ spec:
     stage('Trigger Deploy')   {
        def job 
        build job: 'Deploy' 
+       parameters:[string(name:'GIT_COMMIT',value:env.BRANCH_NAME)]
        } 
 
           if ( isPushToAnotherBranch() ) {
@@ -206,19 +207,19 @@ spec:
       // }
 
   }
-    def deploy( appName, namespace, tagName, hostName ) {
-      container('helm') {
-          echo "Release image: ${shortCommit}"
-          echo "Deploy app name: $appName"
-        withKubeConfig([credentialsId: 'kubeconfig']) {
-          sh """
-         helm upgrade --install $appName --debug --force ./app \
-            --namespace=$namespace \
-            --set image.tag="$tagName" \
-            --set ingress.hostName=$hostName \
-            --set-string ingress.tls[0].hosts[0]="$hostName" \
-            --set-string ingress.tls[0].secretName=acme-$appName-tls 
-          """
-        }
-      }
-    }
+    //  def deploy( appName, namespace, tagName, hostName ) {
+    //    container('helm') {
+    //       echo "Release image: ${shortCommit}"
+    //       echo "Deploy app name: $appName"
+    //     withKubeConfig([credentialsId: 'kubeconfig']) {
+    //       sh """
+    //      helm upgrade --install $appName --debug --force ./app \
+    //         --namespace=$namespace \
+    //         --set image.tag="$tagName" \
+    //         --set ingress.hostName=$hostName \
+    //        --set-string ingress.tls[0].hosts[0]="$hostName" \
+    //         --set-string ingress.tls[0].secretName=acme-$appName-tls 
+    //       """
+    //     }
+    //   }
+    // }
