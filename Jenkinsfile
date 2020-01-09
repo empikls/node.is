@@ -187,7 +187,7 @@ spec:
             }
           }
         }
-
+    }
       // one more try 
       // currentBuild.changeSets*.items*.affectedFiles.find { it.path.equals("production-release.txt") }
 
@@ -206,7 +206,7 @@ spec:
       //   }
       // }
 
-  }
+  
     //  def deploy( appName, namespace, tagName, hostName ) {
     //    container('helm') {
     //       echo "Release image: ${shortCommit}"
