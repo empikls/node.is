@@ -139,7 +139,7 @@ spec:
                     nameStage = "app-dev"
                     namespace = "dev"
                     tagDockerImage = readFile('GIT_COMMIT').take(7)
-                    hostname = "dev-184-173-46-252.nip.io"
+                    hostname = "dev-173-193-112-65.nip.io"
                         deploy( nameStage, namespace, tagDockerImage, hostname )
                 }
             }
@@ -149,7 +149,7 @@ spec:
                     nameStage = "app-qa"
                     namespace = "qa"
                     tagDockerImage = env.BRANCH_NAME
-                    hostname = "qa-184-173-46-252.nip.io"
+                    hostname = "qa-173-193-112-65..nip.io"
                         deploy( nameStage, namespace, tagDockerImage, hostname )
                 }
             }   
