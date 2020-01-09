@@ -7,9 +7,9 @@ WORKDIR /usr/node/app
 
 RUN mkdir tests && npm install
 
-COPY package*.json /usr/node/app/
-COPY index.js /usr/node/app/
-COPY ./test/test-pages.js /usr/node/app/tests/
+COPY package*.json ./
+COPY index.js ./
+COPY ./test/test-pages.js ./tests/
 
 
 EXPOSE 9001
