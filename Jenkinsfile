@@ -54,7 +54,6 @@ spec:
 
 {
 
-
   node(label) {
     
     stage('Checkout SCM') {
@@ -119,7 +118,7 @@ spec:
         } 
       } 
     }
-    
+
       
     stage('Trigger Deploy')   {
        def job 
