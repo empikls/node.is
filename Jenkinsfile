@@ -174,7 +174,6 @@ spec:
     
     boolean isChangeSet() {
 
-
       // new version
         currentBuild.changeSets.any { changeSet -> 
           changeSet.items.any { entry -> 
