@@ -119,7 +119,6 @@ spec:
         } 
       } 
     }
-
       
     stage('Trigger Deploy')   {
        def job 
