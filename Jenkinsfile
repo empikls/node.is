@@ -182,7 +182,6 @@ spec:
           }
         }
     }
-    
       // one more try 
       // currentBuild.changeSets*.items*.affectedFiles.find { it.path.equals("production-release.txt") }
 
