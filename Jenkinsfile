@@ -152,7 +152,6 @@ spec:
     //             }
     //         }   
             
-            
     }
 }    
     boolean isPullRequest() {
