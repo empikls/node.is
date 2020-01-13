@@ -132,7 +132,6 @@ spec:
      def nameStage
      def hostname
     // def job
-    
         
     //          if ( isMaster() ) {
     //             stage('Deploy dev version') {
