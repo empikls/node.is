@@ -170,7 +170,7 @@ spec:
       return ( ! isMaster() && ! isBuildingTag() && ! isPullRequest() )
     }
     
-    
+
     boolean isChangeSet() {
 
       // new version
@@ -184,6 +184,7 @@ spec:
           }
         }
     }
+    
       // one more try 
       // currentBuild.changeSets*.items*.affectedFiles.find { it.path.equals("production-release.txt") }
 
