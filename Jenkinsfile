@@ -128,9 +128,9 @@ spec:
           if ( isPushToAnotherBranch() ) {
             return 0
           }
-    // def tagDockerImage
-    // def nameStage
-    // def hostname
+     def tagDockerImage
+     def nameStage
+     def hostname
     // def job
     
         
