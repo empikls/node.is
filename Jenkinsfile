@@ -154,7 +154,6 @@ spec:
             
     }
 }    
-
     boolean isPullRequest() {
       return (env.BRANCH_NAME ==~  /^PR-\d+$/)
     }
