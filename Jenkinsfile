@@ -170,6 +170,7 @@ spec:
       return ( ! isMaster() && ! isBuildingTag() && ! isPullRequest() )
     }
     
+    
     boolean isChangeSet() {
 
       // new version
