@@ -59,9 +59,7 @@ spec:
     
     stage('Checkout SCM') {
         checkout scm
-        sh 'git rev-parse HEAD > GIT_COMMIT'
-        COMMIT = readFile('GIT_COMMIT')
-        shortCommit = readFile('GIT_COMMIT').take(7)
+        shortCommit = sh(returnStdout: true, script: "git rev-parse HEAD").trim().take(7)
     } 
 
     stage('Build node.js app') {
