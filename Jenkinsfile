@@ -149,7 +149,6 @@ spec:
     //                     deploy( nameStage, namespace, tagDockerImage, hostname )
     //             }
     //         }   
-            
     }
 }    
     boolean isPullRequest() {
