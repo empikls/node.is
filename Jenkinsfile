@@ -149,6 +149,7 @@ spec:
     //                     deploy( nameStage, namespace, tagDockerImage, hostname )
     //             }
     //         }   
+            
     }
 }    
     boolean isPullRequest() {
@@ -196,7 +197,7 @@ spec:
       //     }
       //   }
       // }
-  
+
   
     //  def deploy( appName, namespace, tagName, hostName ) {
     //    container('helm') {
