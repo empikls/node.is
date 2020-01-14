@@ -127,10 +127,10 @@ spec:
           if ( isPushToAnotherBranch() ) {
             return 0
           }
-     def tagDockerImage
-     def nameStage
-     def hostname
-    // def job
+    //  def tagDockerImage
+    //  def nameStage
+    //  def hostname
+    //  def job
     //          if ( isMaster() ) {
     //             stage('Deploy dev version') {
     //                 nameStage = "app-dev"
@@ -160,7 +160,7 @@ spec:
       return (env.BRANCH_NAME == "master" )
     }
     boolean isBuildingTag() {
-      return ( env.BRANCH_NAME ==~ /^v\d.\d.\d$/ || env.BRANCH_NAME ==~ /^\d.\d.\d$/)
+      return ( env.BRANCH_NAME ==~ /^v\d+.\d+.\d+$/ || env.BRANCH_NAME ==~ /^\d+.\d+.\d+$/)
     }
 
     boolean isPushToAnotherBranch() {
@@ -168,23 +168,23 @@ spec:
     }
     
 
-    boolean isChangeSet() {
+     // boolean isChangeSet() {
 
       // new version
-        currentBuild.changeSets.any { changeSet -> 
-          changeSet.items.any { entry -> 
-            entry.affectedFiles.any { file -> 
-              if (file.path.equals("production-release.txt")) {
-                return true
-              }
-            }
-          }
-        }
-    }
+      // currentBuild.changeSets.any { changeSet -> 
+      //    changeSet.items.any { entry -> 
+      //      entry.affectedFiles.any { file -> 
+      //        if (file.path.equals("production-release.txt")) {
+      //          return true
+      //        }
+      //      }
+      //    }
+      //  }
+      // }
       // one more try 
       // currentBuild.changeSets*.items*.affectedFiles.find { it.path.equals("production-release.txt") }
 
-     // previous version
+      // previous version
       // def changeLogSets = currentBuild.changeSets
       // for (int i = 0; i < changeLogSets.size(); i++) {
       //   def entries = changeLogSets[i].items
