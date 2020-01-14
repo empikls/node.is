@@ -79,12 +79,12 @@ spec:
     }
     stage('Build docker image') {
       container('docker') {
-        if ( !isChangeSet() && !isMaster() ) {
+        if (!isMaster() ) {
             echo "Build docker image with tag ${BRANCH_NAME}"
             sh "docker build . -t ${DOCKERHUB_IMAGE}:${BRANCH_NAME}"
         }
         else {
-          if (  !isChangeSet() && !isBuildingTag() ) {
+          if (!isBuildingTag() ) {
             echo "Build docker image with tag ${shortCommit}"
             sh "docker build . -t ${DOCKERHUB_IMAGE}:${shortCommit}"
           }
@@ -97,7 +97,7 @@ spec:
      stage('Docker push') {
       container('docker') {
         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
-          if ( !isChangeSet() && !isMaster() ) {
+          if (!isMaster() ) {
             echo "Push docker image with tag ${BRANCH_NAME}"
             sh """
              docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
@@ -105,7 +105,7 @@ spec:
             """
           }
           else {
-            if ( !isChangeSet() && !isBuildingTag() ) {
+            if ( !isBuildingTag() ) {
             echo "Push docker image with tag ${shortCommit}"
             sh """
              docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
@@ -166,19 +166,19 @@ spec:
     }
     
 
-     // boolean isChangeSet() {
+    //  boolean isChangeSet() {
 
-      // new version
-      // currentBuild.changeSets.any { changeSet -> 
-      //    changeSet.items.any { entry -> 
-      //      entry.affectedFiles.any { file -> 
-      //        if (file.path.equals("production-release.txt")) {
-      //          return true
-      //        }
-      //      }
-      //    }
-      //  }
-      // }
+    //   new version
+    //   currentBuild.changeSets.any { changeSet -> 
+    //      changeSet.items.any { entry -> 
+    //        entry.affectedFiles.any { file -> 
+    //          if (file.path.equals("production-release.txt")) {
+    //            return true
+    //          }
+    //        }
+    //      }
+    //    }
+    //   }
       // one more try 
       // currentBuild.changeSets*.items*.affectedFiles.find { it.path.equals("production-release.txt") }
 
