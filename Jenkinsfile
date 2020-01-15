@@ -104,8 +104,7 @@ spec:
             }
           }
         } 
-       
-    
+          
     stage('Trigger Deploy')   {
        def job 
        build job: 'Deploy' , parameters:[string(name:'COMMIT', value: tag, description: 'last commit')]
