@@ -77,12 +77,9 @@ spec:
         }
     }
 
-    def tag
+    def tag = env.BRANCH_NAME
       if (!isBuildingTag() ) {
-        tag = "${shortCommit}"
-      }
-      else {
-        tag = "${BRANCH_NAME}"
+        tag = shortCommit
       }
       stage('Build docker image') {
         container('docker') {
@@ -91,12 +88,6 @@ spec:
       }
       if ( isPullRequest() ) {
         return 0  
-      }
-      if (!isBuildingTag() ) {
-        tag = "${shortCommit}"
-      }
-      else {
-        tag = "${BRANCH_NAME}"
       }
      stage('Docker push') {
       container('docker') {
@@ -109,7 +100,6 @@ spec:
           }
         } 
     stage('Trigger Deploy')   {
-       def job 
        build job: 'Deploy' , parameters:[string(name:'tagFromJob1', value: tag, description: 'last commit')]
        } 
 
