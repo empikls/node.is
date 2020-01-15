@@ -79,11 +79,12 @@ spec:
 
     def tag
       if (!isBuildingTag() ) {
-        tag = ${shortCommit}
+        tag = "${shortCommit}"
       }
       else {
-        tag = ${BRANCH_NAME}
+        tag = "${BRANCH_NAME}"
       }
+    
         stage('Build docker image') {
       container('docker') {
             sh "docker build . -t ${DOCKERHUB_IMAGE}:tag"
