@@ -87,7 +87,7 @@ spec:
     
         stage('Build docker image') {
       container('docker') {
-            sh "docker build . -t ${DOCKERHUB_IMAGE}:tag"
+            sh "docker build . -t ${DOCKERHUB_IMAGE}:$tag"
         }
     }
         if ( isPullRequest() ) {
@@ -98,12 +98,17 @@ spec:
         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
             sh """
              docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
-             docker push ${DOCKERHUB_IMAGE}:tag
+             docker push ${DOCKERHUB_IMAGE}:$tag
             """
             }
           }
         } 
-          
+          if (!isBuildingTag() ) {
+        tag = "${shortCommit}"
+      }
+      else {
+        tag = "${BRANCH_NAME}"
+      }
     stage('Trigger Deploy')   {
        def job 
        build job: 'Deploy' , parameters:[string(name:'COMMIT', value: tag, description: 'last commit')]
