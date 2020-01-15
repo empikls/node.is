@@ -51,8 +51,8 @@ spec:
     tty: true
 """
   )
-{
 
+{
 
   node(label) {
     
@@ -104,8 +104,8 @@ spec:
             }
           }
         } 
-      } 
-    }
+       
+    
     stage('Trigger Deploy')   {
        def job 
        build job: 'Deploy' , parameters:[string(name:'COMMIT', value: tag, description: 'last commit')]
@@ -114,6 +114,9 @@ spec:
           if ( isPushToAnotherBranch() ) {
             return 0
           }
+  }
+}
+  
     //  def tagDockerImage
     //  def nameStage
     //  def hostname
@@ -138,8 +141,8 @@ spec:
     //             }
     //         }   
             
-    }
-}    
+    
+    
     boolean isPullRequest() {
       return (env.BRANCH_NAME ==~  /^PR-\d+$/)
     }
