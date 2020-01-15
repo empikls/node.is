@@ -76,19 +76,20 @@ spec:
         """
         }
     }
+
+    def tag
+    if (!isMaster() {
+      tag = "${BRANCH_NAME}"
+    }
+    else {
+      if (!isBuildingTag() ) {
+        tag = "${shortCommit}"
+      }
+    }
     stage('Build docker image') {
       container('docker') {
-        if (!isMaster() ) {
-            echo "Build docker image with tag ${BRANCH_NAME}"
-            sh "docker build . -t ${DOCKERHUB_IMAGE}:${BRANCH_NAME}"
+            sh "docker build . -t ${DOCKERHUB_IMAGE}:tag"
         }
-        else {
-          if (!isBuildingTag() ) {
-            echo "Build docker image with tag ${shortCommit}"
-            sh "docker build . -t ${DOCKERHUB_IMAGE}:${shortCommit}"
-          }
-        }
-      }
     }
         if ( isPullRequest() ) {
           return 0  
@@ -96,30 +97,18 @@ spec:
      stage('Docker push') {
       container('docker') {
         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
-          if (!isMaster() ) {
-            echo "Push docker image with tag ${BRANCH_NAME}"
             sh """
              docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
-             docker push ${DOCKERHUB_IMAGE}:${BRANCH_NAME}
-            """
-          }
-          else {
-            if ( !isBuildingTag() ) {
-            echo "Push docker image with tag ${shortCommit}"
-            sh """
-             docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
-             docker push ${DOCKERHUB_IMAGE}:${shortCommit}
+             docker push ${DOCKERHUB_IMAGE}:tag
             """
             }
           }
-          
         } 
       } 
     }
     stage('Trigger Deploy')   {
        def job 
-       build job: 'Deploy' , parameters:[string(name:'COMMIT', value: shortCommit, description: 'last commit'),
-                                         string(name:'TAG',value:env.BRANCH_NAME, description: 'branch name')]
+       build job: 'Deploy' , parameters:[string(name:'COMMIT', value: tag, description: 'last commit')]
        } 
 
           if ( isPushToAnotherBranch() ) {
