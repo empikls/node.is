@@ -84,15 +84,20 @@ spec:
       else {
         tag = "${BRANCH_NAME}"
       }
-    
-        stage('Build docker image') {
-      container('docker') {
-            sh "docker build . -t ${DOCKERHUB_IMAGE}:$tag"
+      stage('Build docker image') {
+        container('docker') {
+          sh "docker build . -t ${DOCKERHUB_IMAGE}:$tag"
         }
-    }
-        if ( isPullRequest() ) {
-          return 0  
-        }
+      }
+      if ( isPullRequest() ) {
+        return 0  
+      }
+      if (!isBuildingTag() ) {
+        tag = "${shortCommit}"
+      }
+      else {
+        tag = "${BRANCH_NAME}"
+      }
      stage('Docker push') {
       container('docker') {
         withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
@@ -103,15 +108,9 @@ spec:
             }
           }
         } 
-          if (!isBuildingTag() ) {
-        tag = "${shortCommit}"
-      }
-      else {
-        tag = "${BRANCH_NAME}"
-      }
     stage('Trigger Deploy')   {
        def job 
-       build job: 'Deploy' , parameters:[string(name:'COMMIT', value: tag, description: 'last commit')]
+       build job: 'Deploy' , parameters:[string(name:'tagFromJob1', value: tag, description: 'last commit')]
        } 
 
           if ( isPushToAnotherBranch() ) {
