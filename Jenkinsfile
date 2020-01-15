@@ -88,6 +88,7 @@ spec:
       if ( isPullRequest() ) {
         return 0  
       }
+
       
      stage('Docker push') {
       container('docker') {
