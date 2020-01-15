@@ -76,7 +76,6 @@ spec:
         """
         }
     }
-
     def tag = env.BRANCH_NAME
       if (!isBuildingTag() ) {
         tag = shortCommit
