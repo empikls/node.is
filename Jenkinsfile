@@ -86,7 +86,9 @@ spec:
         tag = "${shortCommit}"
       }
     }
-    stage('Build docker image') {
+    
+    
+        stage('Build docker image') {
       container('docker') {
             sh "docker build . -t ${DOCKERHUB_IMAGE}:tag"
         }
