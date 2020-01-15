@@ -115,7 +115,6 @@ spec:
           }
   }
 }
-  
     //  def tagDockerImage
     //  def nameStage
     //  def hostname
