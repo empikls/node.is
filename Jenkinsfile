@@ -107,30 +107,6 @@ spec:
           }
   }
 }
-
-    //  def tagDockerImage
-    //  def nameStage
-    //  def hostname
-    //  def job
-    //          if ( isMaster() ) {
-    //             stage('Deploy dev version') {
-    //                 nameStage = "app-dev"
-    //                 namespace = "dev"
-    //                 tagDockerImage = readFile('GIT_COMMIT').take(7)
-    //                 hostname = "dev-173-193-112-65.nip.io"
-    //                     deploy( nameStage, namespace, tagDockerImage, hostname )
-    //             }
-    //         }
-            
-    //         else if ( isBuildingTag() ) {
-    //             stage('Deploy to QA stage') {
-    //                 nameStage = "app-qa"
-    //                 namespace = "qa"
-    //                 tagDockerImage = env.BRANCH_NAME
-    //                 hostname = "qa-173-193-112-65..nip.io"
-    //                     deploy( nameStage, namespace, tagDockerImage, hostname )
-    //             }
-    //         }   
             
     boolean isPullRequest() {
       return (env.BRANCH_NAME ==~  /^PR-\d+$/)
@@ -145,52 +121,3 @@ spec:
     boolean isPushToAnotherBranch() {
       return ( ! isMaster() && ! isBuildingTag() && ! isPullRequest() )
     }
-    
-
-    //  boolean isChangeSet() {
-
-    //   new version
-    //   currentBuild.changeSets.any { changeSet -> 
-    //      changeSet.items.any { entry -> 
-    //        entry.affectedFiles.any { file -> 
-    //          if (file.path.equals("production-release.txt")) {
-    //            return true
-    //          }
-    //        }
-    //      }
-    //    }
-    //   }
-      // one more try 
-      // currentBuild.changeSets*.items*.affectedFiles.find { it.path.equals("production-release.txt") }
-
-      // previous version
-      // def changeLogSets = currentBuild.changeSets
-      // for (int i = 0; i < changeLogSets.size(); i++) {
-      //   def entries = changeLogSets[i].items
-      //   for (int j = 0; j < entries.length; j++) {   
-      //     def files = new ArrayList(entries[j].affectedFiles)
-      //     for (int k = 0; k < files.size(); k++) {
-      //         def file = files[k]
-      //         if (file.path.equals("production-release.txt")) {
-      //             return true
-      //         }
-      //     }
-      //   }
-      // }
-  
-    //  def deploy( appName, namespace, tagName, hostName ) {
-    //    container('helm') {
-    //       echo "Release image: ${shortCommit}"
-    //       echo "Deploy app name: $appName"
-    //     withKubeConfig([credentialsId: 'kubeconfig']) {
-    //       sh """
-    //      helm upgrade --install $appName --debug --force ./app \
-    //         --namespace=$namespace \
-    //         --set image.tag="$tagName" \
-    //         --set ingress.hostName=$hostName \
-    //        --set-string ingress.tls[0].hosts[0]="$hostName" \
-    //         --set-string ingress.tls[0].secretName=acme-$appName-tls 
-    //       """
-    //     }
-    //   }
-    // }
