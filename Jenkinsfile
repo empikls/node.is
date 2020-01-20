@@ -99,13 +99,14 @@ spec:
             }
           }
         } 
+        if ( isPushToAnotherBranch() ) {
+            return 0
+          }
     stage('Trigger Deploy')   {
        build job: 'PipelineForDeploy' , parameters:[string(name:'tagFromJob1', value: tag, description: 'last commit')]
        } 
 
-          if ( isPushToAnotherBranch() ) {
-            return 0
-          }
+          
   }
 }
             
