@@ -83,30 +83,26 @@ spec:
                 }
                 stage('Build docker image') {
                     container('docker') {
-                        sh "docker build . -t ${DOCKERHUB_IMAGE}:$tag"
+                        sh "docker build . -t ${DOCKERHUB_IMAGE}:tag"
                     }
                 }
-                if (isPullRequest()) {
-                    return 0
-                }
-                stage('Docker push') {
-                    container('docker') {
-                        withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
-                            sh """
+                if (!isPullRequest()) {
+                    stage('Docker push') {
+                        container('docker') {
+                            withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
+                                sh """
                                docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
-                               docker push ${DOCKERHUB_IMAGE}:$tag
+                               docker push ${DOCKERHUB_IMAGE}:tag
                                """
+                            }
                         }
                     }
                 }
-                if (isPushToAnotherBranch()) {
-                    return 0
+                if (!isPushToAnotherBranch()) {
+                    stage('Trigger Deploy') {
+                        build job: 'PipelineForDeploy', parameters: [string(name: 'tagFromJob1', value: tag, description: 'last commit')]
+                    }
                 }
-                stage('Trigger Deploy') {
-                    build job: 'PipelineForDeploy', parameters: [string(name: 'tagFromJob1', value: tag, description: 'last commit')]
-                }
-
-
             }
         }
             
