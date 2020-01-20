@@ -100,7 +100,7 @@ spec:
                 }
                 if (!isPushToAnotherBranch()) {
                     stage('Trigger Deploy') {
-                        build job: 'PipelineForDeploy', parameters: [string(name: 'tagFromJob1', value: tag)]
+                        build job: 'PipelineForDeploy', parameters: [string(name: 'tagFromJob1', value: tag, description: 'last commit')]
                     }
                 }
             }
