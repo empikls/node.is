@@ -53,73 +53,73 @@ spec:
 """
   )
 
-{
+        {
 
- node(label) {
-    
-    stage('Checkout SCM') {
-        checkout scm
-        shortCommit = sh(returnStdout: true, script: "git rev-parse HEAD").trim().take(7)
-    } 
+            node(label) {
 
-    stage('Build node.js app') {
-        container('nodejs') {
-        sh 'npm install'
-        }
-    }
-    stage('Test node.js app') {
-        container('nodejs') {
-        sh """
-        npm install mocha chai --save-dev
-        npm install request --save-dev
-        node index.js &
-        npm test
-        """
-        }
-    }
-    def tag = env.BRANCH_NAME
-      if (!isBuildingTag() ) {
-        tag = shortCommit
-      }
-      stage('Build docker image') {
-        container('docker') {
-          sh "docker build . -t ${DOCKERHUB_IMAGE}:$tag"
-        }
-      }
-      if ( isPullRequest() ) {
-        return 0  
-      }
-     stage('Docker push') {
-      container('docker') {
-        withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
-            sh """
-             docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
-             docker push ${DOCKERHUB_IMAGE}:$tag
-            """
+                stage('Checkout SCM') {
+                    checkout scm
+                    shortCommit = sh(returnStdout: true, script: "git rev-parse HEAD").trim().take(7)
+                }
+
+                stage('Build node.js app') {
+                    container('nodejs') {
+                        sh 'npm install'
+                    }
+                }
+                stage('Test node.js app') {
+                    container('nodejs') {
+                        sh """
+                           npm install mocha chai --save-dev
+                           npm install request --save-dev
+                           node index.js &
+                           npm test
+                           """
+                    }
+                }
+                def tag = env.BRANCH_NAME
+                if (!isBuildingTag()) {
+                    tag = shortCommit
+                }
+                stage('Build docker image') {
+                    container('docker') {
+                        sh "docker build . -t ${DOCKERHUB_IMAGE}:$tag"
+                    }
+                }
+                if (isPullRequest()) {
+                    return 0
+                }
+                stage('Docker push') {
+                    container('docker') {
+                        withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
+                            sh """
+                               docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
+                               docker push ${DOCKERHUB_IMAGE}:$tag
+                               """
+                        }
+                    }
+                }
+                if (isPushToAnotherBranch()) {
+                    return 0
+                }
+                stage('Trigger Deploy') {
+                    build job: 'PipelineForDeploy', parameters: [string(name: 'tagFromJob1', value: tag, description: 'last commit')]
+                }
+
+
             }
-          }
-        } 
-        if ( isPushToAnotherBranch() ) {
-            return 0
-          }
-    stage('Trigger Deploy')   {
-       build job: 'PipelineForDeploy' , parameters:[string(name:'tagFromJob1', value: tag, description: 'last commit')]
-       } 
-
-          
-  }
-}
+        }
             
-    boolean isPullRequest() {
-      return (env.BRANCH_NAME ==~  /^PR-\d+$/)
-    }
-    boolean isMaster() {
-      return (env.BRANCH_NAME == "master" )
-    }
-    boolean isBuildingTag() {
-      return ( env.BRANCH_NAME ==~ /^v\d+.\d+.\d+$/ || env.BRANCH_NAME ==~ /^\d+.\d+.\d+$/)
-    }
+                boolean isPullRequest() {
+                    return (env.BRANCH_NAME ==~ /^PR-\d+$/)
+                }
+                boolean isMaster() {
+                    return (env.BRANCH_NAME == "master")
+                }
+                boolean isBuildingTag() {
+                    return (env.BRANCH_NAME ==~ /^v\d+.\d+.\d+$/ || env.BRANCH_NAME ==~ /^\d+.\d+.\d+$/)
+                }
 
-    boolean isPushToAnotherBranch() {
-      return ( ! isMaster() && ! isBuildingTag() && ! isPullRequest() )
-    }
+                boolean isPushToAnotherBranch() {
+                    return (!isMaster() && !isBuildingTag() && !isPullRequest())
+                }
