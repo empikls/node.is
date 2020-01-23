@@ -11,6 +11,6 @@ app.get('/', function (req, res) {
 
 //Launch listening server on port 9001
 app.listen(9001, function () {
-  console.log('App listening on port 9001!')
+  console.log('App listening on port 9001')
 })
 
