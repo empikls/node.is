@@ -1,5 +1,6 @@
 var expect  = require('chai').expect;
 var request = require('request');
+var appVersion = process.env.npm_package_version
 
 describe('Status and content', function() {
     describe ('Main page', function() {
