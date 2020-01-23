@@ -1,6 +1,5 @@
 #!groovy
 
-
 def label = "jenkins-agent"
 env.DOCKERHUB_IMAGE = "devops53/hello-world"
 
