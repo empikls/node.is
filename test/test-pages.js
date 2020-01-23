@@ -12,7 +12,8 @@ describe('Status and content', function() {
 
         it('content', function(done) {
             request('http://localhost:9001/' , function(error, response, body) {
-                expect(body).to.equal('Hello World');
+                var appVersion = process.env.npm_package_version
+                expect(body).to.equal("Application version - " + appVersion);
                 done();
             });
         });
