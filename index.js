@@ -1,12 +1,13 @@
 //Load express module with `require` directive
 var express = require('express')
 var app = express()
-
+var version = process.env.npm_package_version
+var pjson = require('./package.json');
+console.log(pjson.version);
 
 //Define request response in root URL (/)
 app.get('/', function (req, res) {
-  var appVersion = process.env.npm_package_version
-  res.send("Application version  - " + appVersion)
+  res.send("Application version  - " + pjson.version)
 })
 
 //Launch listening server on port 9001
