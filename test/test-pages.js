@@ -10,14 +10,6 @@ describe('Status and content', function() {
                 done();
             });
         });
-
-        it('content', function(done) {
-            request('http://localhost:9001/' , function(error, response, body) {
-                var appVersion = process.env.npm_package_version
-                expect(body).to.equal("Application version - " + appVersion);
-                done();
-            });
-        });
     });
 
     describe ('About page', function() {
