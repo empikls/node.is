@@ -21,11 +21,11 @@ spec:
     spec:
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: "INPUT_VERSION"
-              value: {{ .Values.image.tag | quote }}
+              value: {{ .Values.appVer }}
           ports:
             - name: http
               containerPort: 9001
