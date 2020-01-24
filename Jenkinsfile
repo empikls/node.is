@@ -50,8 +50,9 @@ spec:
     - cat
     tty: true
 """
-  ) {
-    
+  ) 
+
+{ //pod template    
 node(label) {
 
 stage('Checkout SCM') {
@@ -99,8 +100,8 @@ if (!isPushToAnotherBranch() && !isPullRequest() ) {
         build job: 'PipelineForDeploy', parameters: [string(name: 'tagFromJob1', value: tag)]
     }
 }
-}
-}
+} //node 
+} //pod template
 
 boolean isPullRequest() {
     return (env.BRANCH_NAME ==~ /^PR-\d+$/)
