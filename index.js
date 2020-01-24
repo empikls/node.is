@@ -2,12 +2,11 @@
 var express = require('express')
 var app = express()
 var version = process.env.npm_package_version
-var pjson = require('./package.json');
-console.log(pjson.version);
+var appVersion = process.env.INPUT_VERSION
 
 //Define request response in root URL (/)
 app.get('/', function (req, res) {
-  res.send("New application version  - " + pjson.version)
+  res.send("New application version  - " + ${appVersion})
 })
 
 //Launch listening server on port 9001
