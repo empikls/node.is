@@ -7,7 +7,7 @@ console.log(pjson.version);
 
 //Define request response in root URL (/)
 app.get('/', function (req, res) {
-  res.send("Application version  - " + pjson.version)
+  res.send("New application version  - " + pjson.version)
 })
 
 //Launch listening server on port 9001
