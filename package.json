@@ -7,9 +7,6 @@
     "test": "mocha",
     "start": "node index.js"
   },
-  "repository": {
-    "private": true
-  }
   "author": "sergey",
   "license": "ISC",
   "dependencies": {
