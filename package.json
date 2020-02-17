@@ -1,6 +1,6 @@
 {
   "name": "hello-world",
-  "version": "1.0.12",
+  "version": "1.0.1",
   "description": "test-app",
   "main": "index.js",
   "scripts": {
