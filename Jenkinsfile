@@ -97,7 +97,7 @@ if (!isPullRequest()) {
 }
 if (!isPushToAnotherBranch() && !isPullRequest() ) {
     stage('Trigger Deploy') {
-        build job: 'PipelineForDeploy', parameters: [string(name: 'tagFromJob1', value: tag)]
+        build job: 'PipelineForDeploy', parameters: [string(name: 'dockerTag', value: tag)]
     }
 }
 } //node 
