@@ -1,5 +1,6 @@
 #!groovy
 
+
 def lib = library identifier: 'my-shared-library@master', retriever: modernSCM(github(repository: 'node.is', repoOwner: 'empikls'))
 
 def label = "jenkins-agent"
