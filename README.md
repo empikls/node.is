@@ -1,4 +1,4 @@
-Simple Node.js application packaged as a container with a Helm Chart  
+Simple Node.js application packaged as a container with a Helm Chart 
 -----------------------------------------------
 Requirements
 -----------
