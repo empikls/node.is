@@ -1,9 +1,6 @@
 #!groovy
 
 
-def lib = library identifier: 'my-shared-library@master', retriever: modernSCM(github(repository: 'node.is', repoOwner: 'empikls'))
-
-
 def label = "jenkins-agent"
 env.DOCKERHUB_IMAGE = "devops53/hello-world"
 
@@ -120,4 +117,3 @@ boolean isBuildingTag() {
 boolean isPushToAnotherBranch() {
     return (!isMaster() && !isBuildingTag() && !isPullRequest())
 }
-
