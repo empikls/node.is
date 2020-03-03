@@ -1,6 +1,9 @@
 #!groovy
 
+<<<<<<< HEAD
 def lib = library identifier: 'my-shared-library@master', retriever: modernSCM(github(repository: 'node.is', repoOwner: 'empikls'))
+=======
+>>>>>>> parent of 3a60adb... Update Jenkinsfile
 
 def label = "jenkins-agent"
 env.DOCKERHUB_IMAGE = "devops53/hello-world"
