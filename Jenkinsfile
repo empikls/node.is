@@ -1,6 +1,10 @@
 #!groovy
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> e7d0df60387ce9946a84901c154baa39d07d4dd4
 def lib = library identifier: 'my-shared-library@master', retriever: modernSCM(github(repository: 'node.is', repoOwner: 'empikls'))
 =======
 >>>>>>> parent of 3a60adb... Update Jenkinsfile
