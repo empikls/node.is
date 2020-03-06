@@ -83,8 +83,14 @@ stage('Build docker image') {
         sh "docker build . -t ${DOCKERHUB_IMAGE}:$tag"
     }
 }
-if (!isPullRequest()) {
-    stage('Docker push') {
+if ( isPullRequest() ) {
+			// exitAsSuccess()
+			echo "It's pull request and we don't push image to docker hub"
+			currentBuild.result = 'SUCCESS';
+			return 0
+		}
+  
+stage('Docker push') {
         container('docker') {
             withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
                 sh """
@@ -93,9 +99,9 @@ if (!isPullRequest()) {
                """
             }
         }
-    }
 }
-if (!isPushToAnotherBranch() && !isPullRequest() ) {
+
+if ( isMaster() || isBuildingTag() ) {
     stage('Trigger Deploy') {
         build job: 'PipelineForDeploy', parameters: [string(name: 'dockerTag', value: tag)]
     }
@@ -113,6 +119,4 @@ boolean isBuildingTag() {
     return (env.BRANCH_NAME ==~ /^v\d+.\d+.\d+$/ || env.BRANCH_NAME ==~ /^\d+.\d+.\d+$/)
 }
 
-boolean isPushToAnotherBranch() {
-    return (!isMaster() && !isBuildingTag() && !isPullRequest())
-}
+
