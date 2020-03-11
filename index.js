@@ -6,7 +6,7 @@ var appVersion = process.env.INPUT_VERSION
 
 //Define request response in root URL (/)
 app.get('/', function (req, res) {
-  res.send("New application version is " + appVersion)
+  res.send("New application version is - " + appVersion)
 })
 
 //Launch listening server on port 9001
